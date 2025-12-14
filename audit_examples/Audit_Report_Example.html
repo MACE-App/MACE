@@ -1,0 +1,3296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M.A.C.E. Audit Report</title>
+    <style>
+        :root {
+            --pass-color: #22c55e;
+            --fail-color: #ef4444;
+            --manual-color: #eab308;
+            --error-color: #f97316;
+            --pending-color: #9ca3af;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #0f172a;
+                --card-bg: #1e293b;
+                --text-primary: #f1f5f9;
+                --text-secondary: #94a3b8;
+                --border-color: #334155;
+            }
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            color: var(--text-secondary);
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .summary-card .count {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .summary-card .label {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .summary-card.pass .count { color: var(--pass-color); }
+        .summary-card.fail .count { color: var(--fail-color); }
+        .summary-card.manual .count { color: var(--manual-color); }
+        .summary-card.error .count { color: var(--error-color); }
+
+        .info-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-item .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .info-item .value {
+            font-weight: 600;
+        }
+
+        .results-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .results-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .results-table th,
+        .results-table td {
+            text-align: left;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .results-table th {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .results-table .status-cell {
+            text-align: center;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-badge.pass { background: #dcfce7; color: #166534; }
+        .status-badge.fail { background: #fee2e2; color: #991b1b; }
+        .status-badge.manual { background: #fef9c3; color: #854d0e; }
+        .status-badge.error { background: #ffedd5; color: #9a3412; }
+
+        @media (prefers-color-scheme: dark) {
+            .status-badge.pass { background: #166534; color: #dcfce7; }
+            .status-badge.fail { background: #991b1b; color: #fee2e2; }
+            .status-badge.manual { background: #854d0e; color: #fef9c3; }
+            .status-badge.error { background: #9a3412; color: #ffedd5; }
+        }
+
+        .collapsible {
+            cursor: pointer;
+        }
+
+        .collapsible:hover {
+            background: var(--bg-color);
+        }
+
+        .details-row {
+            display: none;
+        }
+
+        .details-row.show {
+            display: table-row;
+        }
+
+        .details-content {
+            background: var(--bg-color);
+            padding: 1rem;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.75rem;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .pass-rate-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .pass-rate-chart {
+            flex-shrink: 0;
+        }
+
+        .pass-rate {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .pass-rate.high { color: var(--pass-color); }
+        .pass-rate.medium { color: var(--manual-color); }
+        .pass-rate.low { color: var(--fail-color); }
+
+        .signature-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .signature-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .signature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .signature-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .signature-line {
+            border-bottom: 1px solid var(--text-primary);
+            min-height: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .signature-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        @media print {
+            .signature-section {
+                page-break-inside: avoid;
+            }
+        }
+
+        .executive-summary {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid var(--pass-color);
+        }
+
+        .executive-summary.high {
+            border-left-color: var(--pass-color);
+        }
+
+        .executive-summary.medium {
+            border-left-color: var(--manual-color);
+        }
+
+        .executive-summary.low {
+            border-left-color: var(--fail-color);
+        }
+
+        .executive-summary h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .executive-summary p {
+            margin: 0.5rem 0;
+            line-height: 1.6;
+        }
+
+        .toc {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .toc h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .toc-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px dotted var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .toc-list li:last-child {
+            border-bottom: none;
+        }
+
+        .toc-list a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        .toc-list a:hover {
+            text-decoration: underline;
+        }
+
+        .toc-count {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            
+            <h1>M.A.C.E. Audit Report</h1>
+            <p>macOS Advanced Compliance Editor - Compliance Audit Results</p>
+        </header>
+
+        <div class="summary-cards">
+            <div class="summary-card">
+                <div class="count">113</div>
+                <div class="label">Total Rules</div>
+            </div>
+            <div class="summary-card pass">
+                <div class="count">28</div>
+                <div class="label">Passed</div>
+            </div>
+            <div class="summary-card fail">
+                <div class="count">84</div>
+                <div class="label">Failed</div>
+            </div>
+            <div class="summary-card manual">
+    <div class="count">1</div>
+    <div class="label">Manual Review</div>
+</div>
+            
+        </div>
+
+        <div class="info-section">
+            <h2>Audit Information</h2>
+            <div class="pass-rate-container">
+                <div class="pass-rate-chart">
+                        <svg width="120" height="120" viewBox="0 0 120 120">
+            <path d="M 60.0 10.0 A 50.0 50.0 0 0 1 109.99516923531905 59.30497976158425 L 89.99710154119143 59.582987856950545 A 30.0 30.0 0 0 0 60.0 30.0 Z" fill="#22c55e"/>    <path d="M 109.99516923531905 59.30497976158425 A 50.0 50.0 0 1 1 57.221261882325855 10.077273567308197 L 58.33275712939551 30.04636414038492 A 30.0 30.0 0 1 0 89.99710154119143 59.582987856950545 Z" fill="#ef4444"/>    <path d="M 57.221261882325855 10.077273567308197 A 50.0 50.0 0 0 1 59.99999999999999 10.0 L 59.99999999999999 30.0 A 30.0 30.0 0 0 0 58.33275712939551 30.04636414038492 Z" fill="#eab308"/>
+    </svg>
+                </div>
+                <div class="pass-rate low">
+                    25.0% Pass Rate
+                </div>
+            </div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span class="label">Platform</span>
+                    <span class="value">macOS</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Version</span>
+                    <span class="value">macOS 26 (Tahoe)</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Compliance</span>
+                    <span class="value">CIS Level 2</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Start Time</span>
+                    <span class="value">December 13, 2025 at 10:19:26 PM</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">End Time</span>
+                    <span class="value">December 13, 2025 at 10:19:47 PM</span>
+                </div>
+                <div class="info-item">
+                    <span class="label">Duration</span>
+                    <span class="value">20.64 seconds</span>
+                </div>
+            </div>
+        </div>
+        
+<div class="info-section">
+    <h2>Machine Information</h2>
+    <div class="info-grid">
+        <div class="info-item">
+            <span class="label">Hostname</span>
+            <span class="value">macbook-air-6.local</span>
+        </div>
+    </div>
+</div>
+        
+        <div class="executive-summary low">
+            <h2>Executive Summary</h2>
+            <p>This system shows <strong>poor compliance</strong> with a 25.0% pass rate and requires significant remediation.</p>
+            <p>Audit found <strong>84 of 113</strong> rules failing. 1 rule(s) require manual review.</p>
+            <p><span style="color: var(--fail-color); font-weight: 600;">Areas needing attention:</span> iCloud (0% - 1 failed), Password Policy (12% - 7 failed), System Settings (21% - 33 failed)</p>
+        </div>
+        
+        <div class="toc">
+            <h2>Table of Contents</h2>
+            <ul class="toc-list">
+                <li><a href="#failed">Failed Rules</a><span class="toc-count">84</span></li>
+                        <li><a href="#manual">Manual Review</a><span class="toc-count">1</span></li>
+                        <li><a href="#passed">Passed Rules</a><span class="toc-count">28</span></li>
+            </ul>
+        </div>
+        
+        <div class="info-section">
+            <h2>Section Summary</h2>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Section</th>
+                        <th style="text-align: center;">Total</th>
+                        <th style="text-align: center;">Passed</th>
+                        <th style="text-align: center;">Failed</th>
+                        <th style="text-align: center;">Manual</th>
+                        <th style="text-align: center;">Errors</th>
+                        <th style="text-align: center;">Pass Rate</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>iCloud</td>
+                    <td style="text-align: center;">1</td>
+                    <td style="text-align: center; color: #22c55e;">0</td>
+                    <td style="text-align: center; color: #ef4444;">1</td>
+                    <td style="text-align: center; color: #eab308;">0</td>
+                    <td style="text-align: center; color: #f97316;">0</td>
+                    <td style="text-align: center;" class="pass-rate low">0%</td>
+                </tr>                <tr>
+                    <td>Password Policy</td>
+                    <td style="text-align: center;">8</td>
+                    <td style="text-align: center; color: #22c55e;">1</td>
+                    <td style="text-align: center; color: #ef4444;">7</td>
+                    <td style="text-align: center; color: #eab308;">0</td>
+                    <td style="text-align: center; color: #f97316;">0</td>
+                    <td style="text-align: center;" class="pass-rate low">12%</td>
+                </tr>                <tr>
+                    <td>System Settings</td>
+                    <td style="text-align: center;">43</td>
+                    <td style="text-align: center; color: #22c55e;">9</td>
+                    <td style="text-align: center; color: #ef4444;">33</td>
+                    <td style="text-align: center; color: #eab308;">1</td>
+                    <td style="text-align: center; color: #f97316;">0</td>
+                    <td style="text-align: center;" class="pass-rate low">21%</td>
+                </tr>                <tr>
+                    <td>Operating System</td>
+                    <td style="text-align: center;">40</td>
+                    <td style="text-align: center; color: #22c55e;">11</td>
+                    <td style="text-align: center; color: #ef4444;">29</td>
+                    <td style="text-align: center; color: #eab308;">0</td>
+                    <td style="text-align: center; color: #f97316;">0</td>
+                    <td style="text-align: center;" class="pass-rate low">28%</td>
+                </tr>                <tr>
+                    <td>Audit</td>
+                    <td style="text-align: center;">21</td>
+                    <td style="text-align: center; color: #22c55e;">7</td>
+                    <td style="text-align: center; color: #ef4444;">14</td>
+                    <td style="text-align: center; color: #eab308;">0</td>
+                    <td style="text-align: center; color: #f97316;">0</td>
+                    <td style="text-align: center;" class="pass-rate low">33%</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+                <div class="results-section" id="failed">
+            <h2>Failed Rules (84)</h2>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Rule ID</th>
+                        <th>CIS ID</th>
+                        <th>Title</th>
+                        <th>Section</th>
+                        <th class="status-cell">Status</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <tr class="collapsible">
+                <td>system_settings_location_services_menu_enforce</td>
+                <td>2.6.1.2 (level 2)</td>
+                <td>Ensure Location Services Is In the Menu Bar</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/defaults read /Library/Preferences/com.apple.locationmenu.plist ShowSystemServices
+<strong>Fix Script:</strong> /usr/bin/defaults write /Library/Preferences/com.apple.locationmenu.plist ShowSystemServices -bool true
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: 1, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_printer_sharing_disable</td>
+                <td>2.3.3.3 (level 1)</td>
+                <td>Disable Printer Sharing</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.05s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/sbin/cupsctl | /usr/bin/grep -c "_share_printers=0"
+<strong>Fix Script:</strong> /usr/sbin/cupsctl --no-share-printers
+/usr/bin/lpstat -p | awk '{print $2}'| /usr/bin/xargs -I{} lpadmin -p {} -o printer-is-shared=false
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_guest_access_smb_disable</td>
+                <td>2.13.2 (level 1)</td>
+                <td>Disable Guest Access to Shared SMB Folders</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/defaults read /Library/Preferences/SystemConfiguration/com.apple.smb.server AllowGuestAccess
+<strong>Fix Script:</strong> /usr/sbin/sysadminctl -smbGuestAccess off
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: 0, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_screensaver_ask_for_password_delay_enforce</td>
+                <td>2.11.2 (level 1)</td>
+                <td>Enforce Session Lock After Screen Saver is Started</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.03s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+function run() {
+  let delay = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.screensaver')\
+.objectForKey('askForPasswordDelay'))
+  if ( delay &lt;= $ODV ) {
+    return("true")
+  } else {
+    return("false")
+  }
+}
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - askForPasswordDelay: $ODV
+  PayloadType: com.apple.screensaver
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_improve_search_disable</td>
+                <td>2.9.1</td>
+                <td>Disable Improve Search Information to Apple</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.assistant.support')\
+.objectForKey('Search Queries Data Sharing Status').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - Search Queries Data Sharing Status: 2
+  PayloadType: com.apple.assistant.support
+
+
+<strong>Expected Output:</strong> 2
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: 2, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_location_services_enable</td>
+                <td>2.6.1.1 (level 2)</td>
+                <td>Enable Location Services</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.03s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/sudo -u _locationd /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.locationd')\
+.objectForKey('LocationServicesEnabled').js
+EOS
+<strong>Fix Script:</strong> /usr/bin/defaults write /var/db/locationd/Library/Preferences/ByHost/com.apple.locationd LocationServicesEnabled -bool true;
+pid=$(/bin/launchctl list | /usr/bin/awk '/com.apple.locationd/ { print $1 }')
+kill -9 $pid
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_guest_account_disable</td>
+                <td>2.13.1 (level 1)</td>
+                <td>Disable the Guest Account</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+function run() {
+  let pref1 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.MCX')\
+.objectForKey('DisableGuestAccount'))
+  let pref2 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.MCX')\
+.objectForKey('EnableGuestAccount'))
+  if ( pref1 == true && pref2 == false ) {
+    return("true")
+  } else {
+    return("false")
+  }
+}
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - DisableGuestAccount: true
+  - EnableGuestAccount: false
+  PayloadType: com.apple.MCX
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> false
+<strong>Error:</strong> Expected: true, Got: false
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_remote_management_disable</td>
+                <td>2.3.3.5 (level 1)</td>
+                <td>Disable Remote Management</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.03s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/libexec/mdmclient QuerySecurityInfo 2&gt;/dev/null | /usr/bin/grep -c "RemoteDesktopEnabled = 0"
+<strong>Fix Script:</strong> /System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -deactivate -stop
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_time_machine_auto_backup_enable</td>
+                <td>2.3.4.1 (level 2)</td>
+                <td>Configure Time Machine for Automatic Backups</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.TimeMachine')\
+.objectForKey('AutoBackup').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - AutoBackup: true
+  PayloadType: com.apple.TimeMachine
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_loginwindow_prompt_username_password_enforce</td>
+                <td>2.11.4 (level 1)</td>
+                <td>Configure Login Window to Prompt for Username and Password</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.loginwindow')\
+.objectForKey('SHOWFULLNAME').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - SHOWFULLNAME: true
+  PayloadType: com.apple.loginwindow
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_personalized_advertising_disable</td>
+                <td>2.6.4 (level 1)</td>
+                <td>Disable Personalized Advertising</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowApplePersonalizedAdvertising').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowApplePersonalizedAdvertising: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_smbd_disable</td>
+                <td>2.3.3.2 (level 1)</td>
+                <td>Disable Server Message Block Sharing</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/launchctl print-disabled system | /usr/bin/grep -c '"com.apple.smbd" =&gt; disabled'
+<strong>Fix Script:</strong> /bin/launchctl disable system/com.apple.smbd
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_password_hints_disable</td>
+                <td>2.11.5 (level 1)</td>
+                <td>Disable Password Hints</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.loginwindow')\
+.objectForKey('RetriesUntilHint').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - RetriesUntilHint: 0
+  PayloadType: com.apple.loginwindow
+
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: 0, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_system_wide_preferences_configure</td>
+                <td>2.6.8 (level 1)</td>
+                <td>Require Administrator Password to Modify System-Wide Preferences</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.50s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> authDBs=("system.preferences" "system.preferences.energysaver" "system.preferences.network" "system.preferences.printing" "system.preferences.sharing" "system.preferences.softwareupdate" "system.preferences.startupdisk" "system.preferences.timemachine")
+result="1"
+for section in ${authDBs[@]}; do
+  if [[ $(/usr/bin/security -q authorizationdb read "$section" | /usr/bin/xmllint -xpath 'name(//*[contains(text(), "shared")]/following-sibling::*[1])' -) != "false" ]]; then
+    result="0"
+  fi
+  if [[ $(/usr/bin/security -q authorizationdb read "$section" | /usr/bin/xmllint -xpath '//*[contains(text(), "group")]/following-sibling::*[1]/text()' - ) != "admin" ]]; then
+    result="0"
+  fi
+  if [[ $(/usr/bin/security -q authorizationdb read "$section" | /usr/bin/xmllint -xpath 'name(//*[contains(text(), "authenticate-user")]/following-sibling::*[1])' -) != "true" ]]; then
+    result="0"
+  fi
+  if [[ $(/usr/bin/security -q authorizationdb read "$section" | /usr/bin/xmllint -xpath 'name(//*[contains(text(), "session-owner")]/following-sibling::*[1])' -) != "false" ]]; then
+    result="0"
+  fi
+done
+echo $result
+<strong>Fix Script:</strong> authDBs=("system.preferences" "system.preferences.energysaver" "system.preferences.network" "system.preferences.printing" "system.preferences.sharing" "system.preferences.softwareupdate" "system.preferences.startupdisk" "system.preferences.timemachine")
+
+for section in ${authDBs[@]}; do
+  /usr/bin/security -q authorizationdb read "$section" &gt; "/tmp/$section.plist"
+
+  class_key_value=$(/usr/libexec/PlistBuddy -c "Print :class" "/tmp/$section.plist" 2&gt;&1)
+  if [[ "$class_key_value" == *"Does Not Exist"* ]]; then
+    /usr/libexec/PlistBuddy -c "Add :class string user" "/tmp/$section.plist"
+  else
+    /usr/libexec/PlistBuddy -c "Set :class user" "/tmp/$section.plist"
+  fi
+
+  key_value=$(/usr/libexec/PlistBuddy -c "Print :shared" "/tmp/$section.plist" 2&gt;&1)  	
+  if [[ "$key_value" == *"Does Not Exist"* ]]; then
+    /usr/libexec/PlistBuddy -c "Add :shared bool false" "/tmp/$section.plist"
+  else
+    /usr/libexec/PlistBuddy -c "Set :shared false" "/tmp/$section.plist"
+  fi
+
+  auth_user_key=$(/usr/libexec/PlistBuddy -c "Print :authenticate-user" "/tmp/$section.plist" 2&gt;&1)  	
+  if [[ "$auth_user_key" == *"Does Not Exist"* ]]; then
+    /usr/libexec/PlistBuddy -c "Add :authenticate-user bool true" "/tmp/$section.plist"
+  else
+    /usr/libexec/PlistBuddy -c "Set :authenticate-user true" "/tmp/$section.plist"
+  fi
+
+  session_owner_key=$(/usr/libexec/PlistBuddy -c "Print :session-owner" "/tmp/$section.plist" 2&gt;&1)  	
+  if [[ "$session_owner_key" == *"Does Not Exist"* ]]; then
+    /usr/libexec/PlistBuddy -c "Add :session-owner bool false" "/tmp/$section.plist"
+  else
+    /usr/libexec/PlistBuddy -c "Set :session-owner false" "/tmp/$section.plist"
+  fi
+
+  group_key=$(/usr/libexec/PlistBuddy -c "Print :group" "/tmp/$section.plist" 2&gt;&1)
+  if [[ "$group_key" == *"Does Not Exist"* ]]; then
+    /usr/libexec/PlistBuddy -c "Add :group string admin" "/tmp/$section.plist"
+  else
+    /usr/libexec/PlistBuddy -c "Set :group admin" "/tmp/$section.plist"
+  fi
+
+  /usr/bin/security -q authorizationdb write "$section" &lt; "/tmp/$section.plist"
+done
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_screensaver_timeout_enforce</td>
+                <td>2.11.1 (level 1)</td>
+                <td>Enforce Screen Saver Timeout</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.03s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+function run() {
+  let timeout = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.screensaver')\
+.objectForKey('idleTime'))
+  if ( timeout &lt;= $ODV ) {
+    return("true")
+  } else {
+    return("false")
+  }
+}
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - idleTime: $ODV
+  PayloadType: com.apple.screensaver
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_siri_disable</td>
+                <td>2.5.2.1 (level 1)</td>
+                <td>Disable Siri</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowAssistant').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowAssistant: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_external_intelligence_disable</td>
+                <td>2.5.1.1 (level 1)</td>
+                <td>Disable External Intelligence Integrations</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowExternalIntelligenceIntegrations').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowExternalIntelligenceIntegrations: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_content_caching_disable</td>
+                <td>2.3.3.8 (level 2)</td>
+                <td>Disable Content Caching Service</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowContentCaching').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowContentCaching: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_filevault_enforce</td>
+                <td>2.6.6 (level 1)</td>
+                <td>Enforce FileVault</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.09s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> dontAllowDisable=$(/usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.MCX')\
+.objectForKey('dontAllowFDEDisable').js
+EOS
+)
+fileVault=$(/usr/bin/fdesetup status | /usr/bin/grep -c "FileVault is On.")
+if [[ "$dontAllowDisable" == "true" ]] && [[ "$fileVault" == 1 ]]; then
+  echo "1"
+else
+  echo "0"
+fi
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - dontAllowFDEDisable: true
+  PayloadType: com.apple.MCX
+
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_internet_sharing_disable</td>
+                <td>2.3.3.7 (level 1)</td>
+                <td>Disable Internet Sharing</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.MCX')\
+.objectForKey('forceInternetSharingOff').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - forceInternetSharingOff: true
+  PayloadType: com.apple.MCX
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_firewall_enable</td>
+                <td>2.2.1 (level 1)</td>
+                <td>Enable macOS Application Firewall</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.security.firewall')\
+.objectForKey('EnableFirewall').js
+EOS
+<strong>Fix Script:</strong> /usr/bin/defaults write /Library/Preferences/com.apple.alf globalstate -int 1
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_wake_network_access_disable</td>
+                <td>2.10.3 (level 1)</td>
+                <td>Ensure Wake for Network Access Is Disabled</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/pmset -g custom | /usr/bin/awk '/womp/ { sum+=$2 } END {print sum}'
+<strong>Fix Script:</strong> /usr/bin/pmset -a womp 0
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 1
+<strong>Error:</strong> Expected: 0, Got: 1
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_diagnostics_reports_disable</td>
+                <td>2.6.3.1 (level 1)</td>
+                <td>Disable Sending Diagnostic and Usage Data to Apple</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+function run() {
+let pref1 = $.NSUserDefaults.alloc.initWithSuiteName('com.apple.SubmitDiagInfo')\
+.objectForKey('AutoSubmit').js
+let pref2 = $.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowDiagnosticSubmission').js
+if ( pref1 == false && pref2 == false ){
+    return("true")
+} else {
+    return("false")
+}
+}
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - AutoSubmit: false
+  PayloadType: com.apple.SubmitDiagInfo
+- PayloadContent:
+  - allowDiagnosticSubmission: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> false
+<strong>Error:</strong> Expected: true, Got: false
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_bluetooth_sharing_disable</td>
+                <td>2.3.3.10 (level 1)</td>
+                <td>Disable Bluetooth Sharing</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/sudo -u "$CURRENT_USER" /usr/bin/defaults -currentHost read com.apple.Bluetooth PrefKeyServicesEnabled
+<strong>Fix Script:</strong> /usr/bin/sudo -u "$CURRENT_USER" /usr/bin/defaults -currentHost write com.apple.Bluetooth PrefKeyServicesEnabled -bool false
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: 0, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_external_intelligence_sign_in_disable</td>
+                <td>2.5.1.1 (level 1)</td>
+                <td>Disable External Intelligence Integration Sign In</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowExternalIntelligenceIntegrationsSignIn').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowExternalIntelligenceIntegrationsSignIn: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_automatic_login_disable</td>
+                <td>2.13.3 (level 1)</td>
+                <td>Disable Unattended or Automatic Logon to the System</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.loginwindow')\
+.objectForKey('com.apple.login.mcx.DisableAutoLoginClient').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - com.apple.login.mcx.DisableAutoLoginClient: true
+  PayloadType: com.apple.loginwindow
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_time_server_enforce</td>
+                <td>2.3.2.1 (level 1)</td>
+                <td>Enforce macOS Time Synchronization</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.timed')\
+.objectForKey('TMAutomaticTimeOnlyEnabled').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - com.apple.timed:
+      TMAutomaticTimeOnlyEnabled: true
+  PayloadType: com.apple.ManagedClient.preferences
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_airplay_receiver_disable</td>
+                <td>2.3.1.2 (level 1)</td>
+                <td>Disable Airplay Receiver</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowAirPlayIncomingRequests').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowAirPlayIncomingRequests: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_improve_assistive_voice_disable</td>
+                <td>2.6.3.3 (level 1)</td>
+                <td>Disable Sending Audio Recordings and Transcripts to Apple</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.Accessibility')\
+.objectForKey('AXSAudioDonationSiriImprovementEnabled').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - AXSAudioDonationSiriImprovementEnabled: false
+  PayloadType: com.apple.Accessibility
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_time_server_configure</td>
+                <td>2.3.2.1 (level 1)</td>
+                <td>Configure macOS to Use an Authorized Time Server</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.MCX')\
+.objectForKey('timeServer').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - timeServer: $ODV
+  PayloadType: com.apple.MCX
+
+
+<strong>Expected Output:</strong> $ODV
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: $ODV, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_rae_disable</td>
+                <td>2.3.3.6 (level 1)</td>
+                <td>Disable Remote Apple Events</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/launchctl print-disabled system | /usr/bin/grep -c '"com.apple.AEServer" =&gt; disabled'
+<strong>Fix Script:</strong> /usr/sbin/systemsetup -setremoteappleevents off
+/bin/launchctl disable system/com.apple.AEServer
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_media_sharing_disabled</td>
+                <td>2.3.3.9 (level 2)</td>
+                <td>Disable Media Sharing</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+function run() {
+  let pref1 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowMediaSharing'))
+  let pref2 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowMediaSharingModification'))
+  if ( pref1 == false && pref2 == false ) {
+    return("true")
+  } else {
+    return("false")
+  }
+}
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowMediaSharing: false
+  - allowMediaSharingModification: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> false
+<strong>Error:</strong> Expected: true, Got: false
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_firewall_stealth_mode_enable</td>
+                <td>2.2.2 (level 1)</td>
+                <td>Enable Firewall Stealth Mode</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.security.firewall')\
+.objectForKey('EnableStealthMode').js
+EOS
+<strong>Fix Script:</strong> /usr/bin/defaults write /Library/Preferences/com.apple.alf stealthenabled -int 1
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_flags_fm_failed_configure</td>
+                <td>3.2 (level 2)</td>
+                <td>Configure System to Audit All Failed Change of Object Attributes</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec '\-fm'
+<strong>Fix Script:</strong> /usr/bin/grep -qE "^flags.*-fm" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-fm/' /etc/security/audit_control;/usr/sbin/audit -s
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_flags_ad_configure</td>
+                <td>3.2 (level 2)</td>
+                <td>Configure System to Audit All Administrative Action Events</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec 'ad'
+<strong>Fix Script:</strong> /usr/bin/grep -qE "^flags.*[^-]ad" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,ad/' /etc/security/audit_control; /usr/sbin/audit -s
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_control_owner_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit_Control Owner to Root</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -dn /etc/security/audit_control | /usr/bin/awk '{print $3}'
+<strong>Fix Script:</strong> /usr/sbin/chown root /etc/security/audit_control
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: 0, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_flags_ex_configure</td>
+                <td>3.2 (level 2)</td>
+                <td>Configure System to Audit All Failed Program Execution on the System</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec '\-ex'
+<strong>Fix Script:</strong> /usr/bin/grep -qE "^flags.*-ex" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-ex/' /etc/security/audit_control; /usr/sbin/audit -s
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_files_mode_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit Log Files to Mode 440 or Less Permissive</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -l $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '!/-r--r-----|current|total/{print $1}' | /usr/bin/wc -l | /usr/bin/tr -d ' '
+<strong>Fix Script:</strong> /bin/chmod 440 /var/audit/*
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 16
+<strong>Error:</strong> Expected: 0, Got: 16
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_auditd_enabled</td>
+                <td>3.1 (level 1)</td>
+                <td>Enable Security Auditing</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> LAUNCHD_RUNNING=$(/bin/launchctl print system | /usr/bin/grep -c -E '\tcom.apple.auditd')
+AUDITD_RUNNING=$(/usr/sbin/audit -c | /usr/bin/grep -c "AUC_AUDITING")
+if [[ $LAUNCHD_RUNNING == 1 ]] && [[ -e /etc/security/audit_control ]] && [[ $AUDITD_RUNNING == 1 ]]; then
+  echo "pass"
+else
+  echo "fail"
+fi
+<strong>Fix Script:</strong> if [[ ! -e /etc/security/audit_control ]] && [[ -e /etc/security/audit_control.example ]];then
+  /bin/cp /etc/security/audit_control.example /etc/security/audit_control
+fi
+
+/bin/launchctl enable system/com.apple.auditd
+/bin/launchctl bootstrap system /System/Library/LaunchDaemons/com.apple.auditd.plist
+/usr/sbin/audit -i
+
+<strong>Expected Output:</strong> pass
+<strong>Actual Output:</strong> fail
+<strong>Error:</strong> Expected: pass, Got: fail
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_flags_aa_configure</td>
+                <td>3.2 (level 2)</td>
+                <td>Configure System to Audit All Authorization and Authentication Events</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec 'aa'
+<strong>Fix Script:</strong> /usr/bin/grep -qE "^flags.*[^-]aa" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,aa/' /etc/security/audit_control; /usr/sbin/audit -s
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_flags_fr_configure</td>
+                <td>3.2 (level 2)</td>
+                <td>Configure System to Audit All Failed Read Actions on the System</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec '\-fr'
+<strong>Fix Script:</strong> /usr/bin/grep -qE "^flags.*-fr" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-fr/' /etc/security/audit_control;/usr/sbin/audit -s
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_flags_lo_configure</td>
+                <td>3.2 (level 2)</td>
+                <td>Configure System to Audit All Log In and Log Out Events</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec '^lo'
+<strong>Fix Script:</strong> /usr/bin/grep -qE "^flags.*[^-]lo" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,lo/' /etc/security/audit_control; /usr/sbin/audit -s
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_flags_fw_configure</td>
+                <td>3.2 (level 2)</td>
+                <td>Configure System to Audit All Failed Write Actions on the System</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec '\-fw'
+<strong>Fix Script:</strong> /usr/bin/grep -qE "^flags.*-fw" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-fw/' /etc/security/audit_control;/usr/sbin/audit -s
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_retention_configure</td>
+                <td>3.4 (level 1)</td>
+                <td>Configure Audit Retention to $ODV</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/awk -F: '/expire-after/{print $2}' /etc/security/audit_control
+<strong>Fix Script:</strong> /usr/bin/sed -i.bak 's/^expire-after.*/expire-after:$ODV/' /etc/security/audit_control; /usr/sbin/audit -s
+
+<strong>Expected Output:</strong> $ODV
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: $ODV, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_control_group_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit_Control Group to Wheel</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -dn /etc/security/audit_control | /usr/bin/awk '{print $4}'
+<strong>Fix Script:</strong> /usr/bin/chgrp wheel /etc/security/audit_control
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: 0, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_files_group_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit Log Files Group to Wheel</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -n $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '{s+=$4} END {print s}'
+<strong>Fix Script:</strong> /usr/bin/chgrp -R wheel /var/audit/*
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 240
+<strong>Error:</strong> Expected: 0, Got: 240
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_folders_mode_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit Log Folders to Mode 700 or Less Permissive</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/stat -f %A $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}')
+<strong>Fix Script:</strong> /bin/chmod 700 /var/audit
+
+<strong>Expected Output:</strong> 700
+<strong>Actual Output:</strong> 666
+<strong>Error:</strong> Expected: 700, Got: 666
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_power_nap_disable</td>
+                <td>2.10.2 (level 1)</td>
+                <td>Disable Power Nap</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/pmset -g custom | /usr/bin/awk '/powernap/ { sum+=$2 } END {print sum}'
+<strong>Fix Script:</strong> /usr/bin/pmset -a powernap 0
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 2
+<strong>Error:</strong> Expected: 0, Got: 2
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_safari_warn_fraudulent_website_enable</td>
+                <td>6.3.3 (level 1)</td>
+                <td>Ensure Warn When Visiting A Fraudulent Website in Safari Is Enabled</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/profiles -P -o stdout | /usr/bin/grep -c 'WarnAboutFraudulentWebsites = 1' | /usr/bin/awk '{ if ($1 &gt;= 1) {print "1"} else {print "0"}}'
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - WarnAboutFraudulentWebsites: true
+  PayloadType: com.apple.Safari
+
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_root_disable</td>
+                <td>5.6 (level 1)</td>
+                <td>Disable Root Login</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.03s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/dscl . -read /Users/root UserShell 2&gt;&1 | /usr/bin/grep -c "/usr/bin/false"
+<strong>Fix Script:</strong> /usr/bin/dscl . -create /Users/root UserShell /usr/bin/false
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_notes_transcription_disable</td>
+                <td>2.5.1.4 (level 1)</td>
+                <td>Disable Apple Intelligence Notes Transcription</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowNotesTranscription').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowNotesTranscription: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_safari_open_safe_downloads_disable</td>
+                <td>6.3.1 (level 1)</td>
+                <td>Disable Automatic Opening of Safe Files in Safari</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/profiles -P -o stdout | /usr/bin/grep -c 'AutoOpenSafeDownloads = 0' | /usr/bin/awk '{ if ($1 &gt;= 1) {print "1"} else {print "0"}}'
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - AutoOpenSafeDownloads: false
+  PayloadType: com.apple.Safari
+
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_mail_summary_disable</td>
+                <td>2.5.1.3 (level 1)</td>
+                <td>Disable Apple Intelligence Mail Summary</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowMailSummary').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowMailSummary: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_notes_transcription_summary_disable</td>
+                <td>2.5.1.4 (level 1)</td>
+                <td>Disable Apple Intelligence Notes Transcription Summary</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowNotesTranscriptionSummary').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowNotesTranscriptionSummary: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_authenticated_root_enable</td>
+                <td>5.1.4 (level 1)</td>
+                <td>Enable Authenticated Root</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/libexec/mdmclient QuerySecurityInfo 2&gt;/dev/null | /usr/bin/grep -c "AuthenticatedRootVolumeEnabled = 1;"
+<strong>Fix Script:</strong> /usr/bin/csrutil authenticated-root enable
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_safari_advertising_privacy_protection_enable</td>
+                <td>6.3.6 (level 1)</td>
+                <td>Ensure Advertising Privacy Protection in Safari Is Enabled</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/profiles -P -o stdout | /usr/bin/grep -c '"WebKitPreferences.privateClickMeasurementEnabled" = 1' | /usr/bin/awk '{ if ($1 &gt;= 1) {print "1"} else {print "0"}}'
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - WebKitPreferences.privateClickMeasurementEnabled: true
+  PayloadType: com.apple.Safari
+
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_sleep_and_display_sleep_apple_silicon_enable</td>
+                <td>2.10.1.2 (level 2)</td>
+                <td>Ensure Sleep and Display Sleep Is Enabled on Apple Silicon Devices</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.23s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> error_count=0
+if /usr/sbin/system_profiler SPHardwareDataType | /usr/bin/grep -q "MacBook"; then
+  cpuType=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
+  if echo "$cpuType" | grep -q "Apple"; then
+    sleepMode=$(/usr/bin/pmset -b -g | /usr/bin/grep '^\s*sleep' 2&gt;&1 | /usr/bin/awk '{print $2}')
+    displaysleepMode=$(/usr/bin/pmset -b -g | /usr/bin/grep displaysleep 2&gt;&1 | /usr/bin/awk '{print $2}')
+    if [[ "$sleepMode" == "" ]] || [[ "$sleepMode" -gt 15 ]]; then
+      ((error_count++))
+    fi
+    if [[ "$displaysleepMode" == "" ]] || [[ "$displaysleepMode" -gt 10 ]] || [[ "$displaysleepMode" -gt "$sleepMode" ]]; then
+      ((error_count++))
+    fi
+  fi
+fi
+echo "$error_count"
+<strong>Fix Script:</strong> /usr/bin/pmset -a sleep 15
+/usr/bin/pmset -a displaysleep 10
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 1
+<strong>Error:</strong> Expected: 0, Got: 1
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_software_update_app_update_enforce</td>
+                <td>1.4 (level 1)</td>
+                <td>Enforce Software Update App Update Updates Automatically</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.03s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.SoftwareUpdate')\
+.objectForKey('AutomaticallyInstallAppUpdates').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - AutomaticallyInstallAppUpdates: true
+  PayloadType: com.apple.SoftwareUpdate
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_sudo_log_enforce</td>
+                <td>5.11 (level 1)</td>
+                <td>Configure Sudo To Log Events</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.03s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/sudo /usr/bin/sudo -V | /usr/bin/grep -c "Log when a command is allowed by sudoers"
+<strong>Fix Script:</strong> /usr/bin/find /etc/sudoers* -type f -exec sed -i '' '/^Defaults[[:blank:]]*\!log_allowed/s/^/# /' '{}' \;
+/bin/echo "Defaults log_allowed" &gt;&gt; /etc/sudoers.d/mscp
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_policy_banner_loginwindow_enforce</td>
+                <td>5.8 (level 2)</td>
+                <td>Display Policy Banner at Login Window</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -ld /Library/Security/PolicyBanner.rtf* | /usr/bin/wc -l | /usr/bin/tr -d ' '
+<strong>Fix Script:</strong> bannerText="$ODV"
+/bin/mkdir /Library/Security/PolicyBanner.rtfd
+/usr/bin/textutil -convert rtf -output /Library/Security/PolicyBanner.rtfd/TXT.rtf -stdin &lt;&lt;EOF
+$bannerText
+EOF
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_writing_tools_disable</td>
+                <td>2.5.1.2 (level 1)</td>
+                <td>Disable Apple Intelligence Writing Tools</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowWritingTools').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowWritingTools: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_sudoers_timestamp_type_configure</td>
+                <td>5.5 (level 1)</td>
+                <td>Configure Sudoers Timestamp Type</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.03s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/sudo /usr/bin/sudo -V | /usr/bin/awk -F": " '/Type of authentication timestamp record/{print $2}'
+<strong>Fix Script:</strong> /usr/bin/find /etc/sudoers* -type f -exec sed -i '' '/timestamp_type/d; /!tty_tickets/d' '{}' \;
+
+<strong>Expected Output:</strong> tty
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: tty, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_airdrop_disable</td>
+                <td>2.3.1.1 (level 1)</td>
+                <td>Disable AirDrop</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowAirDrop').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowAirDrop: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_nfsd_disable</td>
+                <td>4.3 (level 1)</td>
+                <td>Disable Network File System Service</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> isDisabled=$(/sbin/nfsd status | /usr/bin/awk '/nfsd service/ {print $NF}')
+if [[ "$isDisabled" == "disabled" ]] && [[ -z $(/usr/bin/pgrep nfsd) ]]; then
+  echo "pass"
+else
+  echo "fail"
+fi
+<strong>Fix Script:</strong> /bin/launchctl disable system/com.apple.nfsd
+/bin/rm -rf /etc/exports
+
+<strong>Expected Output:</strong> pass
+<strong>Actual Output:</strong> fail
+<strong>Error:</strong> Expected: pass, Got: fail
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_safari_show_full_website_address_enable</td>
+                <td>6.3.7 (level 1)</td>
+                <td>Ensure Show Full Website Address in Safari Is Enabled</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/profiles -P -o stdout | /usr/bin/grep -c 'ShowFullURLInSmartSearchField = 1' | /usr/bin/awk '{ if ($1 &gt;= 1) {print "1"} else {print "0"}}'
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - ShowFullURLInSmartSearchField: true
+  PayloadType: com.apple.Safari
+
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_world_writable_library_folder_configure</td>
+                <td>5.1.7 (level 2)</td>
+                <td>Ensure No World Writable Files Exist in the Library Folder</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>4.65s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/find /Library -type d -perm -002 ! -perm -1000 ! -xattrname com.apple.rootless 2&gt;/dev/null | /usr/bin/wc -l | /usr/bin/xargs
+<strong>Fix Script:</strong> IFS=$'\n'
+for libPermissions in $(/usr/bin/find /Library -type d -perm -002 ! -perm -1000 ! -xattrname com.apple.rootless 2&gt;/dev/null); do
+  /bin/chmod -R o-w "$libPermissions"
+done
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 1
+<strong>Error:</strong> Expected: 0, Got: 1
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_gatekeeper_enable</td>
+                <td>2.6.5 (level 1)</td>
+                <td>Enable Gatekeeper</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.systempolicy.control')\
+.objectForKey('EnableAssessment').js
+EOS
+<strong>Fix Script:</strong> /usr/sbin/spctl --global-enable
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_terminal_secure_keyboard_enable</td>
+                <td>6.4.1 (level 1)</td>
+                <td>Ensure Secure Keyboard Entry Terminal.app is Enabled</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.Terminal')\
+.objectForKey('SecureKeyboardEntry').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - SecureKeyboardEntry: true
+  PayloadType: com.apple.Terminal
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> false
+<strong>Error:</strong> Expected: true, Got: false
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_sudo_timeout_configure</td>
+                <td>5.4 (level 1)</td>
+                <td>Configure Sudo Timeout Period to $ODV</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.03s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/sudo /usr/bin/sudo -V | /usr/bin/grep -c "Authentication timestamp timeout: $ODV.0 minutes"
+<strong>Fix Script:</strong> /usr/bin/find /etc/sudoers* -type f -exec sed -i '' '/timestamp_timeout/d' '{}' \;
+/bin/echo "Defaults timestamp_timeout=$ODV" &gt;&gt; /etc/sudoers.d/mscp
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_safari_show_status_bar_enabled</td>
+                <td>6.3.10 (level 1)</td>
+                <td>Ensure Show Safari shows the Status Bar is Enabled</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/profiles -P -o stdout | /usr/bin/grep -c 'ShowOverlayStatusBar = 1' | /usr/bin/awk '{ if ($1 &gt;= 1) {print "1"} else {print "0"}}'
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - ShowOverlayStatusBar: true
+  PayloadType: com.apple.Safari
+
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_home_folders_secure</td>
+                <td>5.1.1 (level 1)</td>
+                <td>Secure User's Home Folders</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/find /System/Volumes/Data/Users -mindepth 1 -maxdepth 1 -type d ! \( -perm 700 -o -perm 711 \) | /usr/bin/grep -v "Shared" | /usr/bin/grep -v "Guest" | /usr/bin/wc -l | /usr/bin/xargs
+<strong>Fix Script:</strong> IFS=$'\n'
+for userDirs in $( /usr/bin/find /System/Volumes/Data/Users -mindepth 1 -maxdepth 1 -type d ! \( -perm 700 -o -perm 711 \) | /usr/bin/grep -v "Shared" | /usr/bin/grep -v "Guest" ); do
+  /bin/chmod og-rwx "$userDirs"
+done
+unset IFS
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 1
+<strong>Error:</strong> Expected: 0, Got: 1
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_software_update_deferral</td>
+                <td>1.6 (level 1)</td>
+                <td>Ensure Software Update Deferment Is Less Than or Equal to $ODV Days</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+function run() {
+  let timeout = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('enforcedSoftwareUpdateDelay')) || 0
+  if ( timeout &lt;= $ODV ) {
+    return("true")
+  } else {
+    return("false")
+  }
+}
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - enforcedSoftwareUpdateDelay: $ODV
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_install_log_retention_configure</td>
+                <td>3.3 (level 1)</td>
+                <td>Configure Install.log Retention to $ODV</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/sbin/aslmanager -dd 2&gt;&1 | /usr/bin/awk '/\/var\/log\/install.log$/ {count++} /Processing module com.apple.install/,/Finished/ { for (i=1;i&lt;=NR;i++) { if ($i == "TTL" && $(i+2) &gt;= $ODV) { ttl="True" }; if ($i == "MAX") {max="True"}}} END{if (count &gt; 1) { print "Multiple config files for /var/log/install, manually remove the extra files"} else if (max == "True") { print "all_max setting is configured, must be removed" } if (ttl != "True") { print "TTL not configured" } else { print "Yes" }}'
+<strong>Fix Script:</strong> /usr/bin/sed -i '' "s/\* file \/var\/log\/install.log.*/\* file \/var\/log\/install.log format='\$\(\(Time\)\(JZ\)\) \$Host \$\(Sender\)\[\$\(PID\\)\]: \$Message' rotate=utc compress file_max=50M size_only ttl=$ODV/g" /etc/asl/com.apple.install
+
+<strong>Expected Output:</strong> Yes
+<strong>Actual Output:</strong> TTL not configured
+<strong>Error:</strong> Expected: Yes, Got: TTL not configured
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_on_device_dictation_enforce</td>
+                <td>2.18.1 (level 1)</td>
+                <td>Enforce On Device Dictation</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('forceOnDeviceOnlyDictation').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - forceOnDeviceOnlyDictation: true
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_safari_prevent_cross-site_tracking_enable</td>
+                <td>6.3.4 (level 1)</td>
+                <td>Ensure Prevent Cross-site Tracking in Safari Is Enabled</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/profiles -P -o stdout | /usr/bin/grep -cE '"WebKitPreferences.storageBlockingPolicy" = 1|"WebKitStorageBlockingPolicy" = 1|"BlockStoragePolicy" =2' | /usr/bin/awk '{ if ($1 &gt;= 1) {print "1"} else {print "0"}}'
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - WebKitPreferences.storageBlockingPolicy: 1
+  - WebKitStorageBlockingPolicy: 1
+  - BlockStoragePolicy: 2
+  PayloadType: com.apple.Safari
+
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_bonjour_disable</td>
+                <td>4.1 (level 2)</td>
+                <td>Disable Bonjour Multicast</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.03s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.mDNSResponder')\
+.objectForKey('NoMulticastAdvertisements').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - NoMulticastAdvertisements: true
+  PayloadType: com.apple.mDNSResponder
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: true, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>pwpolicy_history_enforce</td>
+                <td>5.2.8 (level 1)</td>
+                <td>Prohibit Password Reuse for a Minimum of $ODV Generations</td>
+                <td>Password Policy</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/pwpolicy -getaccountpolicies 2&gt; /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath '//dict/key[text()="policyAttributePasswordHistoryDepth"]/following-sibling::*[1]/text()' - | /usr/bin/awk '{ if ($1 &gt;= $ODV ) {print "pass"} else {print "fail"}}' | /usr/bin/uniq
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - pinHistory: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+
+
+<strong>Expected Output:</strong> pass
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: pass, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>pwpolicy_custom_regex_enforce</td>
+                <td>5.2.6 (level 2)</td>
+                <td>Require Passwords to Match the Defined Custom Regular Expression</td>
+                <td>Password Policy</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/pwpolicy -getaccountpolicies 2&gt; /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath 'boolean(//*[contains(text(),"policyAttributePassword matches '\''$ODV'\''")])' -
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - customRegex:
+      passwordContentDescription:
+        default: Password must match custom regex.
+      passwordContentRegex: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> false
+<strong>Error:</strong> Expected: true, Got: false
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>pwpolicy_account_lockout_timeout_enforce</td>
+                <td>5.2.1 (level 1)</td>
+                <td>Set Account Lockout Time to $ODV Minutes</td>
+                <td>Password Policy</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/pwpolicy -getaccountpolicies 2&gt; /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath '//dict/key[text()="autoEnableInSeconds"]/following-sibling::integer[1]/text()' - | /usr/bin/awk '{ if ($1/60 &gt;= $ODV ) {print "pass"} else {print "fail"}}' | /usr/bin/uniq
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - minutesUntilFailedLoginReset: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+
+
+<strong>Expected Output:</strong> pass
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: pass, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>pwpolicy_max_lifetime_enforce</td>
+                <td>5.2.7 (level 1)</td>
+                <td>Restrict Maximum Password Lifetime to $ODV Days</td>
+                <td>Password Policy</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/pwpolicy -getaccountpolicies 2&gt; /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath '//dict/key[text()="policyAttributeExpiresEveryNDays"]/following-sibling::*[1]/text()' - | /usr/bin/awk '{ if ($1 &lt;= $ODV ) {print "pass"} else {print "fail"}}' | /usr/bin/uniq
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - maxPINAgeInDays: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+
+
+<strong>Expected Output:</strong> pass
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: pass, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>pwpolicy_alpha_numeric_enforce</td>
+                <td>5.2.3 (level 2)</td>
+                <td>Require Passwords Contain a Minimum of One Numeric Character</td>
+                <td>Password Policy</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/pwpolicy -getaccountpolicies 2&gt; /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath '//dict/key[text()="policyIdentifier"]/following-sibling::*[1]/text()' - | /usr/bin/grep "requireAlphanumeric" -c
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - requireAlphanumeric: true
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 0
+<strong>Error:</strong> Expected: 1, Got: 0
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>pwpolicy_special_character_enforce</td>
+                <td>5.2.5 (level 2)</td>
+                <td>Require Passwords Contain a Minimum of One Special Character</td>
+                <td>Password Policy</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/pwpolicy -getaccountpolicies 2&gt;/dev/null | /usr/bin/tail -n +2 | /usr/bin/xmllint --xpath "//string[contains(text(), \"policyAttributePassword matches '(.*[^a-zA-Z0-9].*){\")]" - 2&gt;/dev/null | /usr/bin/awk -F"{|}" '{if ($2 &gt;= $ODV) {print "pass"} else {print "fail"}}'
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - minComplexChars: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+
+
+<strong>Expected Output:</strong> pass
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: pass, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>pwpolicy_account_lockout_enforce</td>
+                <td>5.2.1 (level 1)</td>
+                <td>Limit Consecutive Failed Login Attempts to $ODV</td>
+                <td>Password Policy</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/pwpolicy -getaccountpolicies 2&gt; /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath '//dict/key[text()="policyAttributeMaximumFailedAuthentications"]/following-sibling::integer[1]/text()' - | /usr/bin/awk '{ if ($1 &lt;= $ODV) {print "pass"} else {print "fail"}}' | /usr/bin/uniq
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - maxFailedAttempts: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+
+
+<strong>Expected Output:</strong> pass
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: pass, Got: 
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>icloud_sync_disable</td>
+                <td>2.1.1.3 (level 2)</td>
+                <td>Disable iCloud Desktop and Document Folder Sync</td>
+                <td>iCloud</td>
+                <td class="status-cell"><span class="status-badge fail">Fail</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowCloudDesktopAndDocuments').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - allowCloudDesktopAndDocuments: false
+  PayloadType: com.apple.applicationaccess
+
+
+<strong>Expected Output:</strong> false
+<strong>Actual Output:</strong> 
+<strong>Error:</strong> Expected: false, Got: 
+                    </div>
+                </td>
+            </tr>
+                </tbody>
+            </table>
+        </div>
+        
+                <div class="results-section" id="manual">
+            <h2>Manual Review (1)</h2>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Rule ID</th>
+                        <th>CIS ID</th>
+                        <th>Title</th>
+                        <th>Section</th>
+                        <th class="status-cell">Status</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <tr class="collapsible">
+                <td>system_settings_loginwindow_loginwindowtext_enable</td>
+                <td>2.11.3 (level 1)</td>
+                <td>Configure Login Window to Show A Custom Message</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge manual">Manual Review</span></td>
+                <td>N/A</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Discussion:</strong><br>
+The login window _MUST_ be configured to show a custom access warning message.<br>
+                    </div>
+                </td>
+            </tr>
+                </tbody>
+            </table>
+        </div>
+                <div class="results-section" id="passed">
+            <h2>Passed Rules (28)</h2>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Rule ID</th>
+                        <th>CIS ID</th>
+                        <th>Title</th>
+                        <th>Section</th>
+                        <th class="status-cell">Status</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+            <tr class="collapsible">
+                <td>system_settings_install_macos_updates_enforce</td>
+                <td>1.3 (level 1)</td>
+                <td>Enforce macOS Updates are Automatically Installed</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.06s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.SoftwareUpdate')\
+.objectForKey('AutomaticallyInstallMacOSUpdates').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - AutomaticallyInstallMacOSUpdates: true
+  PayloadType: com.apple.SoftwareUpdate
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> true
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_time_machine_encrypted_configure</td>
+                <td>2.3.4.2 (level 1)</td>
+                <td>Ensure Time Machine Volumes are Encrypted</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.05s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/sudo /usr/bin/defaults read /Library/Preferences/com.apple.TimeMachine.plist | grep -c NotEncrypted
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_software_update_download_enforce</td>
+                <td>1.2 (level 1)</td>
+                <td>Enforce Software Update Downloads Updates Automatically</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.SoftwareUpdate')\
+.objectForKey('AutomaticDownload').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - AutomaticDownload: true
+  PayloadType: com.apple.SoftwareUpdate
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> true
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_hot_corners_secure</td>
+                <td>2.7.1 (level 2)</td>
+                <td>Secure Hot Corners</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> bl_corner="$(/usr/bin/defaults read /Users/"$CURRENT_USER"/Library/Preferences/com.apple.dock wvous-bl-corner 2&gt;/dev/null)"
+tl_corner="$(/usr/bin/defaults read /Users/"$CURRENT_USER"/Library/Preferences/com.apple.dock wvous-tl-corner 2&gt;/dev/null)"
+tr_corner="$(/usr/bin/defaults read /Users/"$CURRENT_USER"/Library/Preferences/com.apple.dock wvous-tr-corner 2&gt;/dev/null)"
+br_corner="$(/usr/bin/defaults read /Users/"$CURRENT_USER"/Library/Preferences/com.apple.dock wvous-br-corner 2&gt;/dev/null)"
+
+if [[ "$bl_corner" != "6" ]] && [[ "$tl_corner" != "6" ]] && [[ "$tr_corner" != "6" ]] && [[ "$br_corner" != "6" ]]; then
+  echo "0"
+fi
+<strong>Fix Script:</strong> /usr/bin/sudo -u "$CURRENT_USER" /usr/bin/defaults delete /Users/"$CURRENT_USER"/Library/Preferences/com.apple.dock wvous-bl-corner 2&gt;/dev/null
+/usr/bin/sudo -u "$CURRENT_USER" /usr/bin/defaults delete /Users/"$CURRENT_USER"/Library/Preferences/com.apple.dock wvous-tl-corner 2&gt;/dev/null
+/usr/bin/sudo -u "$CURRENT_USER" /usr/bin/defaults delete /Users/"$CURRENT_USER"/Library/Preferences/com.apple.dock wvous-tr-corner 2&gt;/dev/null
+/usr/bin/sudo -u "$CURRENT_USER" /usr/bin/defaults delete /Users/"$CURRENT_USER"/Library/Preferences/com.apple.dock wvous-br-corner 2&gt;/dev/null
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_softwareupdate_current</td>
+                <td>1.1 (level 1)</td>
+                <td>Ensure Software Update is Updated and Current</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.03s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> softwareupdate_date_epoch=$(/bin/date -j -f "%Y-%m-%d" "$(/usr/bin/defaults read /Library/Preferences/com.apple.SoftwareUpdate.plist LastFullSuccessfulDate | /usr/bin/awk '{print $1}')" "+%s")
+thirty_days_epoch=$(/bin/date -v -30d "+%s")
+if [[ $softwareupdate_date_epoch -lt $thirty_days_epoch ]]; then
+  /bin/echo "0"
+else
+  /bin/echo "1"
+fi
+<strong>Fix Script:</strong> /usr/sbin/softwareupdate -i -a
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 1
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_screen_sharing_disable</td>
+                <td>2.3.3.1 (level 1)</td>
+                <td>Disable Screen Sharing and Apple Remote Desktop</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> result="FAIL"
+enabled=$(/bin/launchctl print-disabled system | /usr/bin/grep '"com.apple.screensharing" =&gt; enabled')
+running=$(/bin/launchctl print system/com.apple.screensharing 2&gt;/dev/null)
+
+if [[ -z "$running" ]] && [[ -z "$enabled" ]]; then
+  result="PASS"
+elif [[ -n "$running" ]]; then
+  result=result+" RUNNING"
+elif [[ -n "$enabled" ]]; then
+  result=result+" ENABLED"
+fi
+echo $result
+<strong>Fix Script:</strong> /bin/launchctl disable system/com.apple.screensharing
+
+<strong>Expected Output:</strong> PASS
+<strong>Actual Output:</strong> PASS
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_ssh_disable</td>
+                <td>2.3.3.4 (level 1)</td>
+                <td>Disable SSH Server for Remote Access Sessions</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> result="FAIL"
+enabled=$(/bin/launchctl print-disabled system | /usr/bin/grep '"com.openssh.sshd" =&gt; enabled')
+running=$(/bin/launchctl print system/com.openssh.sshd 2&gt;/dev/null)
+
+if [[ -z "$running" ]] && [[ -z "$enabled" ]]; then
+  result="PASS"
+elif [[ -n "$running" ]]; then
+  result=result+" RUNNING"
+elif [[ -n "$enabled" ]]; then
+  result=result+" ENABLED"
+fi
+echo $result
+<strong>Fix Script:</strong> /usr/sbin/systemsetup -f -setremotelogin off &gt;/dev/null
+/bin/launchctl disable system/com.openssh.sshd
+
+<strong>Expected Output:</strong> PASS
+<strong>Actual Output:</strong> PASS
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_critical_update_install_enforce</td>
+                <td>1.5 (level 1)</td>
+                <td>Enforce Critical Security Updates to be Installed</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.SoftwareUpdate')\
+.objectForKey('CriticalUpdateInstall').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - CriticalUpdateInstall: true
+  PayloadType: com.apple.SoftwareUpdate
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> true
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>system_settings_improve_siri_dictation_disable</td>
+                <td>2.6.3.2 (level 1)</td>
+                <td>Disable Improve Siri and Dictation Information to Apple</td>
+                <td>System Settings</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.assistant.support')\
+.objectForKey('Siri Data Sharing Opt-In Status').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - Siri Data Sharing Opt-In Status: 2
+  PayloadType: com.apple.assistant.support
+
+
+<strong>Expected Output:</strong> 2
+<strong>Actual Output:</strong> 2
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_folder_group_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit Log Folders Group to Wheel</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -dn $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '{print $4}'
+<strong>Fix Script:</strong> /usr/bin/chgrp wheel /var/audit
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_control_mode_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit_Control Owner to Mode 440 or Less Permissive</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -l /etc/security/audit_control | /usr/bin/awk '!/-r--[r-]-----|current|total/{print $1}' | /usr/bin/wc -l | /usr/bin/xargs
+<strong>Fix Script:</strong> /bin/chmod 440 /etc/security/audit_control
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_acls_folders_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit Log Folder to Not Contain Access Control Lists</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -lde /var/audit | /usr/bin/awk '{print $1}' | /usr/bin/grep -c ":"
+<strong>Fix Script:</strong> /bin/chmod -N /var/audit
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_files_owner_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit Log Files to be Owned by Root</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -n $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '{s+=$3} END {print s}'
+<strong>Fix Script:</strong> /usr/sbin/chown -R root /var/audit/*
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_folder_owner_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit Log Folders to be Owned by Root</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -dn $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '{print $3}'
+<strong>Fix Script:</strong> /usr/sbin/chown root /var/audit
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_control_acls_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit_Control to Not Contain Access Control Lists</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -le /etc/security/audit_control | /usr/bin/awk '{print $1}' | /usr/bin/grep -c ":"
+<strong>Fix Script:</strong> /bin/chmod -N /etc/security/audit_control
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>audit_acls_files_configure</td>
+                <td>3.5 (level 1)</td>
+                <td>Configure Audit Log Files to Not Contain Access Control Lists</td>
+                <td>Audit</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls -le $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '{print $1}' | /usr/bin/grep -c ":"
+<strong>Fix Script:</strong> /bin/chmod -RN /var/audit
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_anti_virus_installed</td>
+                <td>5.10 (level 1)</td>
+                <td>Must Use an Approved Antivirus Program</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/xprotect status | /usr/bin/grep -cE "(launch scans: enabled|background scans: enabled)"
+<strong>Fix Script:</strong> /bin/launchctl load -w /Library/Apple/System/Library/LaunchDaemons/com.apple.XProtect.daemon.scan.plist
+/bin/launchctl load -w /Library/Apple/System/Library/LaunchDaemons/com.apple.XprotectFramework.PluginService.plist
+
+<strong>Expected Output:</strong> 2
+<strong>Actual Output:</strong> 2
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_world_writable_system_folder_configure</td>
+                <td>5.1.6 (level 1)</td>
+                <td>Ensure No World Writable Files Exist in the System Folder</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.51s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/find /System/Volumes/Data/System -type d -perm -2 -ls | /usr/bin/grep -vE "downloadDir|locks" | /usr/bin/wc -l | /usr/bin/xargs
+<strong>Fix Script:</strong> IFS=$'\n'
+for sysPermissions in $( /usr/bin/find /System/Volumes/Data/System -type d -perm -2 | /usr/bin/grep -vE "downloadDir|locks" ); do
+  /bin/chmod -R o-w "$sysPermissions"
+done
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_config_data_install_enforce</td>
+                <td>1.5 (level 1)</td>
+                <td>Enforce Installation of XProtect Remediator and Gatekeeper Updates Automatically</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/osascript -l JavaScript &lt;&lt; EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.SoftwareUpdate')\
+.objectForKey('ConfigDataInstall').js
+EOS
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - ConfigDataInstall: true
+  PayloadType: com.apple.SoftwareUpdate
+
+
+<strong>Expected Output:</strong> true
+<strong>Actual Output:</strong> true
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_password_hint_remove</td>
+                <td>2.12.1 (level 1)</td>
+                <td>Remove Password Hint From User Accounts</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> HINT=$(/usr/bin/dscl . -list /Users hint | /usr/bin/awk '{ print $2 }')
+
+if [ -z "$HINT" ]; then
+  echo "PASS"
+else
+  echo "FAIL"
+fi
+<strong>Fix Script:</strong> for u in $(/usr/bin/dscl . -list /Users UniqueID | /usr/bin/awk '$2 &gt; 500 {print $1}'); do
+  /usr/bin/dscl . -delete /Users/$u hint
+done
+
+<strong>Expected Output:</strong> PASS
+<strong>Actual Output:</strong> PASS
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_guest_folder_removed</td>
+                <td>5.9 (level 1)</td>
+                <td>Remove Guest Folder if Present</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/ls /Users/ | /usr/bin/grep -c "Guest"
+<strong>Fix Script:</strong> /bin/rm -Rf /Users/Guest
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_httpd_disable</td>
+                <td>4.2 (level 1)</td>
+                <td>Disable the Built-in Web Server</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.02s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> result="FAIL"
+enabled=$(/bin/launchctl print-disabled system | /usr/bin/grep '"org.apache.httpd" =&gt; enabled')
+running=$(/bin/launchctl print system/org.apache.httpd 2&gt;/dev/null)
+
+if [[ -z "$running" ]] && [[ -z "$enabled" ]]; then
+  result="PASS"
+elif [[ -n "$running" ]]; then
+  result=result+" RUNNING"
+elif [[ -n "$enabled" ]]; then
+  result=result+" ENABLED"
+fi
+echo $result
+<strong>Fix Script:</strong> /bin/launchctl disable system/org.apache.httpd
+
+<strong>Expected Output:</strong> PASS
+<strong>Actual Output:</strong> PASS
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_mobile_file_integrity_enable</td>
+                <td>5.1.3 (level 1)</td>
+                <td>Enable Apple Mobile File Integrity</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/sbin/nvram -p | /usr/bin/grep -c "amfi_get_out_of_my_way=1"
+<strong>Fix Script:</strong> /usr/sbin/nvram boot-args=""
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_sip_enable</td>
+                <td>5.1.2 (level 1)</td>
+                <td>Ensure System Integrity Protection is Enabled</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/csrutil status | /usr/bin/grep -c 'System Integrity Protection status: enabled.'
+<strong>Fix Script:</strong> /usr/bin/csrutil enable
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 1
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_time_server_enabled</td>
+                <td>2.3.2.2 (level 1)</td>
+                <td>Enable Time Synchronization Daemon</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /bin/launchctl print system | /usr/bin/grep -c -E '\tcom.apple.timed'
+<strong>Fix Script:</strong> /bin/launchctl load -w /System/Library/LaunchDaemons/com.apple.timed.plist
+
+<strong>Expected Output:</strong> 1
+<strong>Actual Output:</strong> 1
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_unlock_active_user_session_disable</td>
+                <td>5.7 (level 1)</td>
+                <td>Disable Login to Other User's Active and Locked Sessions</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.04s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> RESULT="FAIL"
+SS_RULE=$(/usr/bin/security -q authorizationdb read system.login.screensaver  2&gt;&1 | /usr/bin/xmllint --xpath "//dict/key[.='rule']/following-sibling::array[1]/string/text()" -)
+
+if [[ "${SS_RULE}" == "$ODV" ]]; then
+    RESULT="PASS"
+else
+    PSSO_CHECK=$(/usr/bin/security -q authorizationdb read "$SS_RULE"  2&gt;&1 | /usr/bin/xmllint --xpath '//key[.="rule"]/following-sibling::array[1]/string/text()' -)
+    if /usr/bin/grep -Fxq "$ODV" &lt;&lt;&lt;"$PSSO_CHECK"; then
+        RESULT="PASS"
+    fi
+fi
+
+echo $RESULT
+<strong>Fix Script:</strong> SS_RULE=$(/usr/bin/security -q authorizationdb read system.login.screensaver 2&gt;&1 | /usr/bin/xmllint --xpath "//dict/key[.='rule']/following-sibling::array[1]/string/text()" -)
+
+if [[ "$SS_RULE" == *psso* ]]; then
+    /usr/bin/security -q authorizationdb read psso-screensaver &gt; "/tmp/psso-screensaver-mscp.plist"
+    /usr/bin/sed -i.bak 's/&lt;string&gt;authenticate-session-owner-or-admin&lt;\/string&gt;/&lt;string&gt;$ODV&lt;\/string&gt;/' /tmp/psso-screensaver-mscp.plist
+    /usr/bin/security -q authorizationdb write psso-screensaver-mscp &lt; /tmp/psso-screensaver-mscp.plist
+    /usr/bin/security -q authorizationdb write system.login.screensaver psso-screensaver-mscp 2&gt;&1
+else
+    /usr/bin/security -q authorizationdb write system.login.screensaver "$ODV" 2&gt;&1
+fi
+
+<strong>Expected Output:</strong> PASS
+<strong>Actual Output:</strong> PASS
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>os_system_wide_applications_configure</td>
+                <td>5.1.5 (level 1)</td>
+                <td>Ensure Appropriate Permissions Are Enabled for System Wide Applications</td>
+                <td>Operating System</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>8.09s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/find /Applications -iname "*\.app" -type d -perm -2 -ls | /usr/bin/wc -l | /usr/bin/xargs
+<strong>Fix Script:</strong> IFS=$'\n'
+for apps in $( /usr/bin/find /Applications -iname "*\.app" -type d -perm -2 ); do
+  /bin/chmod -R o-w "$apps"
+done
+
+<strong>Expected Output:</strong> 0
+<strong>Actual Output:</strong> 0
+
+                    </div>
+                </td>
+            </tr>            <tr class="collapsible">
+                <td>pwpolicy_minimum_length_enforce</td>
+                <td>5.2.2 (level 1)</td>
+                <td>Require a Minimum Password Length of $ODV Characters</td>
+                <td>Password Policy</td>
+                <td class="status-cell"><span class="status-badge pass">Pass</span></td>
+                <td>0.01s</td>
+            </tr>
+            <tr class="details-row">
+                <td colspan="6">
+                    <div class="details-content">
+<strong>Check Script:</strong> /usr/bin/pwpolicy -getaccountpolicies 2&gt;/dev/null | tail +2 | grep -oE "policyAttributePassword matches '.\{[0-9]+," | awk -F'[{,]' -v ODV=$ODV '{if ($2 &gt; max) max=$2} END {print (max &gt;= ODV) ? "pass" : "fail"}'
+<strong>Mobileconfig:</strong> - PayloadContent:
+  - minLength: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+
+
+<strong>Expected Output:</strong> pass
+<strong>Actual Output:</strong> pass
+
+                    </div>
+                </td>
+            </tr>
+                </tbody>
+            </table>
+        </div>
+
+        
+        <div class="signature-section">
+            <h2>Auditor Sign-Off</h2>
+            <div class="signature-grid">
+                <div class="signature-field">
+                    <div class="signature-line"></div>
+                    <span class="signature-label">Auditor Signature</span>
+                </div>
+                <div class="signature-field">
+                    <div class="signature-line"></div>
+                    <span class="signature-label">Date</span>
+                </div>
+                <div class="signature-field">
+                    <div class="signature-line"></div>
+                    <span class="signature-label">Printed Name</span>
+                </div>
+                <div class="signature-field">
+                    <div class="signature-line"></div>
+                    <span class="signature-label">Title / Role</span>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            
+            <p>Generated by M.A.C.E. (macOS Advanced Compliance Editor)</p>
+            <p>Report generated on December 13, 2025 at 10:20:26 PM</p>
+        </footer>
+    </div>
+
+    <script>
+        document.querySelectorAll('.collapsible').forEach(row => {
+            row.addEventListener('click', function() {
+                const detailsRow = this.nextElementSibling;
+                if (detailsRow && detailsRow.classList.contains('details-row')) {
+                    detailsRow.classList.toggle('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

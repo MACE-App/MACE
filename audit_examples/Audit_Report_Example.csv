@@ -1,0 +1,677 @@
+# M.A.C.E. Audit Report
+# Hostname: macbook-air-6.local
+#
+# Summary
+# Pass Rate: 25.0%
+# Total: 113
+# Passed: 28
+# Failed: 84
+# Manual Review: 1
+# Errors: 0
+# Generated: 2025-12-14T03:20:43Z
+#
+# Section Summary
+# iCloud: 0/1 passed (0%)
+# Password Policy: 1/8 passed (12%)
+# System Settings: 9/43 passed (21%)
+# Operating System: 11/40 passed (28%)
+# Audit: 7/21 passed (33%)
+#
+Rule ID,CIS ID,Title,Section,Status,Expected Output,Actual Output,Discussion,Comment,Error Message,Check Script,Fix Script,Modified,Execution Time (s),Timestamp
+system_settings_location_services_menu_enforce,2.6.1.2 (level 2),Ensure Location Services Is In the Menu Bar,system_settings,Fail,1,,,,"Expected: 1, Got: ",/usr/bin/defaults read /Library/Preferences/com.apple.locationmenu.plist ShowSystemServices,/usr/bin/defaults write /Library/Preferences/com.apple.locationmenu.plist ShowSystemServices -bool true,No,0.016,2025-12-14T03:19:26Z
+system_settings_install_macos_updates_enforce,1.3 (level 1),Enforce macOS Updates are Automatically Installed,system_settings,Pass,true,true,,,,"/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.SoftwareUpdate')\
+.objectForKey('AutomaticallyInstallMacOSUpdates').js
+EOS","[Mobileconfig] - PayloadContent:
+  - AutomaticallyInstallMacOSUpdates: true
+  PayloadType: com.apple.SoftwareUpdate
+",No,0.057,2025-12-14T03:19:26Z
+system_settings_printer_sharing_disable,2.3.3.3 (level 1),Disable Printer Sharing,system_settings,Fail,1,0,,,"Expected: 1, Got: 0","/usr/sbin/cupsctl | /usr/bin/grep -c ""_share_printers=0""","/usr/sbin/cupsctl --no-share-printers
+/usr/bin/lpstat -p | awk '{print $2}'| /usr/bin/xargs -I{} lpadmin -p {} -o printer-is-shared=false",No,0.049,2025-12-14T03:19:26Z
+system_settings_guest_access_smb_disable,2.13.2 (level 1),Disable Guest Access to Shared SMB Folders,system_settings,Fail,0,,,,"Expected: 0, Got: ",/usr/bin/defaults read /Library/Preferences/SystemConfiguration/com.apple.smb.server AllowGuestAccess,/usr/sbin/sysadminctl -smbGuestAccess off,No,0.013,2025-12-14T03:19:26Z
+system_settings_time_machine_encrypted_configure,2.3.4.2 (level 1),Ensure Time Machine Volumes are Encrypted,system_settings,Pass,0,0,,,,/usr/bin/sudo /usr/bin/defaults read /Library/Preferences/com.apple.TimeMachine.plist | grep -c NotEncrypted,,No,0.051,2025-12-14T03:19:26Z
+system_settings_screensaver_ask_for_password_delay_enforce,2.11.2 (level 1),Enforce Session Lock After Screen Saver is Started,system_settings,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+function run() {
+  let delay = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.screensaver')\
+.objectForKey('askForPasswordDelay'))
+  if ( delay <= $ODV ) {
+    return(""true"")
+  } else {
+    return(""false"")
+  }
+}
+EOS","[Mobileconfig] - PayloadContent:
+  - askForPasswordDelay: $ODV
+  PayloadType: com.apple.screensaver
+",No,0.033,2025-12-14T03:19:27Z
+system_settings_improve_search_disable,2.9.1,Disable Improve Search Information to Apple,system_settings,Fail,2,,,,"Expected: 2, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.assistant.support')\
+.objectForKey('Search Queries Data Sharing Status').js
+EOS","[Mobileconfig] - PayloadContent:
+  - Search Queries Data Sharing Status: 2
+  PayloadType: com.apple.assistant.support
+",No,0.039,2025-12-14T03:19:27Z
+system_settings_location_services_enable,2.6.1.1 (level 2),Enable Location Services,system_settings,Fail,true,,,,"Expected: true, Got: ","/usr/bin/sudo -u _locationd /usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.locationd')\
+.objectForKey('LocationServicesEnabled').js
+EOS","/usr/bin/defaults write /var/db/locationd/Library/Preferences/ByHost/com.apple.locationd LocationServicesEnabled -bool true;
+pid=$(/bin/launchctl list | /usr/bin/awk '/com.apple.locationd/ { print $1 }')
+kill -9 $pid",No,0.028,2025-12-14T03:19:27Z
+system_settings_software_update_download_enforce,1.2 (level 1),Enforce Software Update Downloads Updates Automatically,system_settings,Pass,true,true,,,,"/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.SoftwareUpdate')\
+.objectForKey('AutomaticDownload').js
+EOS","[Mobileconfig] - PayloadContent:
+  - AutomaticDownload: true
+  PayloadType: com.apple.SoftwareUpdate
+",No,0.039,2025-12-14T03:19:27Z
+system_settings_guest_account_disable,2.13.1 (level 1),Disable the Guest Account,system_settings,Fail,true,false,,,"Expected: true, Got: false","/usr/bin/osascript -l JavaScript << EOS
+function run() {
+  let pref1 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.MCX')\
+.objectForKey('DisableGuestAccount'))
+  let pref2 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.MCX')\
+.objectForKey('EnableGuestAccount'))
+  if ( pref1 == true && pref2 == false ) {
+    return(""true"")
+  } else {
+    return(""false"")
+  }
+}
+EOS","[Mobileconfig] - PayloadContent:
+  - DisableGuestAccount: true
+  - EnableGuestAccount: false
+  PayloadType: com.apple.MCX
+",No,0.040,2025-12-14T03:19:27Z
+system_settings_remote_management_disable,2.3.3.5 (level 1),Disable Remote Management,system_settings,Fail,1,0,,,"Expected: 1, Got: 0","/usr/libexec/mdmclient QuerySecurityInfo 2>/dev/null | /usr/bin/grep -c ""RemoteDesktopEnabled = 0""",/System/Library/CoreServices/RemoteManagement/ARDAgent.app/Contents/Resources/kickstart -deactivate -stop,No,0.029,2025-12-14T03:19:27Z
+system_settings_time_machine_auto_backup_enable,2.3.4.1 (level 2),Configure Time Machine for Automatic Backups,system_settings,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.TimeMachine')\
+.objectForKey('AutoBackup').js
+EOS","[Mobileconfig] - PayloadContent:
+  - AutoBackup: true
+  PayloadType: com.apple.TimeMachine
+",No,0.039,2025-12-14T03:19:27Z
+system_settings_loginwindow_prompt_username_password_enforce,2.11.4 (level 1),Configure Login Window to Prompt for Username and Password,system_settings,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.loginwindow')\
+.objectForKey('SHOWFULLNAME').js
+EOS","[Mobileconfig] - PayloadContent:
+  - SHOWFULLNAME: true
+  PayloadType: com.apple.loginwindow
+",No,0.039,2025-12-14T03:19:27Z
+system_settings_hot_corners_secure,2.7.1 (level 2),Secure Hot Corners,system_settings,Pass,0,0,,,,"bl_corner=""$(/usr/bin/defaults read /Users/""$CURRENT_USER""/Library/Preferences/com.apple.dock wvous-bl-corner 2>/dev/null)""
+tl_corner=""$(/usr/bin/defaults read /Users/""$CURRENT_USER""/Library/Preferences/com.apple.dock wvous-tl-corner 2>/dev/null)""
+tr_corner=""$(/usr/bin/defaults read /Users/""$CURRENT_USER""/Library/Preferences/com.apple.dock wvous-tr-corner 2>/dev/null)""
+br_corner=""$(/usr/bin/defaults read /Users/""$CURRENT_USER""/Library/Preferences/com.apple.dock wvous-br-corner 2>/dev/null)""
+
+if [[ ""$bl_corner"" != ""6"" ]] && [[ ""$tl_corner"" != ""6"" ]] && [[ ""$tr_corner"" != ""6"" ]] && [[ ""$br_corner"" != ""6"" ]]; then
+  echo ""0""
+fi","/usr/bin/sudo -u ""$CURRENT_USER"" /usr/bin/defaults delete /Users/""$CURRENT_USER""/Library/Preferences/com.apple.dock wvous-bl-corner 2>/dev/null
+/usr/bin/sudo -u ""$CURRENT_USER"" /usr/bin/defaults delete /Users/""$CURRENT_USER""/Library/Preferences/com.apple.dock wvous-tl-corner 2>/dev/null
+/usr/bin/sudo -u ""$CURRENT_USER"" /usr/bin/defaults delete /Users/""$CURRENT_USER""/Library/Preferences/com.apple.dock wvous-tr-corner 2>/dev/null
+/usr/bin/sudo -u ""$CURRENT_USER"" /usr/bin/defaults delete /Users/""$CURRENT_USER""/Library/Preferences/com.apple.dock wvous-br-corner 2>/dev/null",No,0.036,2025-12-14T03:19:27Z
+system_settings_personalized_advertising_disable,2.6.4 (level 1),Disable Personalized Advertising,system_settings,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowApplePersonalizedAdvertising').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowApplePersonalizedAdvertising: false
+  PayloadType: com.apple.applicationaccess
+",No,0.039,2025-12-14T03:19:27Z
+system_settings_smbd_disable,2.3.3.2 (level 1),Disable Server Message Block Sharing,system_settings,Fail,1,0,,,"Expected: 1, Got: 0","/bin/launchctl print-disabled system | /usr/bin/grep -c '""com.apple.smbd"" => disabled'",/bin/launchctl disable system/com.apple.smbd,No,0.014,2025-12-14T03:19:27Z
+system_settings_password_hints_disable,2.11.5 (level 1),Disable Password Hints,system_settings,Fail,0,,,,"Expected: 0, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.loginwindow')\
+.objectForKey('RetriesUntilHint').js
+EOS","[Mobileconfig] - PayloadContent:
+  - RetriesUntilHint: 0
+  PayloadType: com.apple.loginwindow
+",No,0.039,2025-12-14T03:19:27Z
+system_settings_system_wide_preferences_configure,2.6.8 (level 1),Require Administrator Password to Modify System-Wide Preferences,system_settings,Fail,1,0,,,"Expected: 1, Got: 0","authDBs=(""system.preferences"" ""system.preferences.energysaver"" ""system.preferences.network"" ""system.preferences.printing"" ""system.preferences.sharing"" ""system.preferences.softwareupdate"" ""system.preferences.startupdisk"" ""system.preferences.timemachine"")
+result=""1""
+for section in ${authDBs[@]}; do
+  if [[ $(/usr/bin/security -q authorizationdb read ""$section"" | /usr/bin/xmllint -xpath 'name(//*[contains(text(), ""shared"")]/following-sibling::*[1])' -) != ""false"" ]]; then
+    result=""0""
+  fi
+  if [[ $(/usr/bin/security -q authorizationdb read ""$section"" | /usr/bin/xmllint -xpath '//*[contains(text(), ""group"")]/following-sibling::*[1]/text()' - ) != ""admin"" ]]; then
+    result=""0""
+  fi
+  if [[ $(/usr/bin/security -q authorizationdb read ""$section"" | /usr/bin/xmllint -xpath 'name(//*[contains(text(), ""authenticate-user"")]/following-sibling::*[1])' -) != ""true"" ]]; then
+    result=""0""
+  fi
+  if [[ $(/usr/bin/security -q authorizationdb read ""$section"" | /usr/bin/xmllint -xpath 'name(//*[contains(text(), ""session-owner"")]/following-sibling::*[1])' -) != ""false"" ]]; then
+    result=""0""
+  fi
+done
+echo $result","authDBs=(""system.preferences"" ""system.preferences.energysaver"" ""system.preferences.network"" ""system.preferences.printing"" ""system.preferences.sharing"" ""system.preferences.softwareupdate"" ""system.preferences.startupdisk"" ""system.preferences.timemachine"")
+
+for section in ${authDBs[@]}; do
+  /usr/bin/security -q authorizationdb read ""$section"" > ""/tmp/$section.plist""
+
+  class_key_value=$(/usr/libexec/PlistBuddy -c ""Print :class"" ""/tmp/$section.plist"" 2>&1)
+  if [[ ""$class_key_value"" == *""Does Not Exist""* ]]; then
+    /usr/libexec/PlistBuddy -c ""Add :class string user"" ""/tmp/$section.plist""
+  else
+    /usr/libexec/PlistBuddy -c ""Set :class user"" ""/tmp/$section.plist""
+  fi
+
+  key_value=$(/usr/libexec/PlistBuddy -c ""Print :shared"" ""/tmp/$section.plist"" 2>&1)  	
+  if [[ ""$key_value"" == *""Does Not Exist""* ]]; then
+    /usr/libexec/PlistBuddy -c ""Add :shared bool false"" ""/tmp/$section.plist""
+  else
+    /usr/libexec/PlistBuddy -c ""Set :shared false"" ""/tmp/$section.plist""
+  fi
+
+  auth_user_key=$(/usr/libexec/PlistBuddy -c ""Print :authenticate-user"" ""/tmp/$section.plist"" 2>&1)  	
+  if [[ ""$auth_user_key"" == *""Does Not Exist""* ]]; then
+    /usr/libexec/PlistBuddy -c ""Add :authenticate-user bool true"" ""/tmp/$section.plist""
+  else
+    /usr/libexec/PlistBuddy -c ""Set :authenticate-user true"" ""/tmp/$section.plist""
+  fi
+
+  session_owner_key=$(/usr/libexec/PlistBuddy -c ""Print :session-owner"" ""/tmp/$section.plist"" 2>&1)  	
+  if [[ ""$session_owner_key"" == *""Does Not Exist""* ]]; then
+    /usr/libexec/PlistBuddy -c ""Add :session-owner bool false"" ""/tmp/$section.plist""
+  else
+    /usr/libexec/PlistBuddy -c ""Set :session-owner false"" ""/tmp/$section.plist""
+  fi
+
+  group_key=$(/usr/libexec/PlistBuddy -c ""Print :group"" ""/tmp/$section.plist"" 2>&1)
+  if [[ ""$group_key"" == *""Does Not Exist""* ]]; then
+    /usr/libexec/PlistBuddy -c ""Add :group string admin"" ""/tmp/$section.plist""
+  else
+    /usr/libexec/PlistBuddy -c ""Set :group admin"" ""/tmp/$section.plist""
+  fi
+
+  /usr/bin/security -q authorizationdb write ""$section"" < ""/tmp/$section.plist""
+done",No,0.496,2025-12-14T03:19:28Z
+system_settings_screensaver_timeout_enforce,2.11.1 (level 1),Enforce Screen Saver Timeout,system_settings,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+function run() {
+  let timeout = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.screensaver')\
+.objectForKey('idleTime'))
+  if ( timeout <= $ODV ) {
+    return(""true"")
+  } else {
+    return(""false"")
+  }
+}
+EOS","[Mobileconfig] - PayloadContent:
+  - idleTime: $ODV
+  PayloadType: com.apple.screensaver
+",No,0.030,2025-12-14T03:19:28Z
+system_settings_softwareupdate_current,1.1 (level 1),Ensure Software Update is Updated and Current,system_settings,Pass,1,1,,,,"softwareupdate_date_epoch=$(/bin/date -j -f ""%Y-%m-%d"" ""$(/usr/bin/defaults read /Library/Preferences/com.apple.SoftwareUpdate.plist LastFullSuccessfulDate | /usr/bin/awk '{print $1}')"" ""+%s"")
+thirty_days_epoch=$(/bin/date -v -30d ""+%s"")
+if [[ $softwareupdate_date_epoch -lt $thirty_days_epoch ]]; then
+  /bin/echo ""0""
+else
+  /bin/echo ""1""
+fi",/usr/sbin/softwareupdate -i -a,No,0.027,2025-12-14T03:19:28Z
+system_settings_screen_sharing_disable,2.3.3.1 (level 1),Disable Screen Sharing and Apple Remote Desktop,system_settings,Pass,PASS,PASS,,,,"result=""FAIL""
+enabled=$(/bin/launchctl print-disabled system | /usr/bin/grep '""com.apple.screensharing"" => enabled')
+running=$(/bin/launchctl print system/com.apple.screensharing 2>/dev/null)
+
+if [[ -z ""$running"" ]] && [[ -z ""$enabled"" ]]; then
+  result=""PASS""
+elif [[ -n ""$running"" ]]; then
+  result=result+"" RUNNING""
+elif [[ -n ""$enabled"" ]]; then
+  result=result+"" ENABLED""
+fi
+echo $result",/bin/launchctl disable system/com.apple.screensharing,No,0.015,2025-12-14T03:19:28Z
+system_settings_siri_disable,2.5.2.1 (level 1),Disable Siri,system_settings,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowAssistant').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowAssistant: false
+  PayloadType: com.apple.applicationaccess
+",No,0.039,2025-12-14T03:19:28Z
+system_settings_external_intelligence_disable,2.5.1.1 (level 1),Disable External Intelligence Integrations,system_settings,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowExternalIntelligenceIntegrations').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowExternalIntelligenceIntegrations: false
+  PayloadType: com.apple.applicationaccess
+",No,0.039,2025-12-14T03:19:28Z
+system_settings_content_caching_disable,2.3.3.8 (level 2),Disable Content Caching Service,system_settings,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowContentCaching').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowContentCaching: false
+  PayloadType: com.apple.applicationaccess
+",No,0.040,2025-12-14T03:19:28Z
+system_settings_filevault_enforce,2.6.6 (level 1),Enforce FileVault,system_settings,Fail,1,0,,,"Expected: 1, Got: 0","dontAllowDisable=$(/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.MCX')\
+.objectForKey('dontAllowFDEDisable').js
+EOS
+)
+fileVault=$(/usr/bin/fdesetup status | /usr/bin/grep -c ""FileVault is On."")
+if [[ ""$dontAllowDisable"" == ""true"" ]] && [[ ""$fileVault"" == 1 ]]; then
+  echo ""1""
+else
+  echo ""0""
+fi","[Mobileconfig] - PayloadContent:
+  - dontAllowFDEDisable: true
+  PayloadType: com.apple.MCX
+",No,0.094,2025-12-14T03:19:28Z
+system_settings_internet_sharing_disable,2.3.3.7 (level 1),Disable Internet Sharing,system_settings,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.MCX')\
+.objectForKey('forceInternetSharingOff').js
+EOS","[Mobileconfig] - PayloadContent:
+  - forceInternetSharingOff: true
+  PayloadType: com.apple.MCX
+",No,0.040,2025-12-14T03:19:28Z
+system_settings_ssh_disable,2.3.3.4 (level 1),Disable SSH Server for Remote Access Sessions,system_settings,Pass,PASS,PASS,,,,"result=""FAIL""
+enabled=$(/bin/launchctl print-disabled system | /usr/bin/grep '""com.openssh.sshd"" => enabled')
+running=$(/bin/launchctl print system/com.openssh.sshd 2>/dev/null)
+
+if [[ -z ""$running"" ]] && [[ -z ""$enabled"" ]]; then
+  result=""PASS""
+elif [[ -n ""$running"" ]]; then
+  result=result+"" RUNNING""
+elif [[ -n ""$enabled"" ]]; then
+  result=result+"" ENABLED""
+fi
+echo $result","/usr/sbin/systemsetup -f -setremotelogin off >/dev/null
+/bin/launchctl disable system/com.openssh.sshd",No,0.017,2025-12-14T03:19:28Z
+system_settings_firewall_enable,2.2.1 (level 1),Enable macOS Application Firewall,system_settings,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.security.firewall')\
+.objectForKey('EnableFirewall').js
+EOS",/usr/bin/defaults write /Library/Preferences/com.apple.alf globalstate -int 1,No,0.039,2025-12-14T03:19:29Z
+system_settings_critical_update_install_enforce,1.5 (level 1),Enforce Critical Security Updates to be Installed,system_settings,Pass,true,true,,,,"/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.SoftwareUpdate')\
+.objectForKey('CriticalUpdateInstall').js
+EOS","[Mobileconfig] - PayloadContent:
+  - CriticalUpdateInstall: true
+  PayloadType: com.apple.SoftwareUpdate
+",No,0.040,2025-12-14T03:19:29Z
+system_settings_wake_network_access_disable,2.10.3 (level 1),Ensure Wake for Network Access Is Disabled,system_settings,Fail,0,1,,,"Expected: 0, Got: 1",/usr/bin/pmset -g custom | /usr/bin/awk '/womp/ { sum+=$2 } END {print sum}',/usr/bin/pmset -a womp 0,No,0.019,2025-12-14T03:19:29Z
+system_settings_diagnostics_reports_disable,2.6.3.1 (level 1),Disable Sending Diagnostic and Usage Data to Apple,system_settings,Fail,true,false,,,"Expected: true, Got: false","/usr/bin/osascript -l JavaScript << EOS
+function run() {
+let pref1 = $.NSUserDefaults.alloc.initWithSuiteName('com.apple.SubmitDiagInfo')\
+.objectForKey('AutoSubmit').js
+let pref2 = $.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowDiagnosticSubmission').js
+if ( pref1 == false && pref2 == false ){
+    return(""true"")
+} else {
+    return(""false"")
+}
+}
+EOS","[Mobileconfig] - PayloadContent:
+  - AutoSubmit: false
+  PayloadType: com.apple.SubmitDiagInfo
+- PayloadContent:
+  - allowDiagnosticSubmission: false
+  PayloadType: com.apple.applicationaccess
+",No,0.040,2025-12-14T03:19:29Z
+system_settings_bluetooth_sharing_disable,2.3.3.10 (level 1),Disable Bluetooth Sharing,system_settings,Fail,0,,,,"Expected: 0, Got: ","/usr/bin/sudo -u ""$CURRENT_USER"" /usr/bin/defaults -currentHost read com.apple.Bluetooth PrefKeyServicesEnabled","/usr/bin/sudo -u ""$CURRENT_USER"" /usr/bin/defaults -currentHost write com.apple.Bluetooth PrefKeyServicesEnabled -bool false",No,0.012,2025-12-14T03:19:29Z
+system_settings_external_intelligence_sign_in_disable,2.5.1.1 (level 1),Disable External Intelligence Integration Sign In,system_settings,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowExternalIntelligenceIntegrationsSignIn').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowExternalIntelligenceIntegrationsSignIn: false
+  PayloadType: com.apple.applicationaccess
+",No,0.040,2025-12-14T03:19:29Z
+system_settings_loginwindow_loginwindowtext_enable,2.11.3 (level 1),Configure Login Window to Show A Custom Message,system_settings,Manual Review,,,"The login window _MUST_ be configured to show a custom access warning message.
+",,Check exists but no expected result defined,,,No,N/A,2025-12-14T03:19:29Z
+system_settings_improve_siri_dictation_disable,2.6.3.2 (level 1),Disable Improve Siri and Dictation Information to Apple,system_settings,Pass,2,2,,,,"/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.assistant.support')\
+.objectForKey('Siri Data Sharing Opt-In Status').js
+EOS","[Mobileconfig] - PayloadContent:
+  - Siri Data Sharing Opt-In Status: 2
+  PayloadType: com.apple.assistant.support
+",No,0.039,2025-12-14T03:19:29Z
+system_settings_automatic_login_disable,2.13.3 (level 1),Disable Unattended or Automatic Logon to the System,system_settings,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.loginwindow')\
+.objectForKey('com.apple.login.mcx.DisableAutoLoginClient').js
+EOS","[Mobileconfig] - PayloadContent:
+  - com.apple.login.mcx.DisableAutoLoginClient: true
+  PayloadType: com.apple.loginwindow
+",No,0.039,2025-12-14T03:19:29Z
+system_settings_time_server_enforce,2.3.2.1 (level 1),Enforce macOS Time Synchronization,system_settings,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.timed')\
+.objectForKey('TMAutomaticTimeOnlyEnabled').js
+EOS","[Mobileconfig] - PayloadContent:
+  - com.apple.timed:
+      TMAutomaticTimeOnlyEnabled: true
+  PayloadType: com.apple.ManagedClient.preferences
+",No,0.038,2025-12-14T03:19:29Z
+system_settings_airplay_receiver_disable,2.3.1.2 (level 1),Disable Airplay Receiver,system_settings,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowAirPlayIncomingRequests').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowAirPlayIncomingRequests: false
+  PayloadType: com.apple.applicationaccess
+",No,0.039,2025-12-14T03:19:29Z
+system_settings_improve_assistive_voice_disable,2.6.3.3 (level 1),Disable Sending Audio Recordings and Transcripts to Apple,system_settings,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.Accessibility')\
+.objectForKey('AXSAudioDonationSiriImprovementEnabled').js
+EOS","[Mobileconfig] - PayloadContent:
+  - AXSAudioDonationSiriImprovementEnabled: false
+  PayloadType: com.apple.Accessibility
+",No,0.039,2025-12-14T03:19:29Z
+system_settings_time_server_configure,2.3.2.1 (level 1),Configure macOS to Use an Authorized Time Server,system_settings,Fail,$ODV,,,,"Expected: $ODV, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.MCX')\
+.objectForKey('timeServer').js
+EOS","[Mobileconfig] - PayloadContent:
+  - timeServer: $ODV
+  PayloadType: com.apple.MCX
+",No,0.039,2025-12-14T03:19:29Z
+system_settings_rae_disable,2.3.3.6 (level 1),Disable Remote Apple Events,system_settings,Fail,1,0,,,"Expected: 1, Got: 0","/bin/launchctl print-disabled system | /usr/bin/grep -c '""com.apple.AEServer"" => disabled'","/usr/sbin/systemsetup -setremoteappleevents off
+/bin/launchctl disable system/com.apple.AEServer",No,0.011,2025-12-14T03:19:29Z
+system_settings_media_sharing_disabled,2.3.3.9 (level 2),Disable Media Sharing,system_settings,Fail,true,false,,,"Expected: true, Got: false","/usr/bin/osascript -l JavaScript << EOS
+function run() {
+  let pref1 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowMediaSharing'))
+  let pref2 = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowMediaSharingModification'))
+  if ( pref1 == false && pref2 == false ) {
+    return(""true"")
+  } else {
+    return(""false"")
+  }
+}
+EOS","[Mobileconfig] - PayloadContent:
+  - allowMediaSharing: false
+  - allowMediaSharingModification: false
+  PayloadType: com.apple.applicationaccess
+",No,0.039,2025-12-14T03:19:29Z
+system_settings_firewall_stealth_mode_enable,2.2.2 (level 1),Enable Firewall Stealth Mode,system_settings,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.security.firewall')\
+.objectForKey('EnableStealthMode').js
+EOS",/usr/bin/defaults write /Library/Preferences/com.apple.alf stealthenabled -int 1,No,0.039,2025-12-14T03:19:30Z
+audit_flags_fm_failed_configure,3.2 (level 2),Configure System to Audit All Failed Change of Object Attributes,audit,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec '\-fm'","/usr/bin/grep -qE ""^flags.*-fm"" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-fm/' /etc/security/audit_control;/usr/sbin/audit -s",No,0.010,2025-12-14T03:19:30Z
+audit_folder_group_configure,3.5 (level 1),Configure Audit Log Folders Group to Wheel,audit,Pass,0,0,,,,/bin/ls -dn $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '{print $4}',/usr/bin/chgrp wheel /var/audit,No,0.013,2025-12-14T03:19:30Z
+audit_control_mode_configure,3.5 (level 1),Configure Audit_Control Owner to Mode 440 or Less Permissive,audit,Pass,0,0,,,,/bin/ls -l /etc/security/audit_control | /usr/bin/awk '!/-r--[r-]-----|current|total/{print $1}' | /usr/bin/wc -l | /usr/bin/xargs,/bin/chmod 440 /etc/security/audit_control,No,0.011,2025-12-14T03:19:30Z
+audit_flags_ad_configure,3.2 (level 2),Configure System to Audit All Administrative Action Events,audit,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec 'ad'","/usr/bin/grep -qE ""^flags.*[^-]ad"" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,ad/' /etc/security/audit_control; /usr/sbin/audit -s",No,0.009,2025-12-14T03:19:30Z
+audit_control_owner_configure,3.5 (level 1),Configure Audit_Control Owner to Root,audit,Fail,0,,,,"Expected: 0, Got: ",/bin/ls -dn /etc/security/audit_control | /usr/bin/awk '{print $3}',/usr/sbin/chown root /etc/security/audit_control,No,0.008,2025-12-14T03:19:30Z
+audit_flags_ex_configure,3.2 (level 2),Configure System to Audit All Failed Program Execution on the System,audit,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec '\-ex'","/usr/bin/grep -qE ""^flags.*-ex"" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-ex/' /etc/security/audit_control; /usr/sbin/audit -s",No,0.009,2025-12-14T03:19:30Z
+audit_files_mode_configure,3.5 (level 1),Configure Audit Log Files to Mode 440 or Less Permissive,audit,Fail,0,16,,,"Expected: 0, Got: 16",/bin/ls -l $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '!/-r--r-----|current|total/{print $1}' | /usr/bin/wc -l | /usr/bin/tr -d ' ',/bin/chmod 440 /var/audit/*,No,0.014,2025-12-14T03:19:30Z
+audit_acls_folders_configure,3.5 (level 1),Configure Audit Log Folder to Not Contain Access Control Lists,audit,Pass,0,0,,,,"/bin/ls -lde /var/audit | /usr/bin/awk '{print $1}' | /usr/bin/grep -c "":""",/bin/chmod -N /var/audit,No,0.008,2025-12-14T03:19:30Z
+audit_auditd_enabled,3.1 (level 1),Enable Security Auditing,audit,Fail,pass,fail,,,"Expected: pass, Got: fail","LAUNCHD_RUNNING=$(/bin/launchctl print system | /usr/bin/grep -c -E '\tcom.apple.auditd')
+AUDITD_RUNNING=$(/usr/sbin/audit -c | /usr/bin/grep -c ""AUC_AUDITING"")
+if [[ $LAUNCHD_RUNNING == 1 ]] && [[ -e /etc/security/audit_control ]] && [[ $AUDITD_RUNNING == 1 ]]; then
+  echo ""pass""
+else
+  echo ""fail""
+fi","if [[ ! -e /etc/security/audit_control ]] && [[ -e /etc/security/audit_control.example ]];then
+  /bin/cp /etc/security/audit_control.example /etc/security/audit_control
+fi
+
+/bin/launchctl enable system/com.apple.auditd
+/bin/launchctl bootstrap system /System/Library/LaunchDaemons/com.apple.auditd.plist
+/usr/sbin/audit -i",No,0.016,2025-12-14T03:19:30Z
+audit_flags_aa_configure,3.2 (level 2),Configure System to Audit All Authorization and Authentication Events,audit,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec 'aa'","/usr/bin/grep -qE ""^flags.*[^-]aa"" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,aa/' /etc/security/audit_control; /usr/sbin/audit -s",No,0.008,2025-12-14T03:19:30Z
+audit_files_owner_configure,3.5 (level 1),Configure Audit Log Files to be Owned by Root,audit,Pass,0,0,,,,/bin/ls -n $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '{s+=$3} END {print s}',/usr/sbin/chown -R root /var/audit/*,No,0.011,2025-12-14T03:19:30Z
+audit_flags_fr_configure,3.2 (level 2),Configure System to Audit All Failed Read Actions on the System,audit,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec '\-fr'","/usr/bin/grep -qE ""^flags.*-fr"" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-fr/' /etc/security/audit_control;/usr/sbin/audit -s",No,0.008,2025-12-14T03:19:30Z
+audit_folder_owner_configure,3.5 (level 1),Configure Audit Log Folders to be Owned by Root,audit,Pass,0,0,,,,/bin/ls -dn $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '{print $3}',/usr/sbin/chown root /var/audit,No,0.010,2025-12-14T03:19:30Z
+audit_control_acls_configure,3.5 (level 1),Configure Audit_Control to Not Contain Access Control Lists,audit,Pass,0,0,,,,"/bin/ls -le /etc/security/audit_control | /usr/bin/awk '{print $1}' | /usr/bin/grep -c "":""",/bin/chmod -N /etc/security/audit_control,No,0.008,2025-12-14T03:19:30Z
+audit_flags_lo_configure,3.2 (level 2),Configure System to Audit All Log In and Log Out Events,audit,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec '^lo'","/usr/bin/grep -qE ""^flags.*[^-]lo"" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,lo/' /etc/security/audit_control; /usr/sbin/audit -s",No,0.008,2025-12-14T03:19:30Z
+audit_flags_fw_configure,3.2 (level 2),Configure System to Audit All Failed Write Actions on the System,audit,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/awk -F':' '/^flags/ { print $NF }' /etc/security/audit_control | /usr/bin/tr ',' '\n' | /usr/bin/grep -Ec '\-fw'","/usr/bin/grep -qE ""^flags.*-fw"" /etc/security/audit_control || /usr/bin/sed -i.bak '/^flags/ s/$/,-fw/' /etc/security/audit_control;/usr/sbin/audit -s",No,0.008,2025-12-14T03:19:30Z
+audit_retention_configure,3.4 (level 1),Configure Audit Retention to $ODV,audit,Fail,$ODV,,,,"Expected: $ODV, Got: ",/usr/bin/awk -F: '/expire-after/{print $2}' /etc/security/audit_control,/usr/bin/sed -i.bak 's/^expire-after.*/expire-after:$ODV/' /etc/security/audit_control; /usr/sbin/audit -s,No,0.006,2025-12-14T03:19:30Z
+audit_acls_files_configure,3.5 (level 1),Configure Audit Log Files to Not Contain Access Control Lists,audit,Pass,0,0,,,,"/bin/ls -le $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '{print $1}' | /usr/bin/grep -c "":""",/bin/chmod -RN /var/audit,No,0.012,2025-12-14T03:19:30Z
+audit_control_group_configure,3.5 (level 1),Configure Audit_Control Group to Wheel,audit,Fail,0,,,,"Expected: 0, Got: ",/bin/ls -dn /etc/security/audit_control | /usr/bin/awk '{print $4}',/usr/bin/chgrp wheel /etc/security/audit_control,No,0.007,2025-12-14T03:19:30Z
+audit_files_group_configure,3.5 (level 1),Configure Audit Log Files Group to Wheel,audit,Fail,0,240,,,"Expected: 0, Got: 240",/bin/ls -n $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}') | /usr/bin/awk '{s+=$4} END {print s}',/usr/bin/chgrp -R wheel /var/audit/*,No,0.011,2025-12-14T03:19:30Z
+audit_folders_mode_configure,3.5 (level 1),Configure Audit Log Folders to Mode 700 or Less Permissive,audit,Fail,700,666,,,"Expected: 700, Got: 666",/usr/bin/stat -f %A $(/usr/bin/grep '^dir' /etc/security/audit_control | /usr/bin/awk -F: '{print $2}'),/bin/chmod 700 /var/audit,No,0.012,2025-12-14T03:19:30Z
+os_power_nap_disable,2.10.2 (level 1),Disable Power Nap,os,Fail,0,2,,,"Expected: 0, Got: 2",/usr/bin/pmset -g custom | /usr/bin/awk '/powernap/ { sum+=$2 } END {print sum}',/usr/bin/pmset -a powernap 0,No,0.017,2025-12-14T03:19:30Z
+os_safari_warn_fraudulent_website_enable,6.3.3 (level 1),Ensure Warn When Visiting A Fraudulent Website in Safari Is Enabled,os,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/profiles -P -o stdout | /usr/bin/grep -c 'WarnAboutFraudulentWebsites = 1' | /usr/bin/awk '{ if ($1 >= 1) {print ""1""} else {print ""0""}}'","[Mobileconfig] - PayloadContent:
+  - WarnAboutFraudulentWebsites: true
+  PayloadType: com.apple.Safari
+",No,0.015,2025-12-14T03:19:31Z
+os_root_disable,5.6 (level 1),Disable Root Login,os,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/dscl . -read /Users/root UserShell 2>&1 | /usr/bin/grep -c ""/usr/bin/false""",/usr/bin/dscl . -create /Users/root UserShell /usr/bin/false,No,0.028,2025-12-14T03:19:31Z
+os_notes_transcription_disable,2.5.1.4 (level 1),Disable Apple Intelligence Notes Transcription,os,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowNotesTranscription').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowNotesTranscription: false
+  PayloadType: com.apple.applicationaccess
+",No,0.035,2025-12-14T03:19:31Z
+os_anti_virus_installed,5.10 (level 1),Must Use an Approved Antivirus Program,os,Pass,2,2,,,,"/usr/bin/xprotect status | /usr/bin/grep -cE ""(launch scans: enabled|background scans: enabled)""","/bin/launchctl load -w /Library/Apple/System/Library/LaunchDaemons/com.apple.XProtect.daemon.scan.plist
+/bin/launchctl load -w /Library/Apple/System/Library/LaunchDaemons/com.apple.XprotectFramework.PluginService.plist",No,0.012,2025-12-14T03:19:31Z
+os_world_writable_system_folder_configure,5.1.6 (level 1),Ensure No World Writable Files Exist in the System Folder,os,Pass,0,0,,,,"/usr/bin/find /System/Volumes/Data/System -type d -perm -2 -ls | /usr/bin/grep -vE ""downloadDir|locks"" | /usr/bin/wc -l | /usr/bin/xargs","IFS=$'\n'
+for sysPermissions in $( /usr/bin/find /System/Volumes/Data/System -type d -perm -2 | /usr/bin/grep -vE ""downloadDir|locks"" ); do
+  /bin/chmod -R o-w ""$sysPermissions""
+done",No,0.510,2025-12-14T03:19:31Z
+os_safari_open_safe_downloads_disable,6.3.1 (level 1),Disable Automatic Opening of Safe Files in Safari,os,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/profiles -P -o stdout | /usr/bin/grep -c 'AutoOpenSafeDownloads = 0' | /usr/bin/awk '{ if ($1 >= 1) {print ""1""} else {print ""0""}}'","[Mobileconfig] - PayloadContent:
+  - AutoOpenSafeDownloads: false
+  PayloadType: com.apple.Safari
+",No,0.013,2025-12-14T03:19:31Z
+os_mail_summary_disable,2.5.1.3 (level 1),Disable Apple Intelligence Mail Summary,os,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowMailSummary').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowMailSummary: false
+  PayloadType: com.apple.applicationaccess
+",No,0.039,2025-12-14T03:19:31Z
+os_notes_transcription_summary_disable,2.5.1.4 (level 1),Disable Apple Intelligence Notes Transcription Summary,os,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowNotesTranscriptionSummary').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowNotesTranscriptionSummary: false
+  PayloadType: com.apple.applicationaccess
+",No,0.040,2025-12-14T03:19:31Z
+os_authenticated_root_enable,5.1.4 (level 1),Enable Authenticated Root,os,Fail,1,0,,,"Expected: 1, Got: 0","/usr/libexec/mdmclient QuerySecurityInfo 2>/dev/null | /usr/bin/grep -c ""AuthenticatedRootVolumeEnabled = 1;""",/usr/bin/csrutil authenticated-root enable,No,0.017,2025-12-14T03:19:31Z
+os_safari_advertising_privacy_protection_enable,6.3.6 (level 1),Ensure Advertising Privacy Protection in Safari Is Enabled,os,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/profiles -P -o stdout | /usr/bin/grep -c '""WebKitPreferences.privateClickMeasurementEnabled"" = 1' | /usr/bin/awk '{ if ($1 >= 1) {print ""1""} else {print ""0""}}'","[Mobileconfig] - PayloadContent:
+  - WebKitPreferences.privateClickMeasurementEnabled: true
+  PayloadType: com.apple.Safari
+",No,0.012,2025-12-14T03:19:32Z
+os_config_data_install_enforce,1.5 (level 1),Enforce Installation of XProtect Remediator and Gatekeeper Updates Automatically,os,Pass,true,true,,,,"/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.SoftwareUpdate')\
+.objectForKey('ConfigDataInstall').js
+EOS","[Mobileconfig] - PayloadContent:
+  - ConfigDataInstall: true
+  PayloadType: com.apple.SoftwareUpdate
+",No,0.039,2025-12-14T03:19:32Z
+os_password_hint_remove,2.12.1 (level 1),Remove Password Hint From User Accounts,os,Pass,PASS,PASS,,,,"HINT=$(/usr/bin/dscl . -list /Users hint | /usr/bin/awk '{ print $2 }')
+
+if [ -z ""$HINT"" ]; then
+  echo ""PASS""
+else
+  echo ""FAIL""
+fi","for u in $(/usr/bin/dscl . -list /Users UniqueID | /usr/bin/awk '$2 > 500 {print $1}'); do
+  /usr/bin/dscl . -delete /Users/$u hint
+done",No,0.035,2025-12-14T03:19:32Z
+os_guest_folder_removed,5.9 (level 1),Remove Guest Folder if Present,os,Pass,0,0,,,,"/bin/ls /Users/ | /usr/bin/grep -c ""Guest""",/bin/rm -Rf /Users/Guest,No,0.007,2025-12-14T03:19:32Z
+os_sleep_and_display_sleep_apple_silicon_enable,2.10.1.2 (level 2),Ensure Sleep and Display Sleep Is Enabled on Apple Silicon Devices,os,Fail,0,1,,,"Expected: 0, Got: 1","error_count=0
+if /usr/sbin/system_profiler SPHardwareDataType | /usr/bin/grep -q ""MacBook""; then
+  cpuType=$(/usr/sbin/sysctl -n machdep.cpu.brand_string)
+  if echo ""$cpuType"" | grep -q ""Apple""; then
+    sleepMode=$(/usr/bin/pmset -b -g | /usr/bin/grep '^\s*sleep' 2>&1 | /usr/bin/awk '{print $2}')
+    displaysleepMode=$(/usr/bin/pmset -b -g | /usr/bin/grep displaysleep 2>&1 | /usr/bin/awk '{print $2}')
+    if [[ ""$sleepMode"" == """" ]] || [[ ""$sleepMode"" -gt 15 ]]; then
+      ((error_count++))
+    fi
+    if [[ ""$displaysleepMode"" == """" ]] || [[ ""$displaysleepMode"" -gt 10 ]] || [[ ""$displaysleepMode"" -gt ""$sleepMode"" ]]; then
+      ((error_count++))
+    fi
+  fi
+fi
+echo ""$error_count""","/usr/bin/pmset -a sleep 15
+/usr/bin/pmset -a displaysleep 10",No,0.229,2025-12-14T03:19:32Z
+os_software_update_app_update_enforce,1.4 (level 1),Enforce Software Update App Update Updates Automatically,os,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.SoftwareUpdate')\
+.objectForKey('AutomaticallyInstallAppUpdates').js
+EOS","[Mobileconfig] - PayloadContent:
+  - AutomaticallyInstallAppUpdates: true
+  PayloadType: com.apple.SoftwareUpdate
+",No,0.033,2025-12-14T03:19:32Z
+os_sudo_log_enforce,5.11 (level 1),Configure Sudo To Log Events,os,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/sudo /usr/bin/sudo -V | /usr/bin/grep -c ""Log when a command is allowed by sudoers""","/usr/bin/find /etc/sudoers* -type f -exec sed -i '' '/^Defaults[[:blank:]]*\!log_allowed/s/^/# /' '{}' \;
+/bin/echo ""Defaults log_allowed"" >> /etc/sudoers.d/mscp",No,0.025,2025-12-14T03:19:32Z
+os_policy_banner_loginwindow_enforce,5.8 (level 2),Display Policy Banner at Login Window,os,Fail,1,0,,,"Expected: 1, Got: 0",/bin/ls -ld /Library/Security/PolicyBanner.rtf* | /usr/bin/wc -l | /usr/bin/tr -d ' ',"bannerText=""$ODV""
+/bin/mkdir /Library/Security/PolicyBanner.rtfd
+/usr/bin/textutil -convert rtf -output /Library/Security/PolicyBanner.rtfd/TXT.rtf -stdin <<EOF
+$bannerText
+EOF",No,0.009,2025-12-14T03:19:32Z
+os_writing_tools_disable,2.5.1.2 (level 1),Disable Apple Intelligence Writing Tools,os,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowWritingTools').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowWritingTools: false
+  PayloadType: com.apple.applicationaccess
+",No,0.039,2025-12-14T03:19:32Z
+os_sudoers_timestamp_type_configure,5.5 (level 1),Configure Sudoers Timestamp Type,os,Fail,tty,,,,"Expected: tty, Got: ","/usr/bin/sudo /usr/bin/sudo -V | /usr/bin/awk -F"": "" '/Type of authentication timestamp record/{print $2}'",/usr/bin/find /etc/sudoers* -type f -exec sed -i '' '/timestamp_type/d; /!tty_tickets/d' '{}' \;,No,0.028,2025-12-14T03:19:32Z
+os_airdrop_disable,2.3.1.1 (level 1),Disable AirDrop,os,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowAirDrop').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowAirDrop: false
+  PayloadType: com.apple.applicationaccess
+",No,0.039,2025-12-14T03:19:32Z
+os_nfsd_disable,4.3 (level 1),Disable Network File System Service,os,Fail,pass,fail,,,"Expected: pass, Got: fail","isDisabled=$(/sbin/nfsd status | /usr/bin/awk '/nfsd service/ {print $NF}')
+if [[ ""$isDisabled"" == ""disabled"" ]] && [[ -z $(/usr/bin/pgrep nfsd) ]]; then
+  echo ""pass""
+else
+  echo ""fail""
+fi","/bin/launchctl disable system/com.apple.nfsd
+/bin/rm -rf /etc/exports",No,0.015,2025-12-14T03:19:32Z
+os_httpd_disable,4.2 (level 1),Disable the Built-in Web Server,os,Pass,PASS,PASS,,,,"result=""FAIL""
+enabled=$(/bin/launchctl print-disabled system | /usr/bin/grep '""org.apache.httpd"" => enabled')
+running=$(/bin/launchctl print system/org.apache.httpd 2>/dev/null)
+
+if [[ -z ""$running"" ]] && [[ -z ""$enabled"" ]]; then
+  result=""PASS""
+elif [[ -n ""$running"" ]]; then
+  result=result+"" RUNNING""
+elif [[ -n ""$enabled"" ]]; then
+  result=result+"" ENABLED""
+fi
+echo $result",/bin/launchctl disable system/org.apache.httpd,No,0.015,2025-12-14T03:19:32Z
+os_safari_show_full_website_address_enable,6.3.7 (level 1),Ensure Show Full Website Address in Safari Is Enabled,os,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/profiles -P -o stdout | /usr/bin/grep -c 'ShowFullURLInSmartSearchField = 1' | /usr/bin/awk '{ if ($1 >= 1) {print ""1""} else {print ""0""}}'","[Mobileconfig] - PayloadContent:
+  - ShowFullURLInSmartSearchField: true
+  PayloadType: com.apple.Safari
+",No,0.012,2025-12-14T03:19:33Z
+os_mobile_file_integrity_enable,5.1.3 (level 1),Enable Apple Mobile File Integrity,os,Pass,0,0,,,,"/usr/sbin/nvram -p | /usr/bin/grep -c ""amfi_get_out_of_my_way=1""","/usr/sbin/nvram boot-args=""""",No,0.012,2025-12-14T03:19:33Z
+os_world_writable_library_folder_configure,5.1.7 (level 2),Ensure No World Writable Files Exist in the Library Folder,os,Fail,0,1,,,"Expected: 0, Got: 1",/usr/bin/find /Library -type d -perm -002 ! -perm -1000 ! -xattrname com.apple.rootless 2>/dev/null | /usr/bin/wc -l | /usr/bin/xargs,"IFS=$'\n'
+for libPermissions in $(/usr/bin/find /Library -type d -perm -002 ! -perm -1000 ! -xattrname com.apple.rootless 2>/dev/null); do
+  /bin/chmod -R o-w ""$libPermissions""
+done",No,4.646,2025-12-14T03:19:37Z
+os_gatekeeper_enable,2.6.5 (level 1),Enable Gatekeeper,os,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.systempolicy.control')\
+.objectForKey('EnableAssessment').js
+EOS",/usr/sbin/spctl --global-enable,No,0.042,2025-12-14T03:19:37Z
+os_terminal_secure_keyboard_enable,6.4.1 (level 1),Ensure Secure Keyboard Entry Terminal.app is Enabled,os,Fail,true,false,,,"Expected: true, Got: false","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.Terminal')\
+.objectForKey('SecureKeyboardEntry').js
+EOS","[Mobileconfig] - PayloadContent:
+  - SecureKeyboardEntry: true
+  PayloadType: com.apple.Terminal
+",No,0.040,2025-12-14T03:19:37Z
+os_sip_enable,5.1.2 (level 1),Ensure System Integrity Protection is Enabled,os,Pass,1,1,,,,/usr/bin/csrutil status | /usr/bin/grep -c 'System Integrity Protection status: enabled.',/usr/bin/csrutil enable,No,0.013,2025-12-14T03:19:37Z
+os_time_server_enabled,2.3.2.2 (level 1),Enable Time Synchronization Daemon,os,Pass,1,1,,,,/bin/launchctl print system | /usr/bin/grep -c -E '\tcom.apple.timed',/bin/launchctl load -w /System/Library/LaunchDaemons/com.apple.timed.plist,No,0.012,2025-12-14T03:19:37Z
+os_unlock_active_user_session_disable,5.7 (level 1),Disable Login to Other User's Active and Locked Sessions,os,Pass,PASS,PASS,,,,"RESULT=""FAIL""
+SS_RULE=$(/usr/bin/security -q authorizationdb read system.login.screensaver  2>&1 | /usr/bin/xmllint --xpath ""//dict/key[.='rule']/following-sibling::array[1]/string/text()"" -)
+
+if [[ ""${SS_RULE}"" == ""$ODV"" ]]; then
+    RESULT=""PASS""
+else
+    PSSO_CHECK=$(/usr/bin/security -q authorizationdb read ""$SS_RULE""  2>&1 | /usr/bin/xmllint --xpath '//key[.=""rule""]/following-sibling::array[1]/string/text()' -)
+    if /usr/bin/grep -Fxq ""$ODV"" <<<""$PSSO_CHECK""; then
+        RESULT=""PASS""
+    fi
+fi
+
+echo $RESULT","SS_RULE=$(/usr/bin/security -q authorizationdb read system.login.screensaver 2>&1 | /usr/bin/xmllint --xpath ""//dict/key[.='rule']/following-sibling::array[1]/string/text()"" -)
+
+if [[ ""$SS_RULE"" == *psso* ]]; then
+    /usr/bin/security -q authorizationdb read psso-screensaver > ""/tmp/psso-screensaver-mscp.plist""
+    /usr/bin/sed -i.bak 's/<string>authenticate-session-owner-or-admin<\/string>/<string>$ODV<\/string>/' /tmp/psso-screensaver-mscp.plist
+    /usr/bin/security -q authorizationdb write psso-screensaver-mscp < /tmp/psso-screensaver-mscp.plist
+    /usr/bin/security -q authorizationdb write system.login.screensaver psso-screensaver-mscp 2>&1
+else
+    /usr/bin/security -q authorizationdb write system.login.screensaver ""$ODV"" 2>&1
+fi",No,0.043,2025-12-14T03:19:38Z
+os_sudo_timeout_configure,5.4 (level 1),Configure Sudo Timeout Period to $ODV,os,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/sudo /usr/bin/sudo -V | /usr/bin/grep -c ""Authentication timestamp timeout: $ODV.0 minutes""","/usr/bin/find /etc/sudoers* -type f -exec sed -i '' '/timestamp_timeout/d' '{}' \;
+/bin/echo ""Defaults timestamp_timeout=$ODV"" >> /etc/sudoers.d/mscp",No,0.028,2025-12-14T03:19:38Z
+os_system_wide_applications_configure,5.1.5 (level 1),Ensure Appropriate Permissions Are Enabled for System Wide Applications,os,Pass,0,0,,,,"/usr/bin/find /Applications -iname ""*\.app"" -type d -perm -2 -ls | /usr/bin/wc -l | /usr/bin/xargs","IFS=$'\n'
+for apps in $( /usr/bin/find /Applications -iname ""*\.app"" -type d -perm -2 ); do
+  /bin/chmod -R o-w ""$apps""
+done",No,8.092,2025-12-14T03:19:46Z
+os_safari_show_status_bar_enabled,6.3.10 (level 1),Ensure Show Safari shows the Status Bar is Enabled,os,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/profiles -P -o stdout | /usr/bin/grep -c 'ShowOverlayStatusBar = 1' | /usr/bin/awk '{ if ($1 >= 1) {print ""1""} else {print ""0""}}'","[Mobileconfig] - PayloadContent:
+  - ShowOverlayStatusBar: true
+  PayloadType: com.apple.Safari
+",No,0.012,2025-12-14T03:19:46Z
+os_home_folders_secure,5.1.1 (level 1),Secure User's Home Folders,os,Fail,0,1,,,"Expected: 0, Got: 1","/usr/bin/find /System/Volumes/Data/Users -mindepth 1 -maxdepth 1 -type d ! \( -perm 700 -o -perm 711 \) | /usr/bin/grep -v ""Shared"" | /usr/bin/grep -v ""Guest"" | /usr/bin/wc -l | /usr/bin/xargs","IFS=$'\n'
+for userDirs in $( /usr/bin/find /System/Volumes/Data/Users -mindepth 1 -maxdepth 1 -type d ! \( -perm 700 -o -perm 711 \) | /usr/bin/grep -v ""Shared"" | /usr/bin/grep -v ""Guest"" ); do
+  /bin/chmod og-rwx ""$userDirs""
+done
+unset IFS",No,0.010,2025-12-14T03:19:46Z
+os_software_update_deferral,1.6 (level 1),Ensure Software Update Deferment Is Less Than or Equal to $ODV Days,os,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+function run() {
+  let timeout = ObjC.unwrap($.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('enforcedSoftwareUpdateDelay')) || 0
+  if ( timeout <= $ODV ) {
+    return(""true"")
+  } else {
+    return(""false"")
+  }
+}
+EOS","[Mobileconfig] - PayloadContent:
+  - enforcedSoftwareUpdateDelay: $ODV
+  PayloadType: com.apple.applicationaccess
+",No,0.024,2025-12-14T03:19:46Z
+os_install_log_retention_configure,3.3 (level 1),Configure Install.log Retention to $ODV,os,Fail,Yes,TTL not configured,,,"Expected: Yes, Got: TTL not configured","/usr/sbin/aslmanager -dd 2>&1 | /usr/bin/awk '/\/var\/log\/install.log$/ {count++} /Processing module com.apple.install/,/Finished/ { for (i=1;i<=NR;i++) { if ($i == ""TTL"" && $(i+2) >= $ODV) { ttl=""True"" }; if ($i == ""MAX"") {max=""True""}}} END{if (count > 1) { print ""Multiple config files for /var/log/install, manually remove the extra files""} else if (max == ""True"") { print ""all_max setting is configured, must be removed"" } if (ttl != ""True"") { print ""TTL not configured"" } else { print ""Yes"" }}'","/usr/bin/sed -i '' ""s/\* file \/var\/log\/install.log.*/\* file \/var\/log\/install.log format='\$\(\(Time\)\(JZ\)\) \$Host \$\(Sender\)\[\$\(PID\\)\]: \$Message' rotate=utc compress file_max=50M size_only ttl=$ODV/g"" /etc/asl/com.apple.install",No,0.009,2025-12-14T03:19:46Z
+os_on_device_dictation_enforce,2.18.1 (level 1),Enforce On Device Dictation,os,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('forceOnDeviceOnlyDictation').js
+EOS","[Mobileconfig] - PayloadContent:
+  - forceOnDeviceOnlyDictation: true
+  PayloadType: com.apple.applicationaccess
+",No,0.036,2025-12-14T03:19:46Z
+os_safari_prevent_cross-site_tracking_enable,6.3.4 (level 1),Ensure Prevent Cross-site Tracking in Safari Is Enabled,os,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/profiles -P -o stdout | /usr/bin/grep -cE '""WebKitPreferences.storageBlockingPolicy"" = 1|""WebKitStorageBlockingPolicy"" = 1|""BlockStoragePolicy"" =2' | /usr/bin/awk '{ if ($1 >= 1) {print ""1""} else {print ""0""}}'","[Mobileconfig] - PayloadContent:
+  - WebKitPreferences.storageBlockingPolicy: 1
+  - WebKitStorageBlockingPolicy: 1
+  - BlockStoragePolicy: 2
+  PayloadType: com.apple.Safari
+",No,0.012,2025-12-14T03:19:46Z
+os_bonjour_disable,4.1 (level 2),Disable Bonjour Multicast,os,Fail,true,,,,"Expected: true, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.mDNSResponder')\
+.objectForKey('NoMulticastAdvertisements').js
+EOS","[Mobileconfig] - PayloadContent:
+  - NoMulticastAdvertisements: true
+  PayloadType: com.apple.mDNSResponder
+",No,0.035,2025-12-14T03:19:46Z
+pwpolicy_history_enforce,5.2.8 (level 1),Prohibit Password Reuse for a Minimum of $ODV Generations,pwpolicy,Fail,pass,,,,"Expected: pass, Got: ","/usr/bin/pwpolicy -getaccountpolicies 2> /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath '//dict/key[text()=""policyAttributePasswordHistoryDepth""]/following-sibling::*[1]/text()' - | /usr/bin/awk '{ if ($1 >= $ODV ) {print ""pass""} else {print ""fail""}}' | /usr/bin/uniq","[Mobileconfig] - PayloadContent:
+  - pinHistory: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+",No,0.018,2025-12-14T03:19:46Z
+pwpolicy_custom_regex_enforce,5.2.6 (level 2),Require Passwords to Match the Defined Custom Regular Expression,pwpolicy,Fail,true,false,,,"Expected: true, Got: false","/usr/bin/pwpolicy -getaccountpolicies 2> /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath 'boolean(//*[contains(text(),""policyAttributePassword matches '\''$ODV'\''"")])' -","[Mobileconfig] - PayloadContent:
+  - customRegex:
+      passwordContentDescription:
+        default: Password must match custom regex.
+      passwordContentRegex: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+",No,0.013,2025-12-14T03:19:46Z
+pwpolicy_account_lockout_timeout_enforce,5.2.1 (level 1),Set Account Lockout Time to $ODV Minutes,pwpolicy,Fail,pass,,,,"Expected: pass, Got: ","/usr/bin/pwpolicy -getaccountpolicies 2> /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath '//dict/key[text()=""autoEnableInSeconds""]/following-sibling::integer[1]/text()' - | /usr/bin/awk '{ if ($1/60 >= $ODV ) {print ""pass""} else {print ""fail""}}' | /usr/bin/uniq","[Mobileconfig] - PayloadContent:
+  - minutesUntilFailedLoginReset: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+",No,0.015,2025-12-14T03:19:46Z
+pwpolicy_max_lifetime_enforce,5.2.7 (level 1),Restrict Maximum Password Lifetime to $ODV Days,pwpolicy,Fail,pass,,,,"Expected: pass, Got: ","/usr/bin/pwpolicy -getaccountpolicies 2> /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath '//dict/key[text()=""policyAttributeExpiresEveryNDays""]/following-sibling::*[1]/text()' - | /usr/bin/awk '{ if ($1 <= $ODV ) {print ""pass""} else {print ""fail""}}' | /usr/bin/uniq","[Mobileconfig] - PayloadContent:
+  - maxPINAgeInDays: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+",No,0.015,2025-12-14T03:19:46Z
+pwpolicy_alpha_numeric_enforce,5.2.3 (level 2),Require Passwords Contain a Minimum of One Numeric Character,pwpolicy,Fail,1,0,,,"Expected: 1, Got: 0","/usr/bin/pwpolicy -getaccountpolicies 2> /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath '//dict/key[text()=""policyIdentifier""]/following-sibling::*[1]/text()' - | /usr/bin/grep ""requireAlphanumeric"" -c","[Mobileconfig] - PayloadContent:
+  - requireAlphanumeric: true
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+",No,0.015,2025-12-14T03:19:46Z
+pwpolicy_special_character_enforce,5.2.5 (level 2),Require Passwords Contain a Minimum of One Special Character,pwpolicy,Fail,pass,,,,"Expected: pass, Got: ","/usr/bin/pwpolicy -getaccountpolicies 2>/dev/null | /usr/bin/tail -n +2 | /usr/bin/xmllint --xpath ""//string[contains(text(), \""policyAttributePassword matches '(.*[^a-zA-Z0-9].*){\"")]"" - 2>/dev/null | /usr/bin/awk -F""{|}"" '{if ($2 >= $ODV) {print ""pass""} else {print ""fail""}}'","[Mobileconfig] - PayloadContent:
+  - minComplexChars: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+",No,0.015,2025-12-14T03:19:46Z
+pwpolicy_minimum_length_enforce,5.2.2 (level 1),Require a Minimum Password Length of $ODV Characters,pwpolicy,Pass,pass,pass,,,,"/usr/bin/pwpolicy -getaccountpolicies 2>/dev/null | tail +2 | grep -oE ""policyAttributePassword matches '.\{[0-9]+,"" | awk -F'[{,]' -v ODV=$ODV '{if ($2 > max) max=$2} END {print (max >= ODV) ? ""pass"" : ""fail""}'","[Mobileconfig] - PayloadContent:
+  - minLength: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+",No,0.015,2025-12-14T03:19:46Z
+pwpolicy_account_lockout_enforce,5.2.1 (level 1),Limit Consecutive Failed Login Attempts to $ODV,pwpolicy,Fail,pass,,,,"Expected: pass, Got: ","/usr/bin/pwpolicy -getaccountpolicies 2> /dev/null | /usr/bin/tail +2 | /usr/bin/xmllint --xpath '//dict/key[text()=""policyAttributeMaximumFailedAuthentications""]/following-sibling::integer[1]/text()' - | /usr/bin/awk '{ if ($1 <= $ODV) {print ""pass""} else {print ""fail""}}' | /usr/bin/uniq","[Mobileconfig] - PayloadContent:
+  - maxFailedAttempts: $ODV
+  PayloadType: com.apple.mobiledevice.passwordpolicy
+",No,0.016,2025-12-14T03:19:47Z
+icloud_sync_disable,2.1.1.3 (level 2),Disable iCloud Desktop and Document Folder Sync,icloud,Fail,false,,,,"Expected: false, Got: ","/usr/bin/osascript -l JavaScript << EOS
+$.NSUserDefaults.alloc.initWithSuiteName('com.apple.applicationaccess')\
+.objectForKey('allowCloudDesktopAndDocuments').js
+EOS","[Mobileconfig] - PayloadContent:
+  - allowCloudDesktopAndDocuments: false
+  PayloadType: com.apple.applicationaccess
+",No,0.039,2025-12-14T03:19:47Z
+#
+# Auditor Sign-Off
+#
+# Auditor Signature: _______________________________
+# Date: _______________________________
+# Printed Name: _______________________________
+# Title / Role: _______________________________
+#
