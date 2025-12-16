@@ -1,0 +1,112 @@
+name: 🐛 Bug Report
+description: Report a bug or unexpected behavior in M.A.C.E.
+title: "[Bug]: "
+labels: ["bug"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report a bug!  
+        Please fill out as much detail as possible — it really helps track down edge cases.
+
+  - type: input
+    id: app_version
+    attributes:
+      label: App Version
+      description: What version of M.A.C.E. are you running?
+      placeholder: e.g. v0.0.4-alpha
+    validations:
+      required: true
+
+  - type: dropdown
+    id: os_version
+    attributes:
+      label: macOS Version
+      description: Select the macOS version installed on this machine
+      options:
+        - macOS Sequoia (15.x)
+        - macOS Sonoma (14.x)
+        - macOS Ventura (13.x)
+        - macOS Monterey (12.x)
+        - Other / Not listed
+    validations:
+      required: true
+
+  - type: input
+    id: mac_model
+    attributes:
+      label: Mac Model
+      description: You can find this under  > About This Mac
+      placeholder: e.g. MacBook Pro (14-inch, M2 Pro, 2023)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: screen
+    attributes:
+      label: Screen / Area where the issue occurred
+      description: Where did the issue happen?
+      options:
+        - Compliance Builder Hub
+        - Compliance Editor
+        - Audit Builder
+        - Audit Report Viewer
+        - Project Management
+        - App Launch / Startup
+        - Settings
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Please describe the issue clearly
+      placeholder: |
+        Steps to reproduce:
+        1.
+        2.
+
+        Expected behavior:
+
+        Actual behavior:
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Can you reproduce it consistently?
+      description: Let me know how often this happens
+      placeholder: |
+        - Always
+        - Sometimes
+        - Only once
+        - Unsure
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot or Screen Recording
+      description: Drag and drop images or videos here if possible
+      placeholder: Screenshots are extremely helpful for UI-related issues.
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs (if available)
+      description: Paste any relevant logs or error output
+      render: shell
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues before submitting
+          required: true
+        - label: I am running the latest available version
+          required: true
