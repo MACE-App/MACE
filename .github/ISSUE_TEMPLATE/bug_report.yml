@@ -50,12 +50,17 @@ body:
       description: Where did the issue happen?
       options:
         - Compliance Builder Hub
-        - Compliance Editor
-        - Audit Builder
-        - Audit Report Viewer
-        - Project Management
+        - Compliance Builder Rule Details
+        - Compliance Builder Hub Other
+        - Audit Builder Hub
+        - Audit Builder Rule Details
+        - Audit Builder Exports
+        - Audit Builder Hub Other
+        - Documentation Builder Hub
+        - Documentation Builder Exports
+        - Documentation Builder Hub Other
         - App Launch / Startup
-        - Settings
+        - Main Menu / Navigation
         - Other
     validations:
       required: true
