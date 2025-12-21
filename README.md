@@ -2,16 +2,15 @@
   <img src=".github/images/App_Icon.png" alt="MACE App Icon" width="120" />
 </p>
 
-<h1 align="center">M.A.C.E. — Mac Advanced Compliance Editor</h1>
-<p align="center"><strong>The future home of a modern macOS compliance app powered by NIST's mSCP 2.0</strong></p>
+<h1 align="center">M.A.C.E. — macOS Advanced Compliance Editor</h1>
+<p align="center"><strong>Build, customize, audit, and deploy macOS security baselines — no command line required.</strong></p>
 
 <p align="center">
   <!-- Badges -->
-  <a href="https://github.com/MACE-App/MACE/issues">
-    <img alt="GitHub issues" src="https://img.shields.io/github/issues/MACE-App/MACE?logo=github" />
-  </a>
-  <a href="https://github.com/MACE-App/MACE/pulls">
-    <img alt="GitHub pull requests" src="https://img.shields.io/github/issues-pr/MACE-App/MACE?logo=github" />
+  <img alt="Swift" src="https://img.shields.io/badge/Swift-5.9-orange?logo=swift" />
+  <img alt="macOS" src="https://img.shields.io/badge/macOS-14%2B-blue?logo=apple" />
+  <a href="https://github.com/MACE-App/MACE/releases">
+    <img alt="Downloads" src="https://img.shields.io/github/downloads/MACE-App/MACE/total?logo=github" />
   </a>
   <a href="https://github.com/MACE-App/MACE/releases">
     <img alt="GitHub release" src="https://img.shields.io/github/v/release/MACE-App/MACE?logo=github" />
@@ -22,53 +21,52 @@
 </p>
 
 ## Contents
-- [📖 About](#about)
-- [🚦 Status](#status)
-- [🖼️ Screenshots](#screenshots)
-- [✨ Features](#features)
-- [🔮 Upcoming](#upcoming-features)
-- [🙌 Credits](#credits)
+- [About](#about)
+- [Why MACE?](#why-mace)
+- [Quick Start](#quick-start)
+- [Screenshots](#screenshots)
+- [Features](#features)
+- [Build Capabilities](#build-capabilities)
+- [Audit & Verification](#audit--verification)
+- [Status](#status)
+- [Upcoming Features](#upcoming-features)
+- [Community & Feedback](#community--feedback)
+- [Credits](#credits)
 
 ## About
-M.A.C.E. (Mac Advanced Compliance Editor) is a modern macOS app to simplify compliance baseline creation, documentation, auditing, and management using [NIST's mSCP 2.0](https://pages.nist.gov/macos_security/). The goal of this project is to help Mac admins make compliance easy and seamless, while providing customization and encouraging feedback. M.A.C.E. aims to evolve based on the needs of the community, adding features and functions that make compliance management better for everyone. Designed for Mac admins, it focuses on visual rule editing, flexible baselines, and streamlined audits.
 
-## Status
-🚧 **Active development. Screenshots and features may change as  evolves.**
+M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifies compliance baseline creation, customization, auditing, and deployment using [NIST's mSCP 2.0](https://pages.nist.gov/macos_security/).
 
-> ⚠️ **Alpha Release Notice**  
-> This is an alpha release and does **not** offer all the functions or abilities needed for production use. Many features are blocked or disabled until they are ready. This release is for users to check out the progress so far.  
-> Much of this project depends on [mSCP 2.0](https://pages.nist.gov/macos_security/), which has not been released yet. The rules in this app are currently manually combined and uploaded, so they may be stale or inaccurate for now.
+**The problem:** Compliance folks need better tools. The mSCP project is fantastic, but for those of us who are less command-line savvy, customizing baselines can be intimidating. We needed something that makes compliance simple *and* customizable — without requiring scripting knowledge.
 
-**ℹ️ Website & Usage Instructions:**  
-A website with instructions on how to use this app will be released once the core functions are vetted by the userbase. There is a lot that can change—from views to functions—so we are holding off on the website piece at the moment.
+**The solution:** M.A.C.E. fills that gap. This is my first app, and I have a lot to learn, but I'm building what I've needed for years: a tool that puts powerful compliance capabilities in a visual, approachable interface. The community decides where it goes next.
 
-**🛠️ Current Focus:**  
-- 🗂️ Getting the compliance builder hub to read rules properly and allow user adjustments as simply as possible (assuming mSCP 2.0 format doesn't change)
-- 🏗️ Building an mSCP-style build engine to generate customizable enforcement files like the mSCP format
+**Built for:**
+- macOS Security Administrators
+- Compliance Officers & IT Audit Teams
+- MDM Administrators (Jamf, Intune)
+- Government & Enterprise Security Teams
 
-**👁️ Views: Simple & Advanced:**  
-We plan to implement both a **Simple View** and an **Advanced View** for all major features.  
-Currently, all functions use the Advanced View so users can test every available function. The Simple View will be introduced in future updates to streamline the experience for new or less technical users.
+## Why MACE?
 
-**⚠️ Build Feature Notice:**  
-The **Build** feature is expected to have the most issues, especially when exporting for MDMs such as Intune or JAMF, due to the complexity and variability of these platforms. Please report any problems or inconsistencies you encounter with builds, as this area has the most moving parts in the project.
+| | |
+|---|---|
+| **No command line required** | Visual interface for creating and managing compliance baselines |
+| **Native macOS app** | Built with SwiftUI for a fast, responsive experience |
+| **All-in-one workflow** | Create, customize, audit, and export from a single app |
+| **MDM-ready exports** | Generate deployment-ready profiles for Jamf, Intune, and more |
+| **Free & open source** | Community-driven development with no licensing fees |
 
-**🚫 Known Limitations:**
-- ⚠️ Rules may not reflect the latest guidance, this is due to the project not containing a finalized 2.0 version. 
-- ⚠️ At the moment this app relays heavy on information in the rules and will end up relaying heavily on the project once its in a released state, so compliances, rules, and other things may not reflect 100% of whats in the mSCP project. Our goal is to make it a 1 for 1 in the future allow users to update current rules, information, or compliances as soon as they are released.
-- ❌ Some compliance frameworks and export formats are not yet supported  
-- ⏳ mSCP audit, documentation, build engine is pending further mSCP 2.0 release
-- 🌐 **Language Support:** Currently, M.A.C.E. only supports American English. While both this project and the mSCP project aim to support additional languages in the future, many core features must be completed first. Community assistance will be needed to expand language support as the project matures.
-- 🚫 **No mSCP 1.0 Support:** M.A.C.E. does not focus on supporting mSCP 1.0. This is intentional to encourage users to adopt the new rule style and help advance the mSCP project towards the future.
-- ⏸️ **Importing JCE mSCP 1.0/2.0 Projects:** Importing existing JCE mSCP 1.0/2.0 projects is on hold until mSCP 2.0 is further along and stable. This feature will be revisited as the mSCP 2.0 format matures.
+## Quick Start
 
-**💡 Feedback:**  
-- 🙅‍♂️ Please avoid reporting bugs at this stage (the app is full of them!)
-- 💬 Suggestions for easy-to-add features or "nice to have" ideas are welcome and help guide development
-
----
+1. **Download** the [latest release](https://github.com/MACE-App/MACE/releases)
+2. **Create** a new project and select your compliance framework
+3. **Customize** rules to fit your organization's needs
+4. **Build** scripts and configuration profiles for deployment
+5. **Audit** your Mac and export compliance reports
 
 ## Screenshots
+
 <table>
 <tr>
 <td align="center">
@@ -87,84 +85,185 @@ The **Build** feature is expected to have the most issues, especially when expor
 </td>
 <td align="center">
   <img src=".github/images/documentation.png" alt="MACE Documentation Screenshot" width="420" />
-  <p align="center"><em>Documentation Settings</em></p>
+  <p align="center"><em>Documentation settings</em></p>
 </td>
 </tr>
 </table>
 
-## Audit Output Examples
-You can view sample audit outputs generated by M.A.C.E. in different formats:
-
+### Audit Output Examples
+View sample audit outputs generated by M.A.C.E.:
 - [Audit_Report_Example.pdf](audit_examples/Audit_Report_Example.pdf)
 - [Audit_Report_Example.html](audit_examples/Audit_Report_Example.html)
 - [Audit_Report_Example.csv](audit_examples/Audit_Report_Example.csv)
 
 ## Features
-**✨ Current Features**
 
-**🗂️ Project Management**
+### Project Management
 - Create compliance projects for macOS, iOS/iPadOS, and visionOS
-- Open and edit existing projects
-- Quick access to recent projects
+- Open and manage existing projects (`.mace` file format)
+- Recent projects list for quick access
+- Platform and compliance framework selection wizard
 - Automatic project saving
 
-**📝 Compliance Editor**
-- Browse security rules organized by section
-- Search and filter by compliance framework (NIST, CIS, DISA STIG, etc.)
-- Customize rules to fit your organization's needs
-- Enable or disable rules for your baseline
+### Compliance Editor
+- **Three-panel interface:** Sections sidebar, searchable rule list, and detailed editor
+- Browse 500+ security rules organized by section
+- Search, filter, and sort by:
+  - Compliance framework (STIG, CIS, NIST, etc.)
+  - Section/category
+  - Tags and metadata
+  - Modification status
+- "Show All" mode to view all available rules regardless of framework
+- Keyboard shortcuts for power users (Space bar to toggle rules)
 
-**🔍 Audit System**
-- Run compliance checks on your Mac (M.A.C.E. Engine)
-- View results in real-time (MacOS Only)
-- Export reports as HTML, PDF, or CSV
-- Add custom branding and device info to reports
-- *(mSCP audit support coming when mSCP 2.0 is ready)*
+### Rule Editing
+- Edit all rule fields:
+  - Discussion, check criteria, and remediation instructions
+  - References and citations
+  - Tags and metadata
+  - Mobile configuration payloads
+  - DDM (Declarative Device Management) declarations
+  - Organizational Defined Values (ODVs)
+  - Shell scripts for fixes
+- Track customizations with visual modification indicators
+- Side-by-side comparison: baseline vs. custom rule versions
+- Automatic YAML structure preservation
 
-**🛠️ Rule Builder**
-- Create custom security rules from scratch
-- Edit standalone rule files
+### Rule Builder
+- Create custom security rules from templates
+- Edit standalone rule YAML files
+- Full validation of rule ID and structure
 
-**📄 Documentation**
-- Generate documentation  (M.A.C.E. Engine)
-- *(mSCP Documentation support coming when mSCP 2.0 is ready)*
-
-**⬆️ Updates**
-- Automatic update notifications
-- View release notes for new versions
-
-**🌗 Appearance**
-- Light and dark mode support
+### Settings & Appearance
+- Light, Dark, and System theme support
 - Seasonal and holiday app icons
+- Auto-save functionality
+- Display settings memory (remember preferences)
+- Application logging console with export
+
+## Build Capabilities
+
+### Script Generation
+| Output | Description |
+|--------|-------------|
+| Audit Scripts | Shell scripts for compliance checking |
+| Remediation Scripts | Shell scripts to fix non-compliant settings |
+| Extension Attributes | Scripts for Jamf Pro and other MDMs |
+
+### Configuration Profiles
+| Format | Use Case |
+|--------|----------|
+| `.mobileconfig` | Apple Configuration Profiles (combined or individual) |
+| Plist | Jamf Pro Custom Settings |
+| XML | Microsoft Intune |
+| Signed Profiles | Digital signature support with certificate verification |
+
+### Declarative Device Management (DDM)
+- Generate DDM declarations and artifacts
+- Support for Apple's modern management APIs
+- Service path configuration for system services
+
+### Documentation Generation
+| Format | Description |
+|--------|-------------|
+| HTML | Web-viewable documentation with table of contents |
+| PDF | Professional print-ready documents |
+| CSV/Excel | Spreadsheet export for analysis |
+| README | Auto-generated build information |
+
+### Build Options
+- **M.A.C.E. Build Engine:** Native Swift engine with full customization
+- **mSCP Build Engine:** Official Python scripts *(coming soon)*
+- Configurable output options per artifact type
+- Author metadata and baseline versioning
+- Custom output directory selection
+
+## Audit & Verification
+
+### Compliance Auditing
+- Run automated compliance checks against your baseline
+- Real-time progress tracking with live watch capability
+- Status tracking: Pass, Fail, Error, Manual Review, Not Applicable
+- Section-by-section compliance analysis
+- User comments and notes on individual results
+- Manual override capability for audit results
+
+### Audit Results
+- Comprehensive summary with pass/fail counts and percentages
+- Detailed rule-by-rule results with expected vs. actual output
+- Color-coded status indicators
+- Execution time per rule
+
+### Export Formats
+
+| Format | Description |
+|--------|-------------|
+| **DISA STIG CKL** | Compatible with STIG Viewer; automatic STIG ID mapping |
+| **CSV** | Spreadsheet-friendly with summary statistics and device info |
+| **HTML** | Interactive web-viewable reports with charts |
+| **PDF** | Professional documents with headers, summaries, and details |
+
+## Status
+
+> **Alpha Release**
+> This is an alpha release. Many features are still in development and some are disabled until ready. This release is for early adopters to preview progress and provide feedback.
+
+**Current Focus:**
+- Finalizing the compliance builder hub for rule reading and user adjustments
+- Building an mSCP-style build engine for customizable enforcement files
+- Improving audit export accuracy for MDM platforms
+
+**Known Limitations:**
+- Rules may not reflect the latest guidance until mSCP 2.0 is finalized
+- Some export formats may have issues with specific MDM platforms (Intune, Jamf)
+- mSCP audit engine pending mSCP 2.0 release
+- Currently supports American English only
+
+**Feedback:**
+- Bug reports are welcome via [GitHub Issues](https://github.com/MACE-App/MACE/issues)
+- Feature suggestions and "nice to have" ideas help guide development
+
+**Website:** A dedicated website with tutorials and usage guides is planned once core features are finalized.
 
 ## Upcoming Features
 
-**📥 Import Tools**
-- Import existing mSCP 1.0/2.0 baselines into M.A.C.E. *(On hold until mSCP 2.0 is further along)*
+### Import Tools
+- Import existing mSCP 1.0/2.0 baselines into M.A.C.E.
 - Convert external configurations to projects
 
-**📤 Deployment Exports**
-- Generate configuration profiles for MDM
-- Export remediation scripts
-- Generate guidance/enforcement files
-
-**🧪 Audit Enhancements**
-- Run the mSCP audit (pending mSCP updates)
+### Audit Enhancements
+- Run the official mSCP audit *(pending mSCP updates)*
 - Apply fixes directly from audit results
 - Compare audits over time
 - Track compliance history
 
-**🔄 Rule Updates**
-- Auto-update rules for current or existing projects (pending mSCP updates)
+### Rule Updates
+- Auto-update rules from mSCP repository
+- Version tracking and update notifications
 
-**⬆️ Automatic App Updater**
-- Seamlessly keep the app up to date with automatic updates
+### Additional Enhancements
+- Automatic app updates
+- Additional language support
+- Visual and functional improvements across all features
 
-**🎨 Visual & Functional Enhancements**
-- Visual or functional enhancements for all features
+## Community & Feedback
 
----
+M.A.C.E. is a **community-driven project**. I personally work with STIGs, so many features were built around that workflow but I want this app to work for everyone. Whether you're using CIS, NIST 800-53, CMMC, or something else entirely, your input matters.
+
+**I'd love to hear from you:**
+- What compliance frameworks do you use?
+- What features would make your workflow easier?
+- What's missing or could be improved?
+
+Open an [issue](https://github.com/MACE-App/MACE/issues) or start a [discussion](https://github.com/MACE-App/MACE/discussions) your feedback directly shapes development.
 
 ## Credits
-Powered by [NIST mSCP 2.0](https://pages.nist.gov/macos_security/).  
+
+Powered by [NIST mSCP 2.0](https://pages.nist.gov/macos_security/).
 Created by a Mac admin for the macOS admin community.
+
+<p align="center">
+  <a href="https://github.com/MACE-App/MACE/releases">Download Latest Release</a> •
+  <a href="https://github.com/MACE-App/MACE/issues">Report an Issue</a> •
+  <a href="https://github.com/MACE-App/MACE/discussions">Discussions</a>
+</p>
