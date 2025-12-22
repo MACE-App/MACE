@@ -1,0 +1,191 @@
+name: Build and Release
+
+on:
+  release:
+    types: [published]
+
+env:
+  SCHEME: MACE
+  APP_NAME: MACE
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - name: Install Dependencies
+        run: |
+          # Download Sparkle for signing tools
+          curl -L -o Sparkle.tar.xz https://github.com/sparkle-project/Sparkle/releases/download/2.6.4/Sparkle-2.6.4.tar.xz
+          mkdir -p Sparkle
+          tar -xf Sparkle.tar.xz -C Sparkle
+
+      # Import signing certificate
+      - name: Import Certificate
+        env:
+          CERTIFICATE_P12: ${{ secrets.DEVELOPER_ID_P12 }}
+          CERTIFICATE_PASSWORD: ${{ secrets.DEVELOPER_ID_PASSWORD }}
+        run: |
+          # Create temporary keychain
+          KEYCHAIN_PATH=$RUNNER_TEMP/signing.keychain-db
+          KEYCHAIN_PASSWORD=$(openssl rand -base64 32)
+
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+          # Import certificate
+          echo "$CERTIFICATE_P12" | base64 --decode > $RUNNER_TEMP/certificate.p12
+          security import $RUNNER_TEMP/certificate.p12 -P "$CERTIFICATE_PASSWORD" \
+            -A -t cert -f pkcs12 -k "$KEYCHAIN_PATH"
+          security list-keychain -d user -s "$KEYCHAIN_PATH"
+
+          # Allow codesign access
+          security set-key-partition-list -S apple-tool:,apple:,codesign: \
+            -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+
+      # Clone the source repository
+      - name: Clone Source Repository
+        run: |
+          # Clone the development repository that contains the Xcode project
+          git clone https://github.com/${{ github.repository_owner }}/Compliance_Builder.git source_repo
+          cd source_repo
+          # Checkout the tag that matches the release
+          git checkout tags/${{ github.event.release.tag_name }} || git checkout main
+
+      # Build the app
+      - name: Build App
+        run: |
+          cd source_repo/MACE
+          xcodebuild archive \
+            -scheme "$SCHEME" \
+            -archivePath "$RUNNER_TEMP/$APP_NAME.xcarchive" \
+            -configuration Release \
+            CODE_SIGN_IDENTITY="Developer ID Application" \
+            DEVELOPMENT_TEAM="${{ secrets.TEAM_ID }}"
+
+      - name: Export App
+        run: |
+          # Create export options plist
+          cat > $RUNNER_TEMP/ExportOptions.plist << EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key>
+            <string>developer-id</string>
+            <key>teamID</key>
+            <string>${{ secrets.TEAM_ID }}</string>
+          </dict>
+          </plist>
+          EOF
+
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/$APP_NAME.xcarchive" \
+            -exportPath "$RUNNER_TEMP/Export" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist"
+
+      # Notarize
+      - name: Notarize App
+        env:
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_APP_PASSWORD }}
+          TEAM_ID: ${{ secrets.TEAM_ID }}
+        run: |
+          # Create zip for notarization
+          ditto -c -k --keepParent "$RUNNER_TEMP/Export/$APP_NAME.app" "$RUNNER_TEMP/$APP_NAME-notarize.zip"
+
+          # Submit for notarization
+          xcrun notarytool submit "$RUNNER_TEMP/$APP_NAME-notarize.zip" \
+            --apple-id "$APPLE_ID" \
+            --password "$APPLE_PASSWORD" \
+            --team-id "$TEAM_ID" \
+            --wait
+
+          # Staple the notarization
+          xcrun stapler staple "$RUNNER_TEMP/Export/$APP_NAME.app"
+
+      # Create distribution zip
+      - name: Create Release Zip
+        run: |
+          cd "$RUNNER_TEMP/Export"
+          ditto -c -k --keepParent "$APP_NAME.app" "$APP_NAME.zip"
+          echo "ZIP_PATH=$RUNNER_TEMP/Export/$APP_NAME.zip" >> $GITHUB_ENV
+
+      # Sign with Sparkle and update appcast
+      - name: Update Appcast
+        env:
+          SPARKLE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          # Get version from app
+          VERSION=$(/usr/libexec/PlistBuddy -c "Print CFBundleShortVersionString" \
+            "$RUNNER_TEMP/Export/$APP_NAME.app/Contents/Info.plist")
+          BUILD=$(/usr/libexec/PlistBuddy -c "Print CFBundleVersion" \
+            "$RUNNER_TEMP/Export/$APP_NAME.app/Contents/Info.plist")
+
+          # Get file size
+          FILE_SIZE=$(stat -f%z "$ZIP_PATH")
+
+          # Sign the zip with Sparkle (key via stdin)
+          SIGNATURE=$(echo "$SPARKLE_KEY" | ./Sparkle/bin/sign_update "$ZIP_PATH" --ed-key-file -)
+
+          # Get release tag
+          TAG="${{ github.event.release.tag_name }}"
+          DOWNLOAD_URL="https://github.com/${{ github.repository }}/releases/download/$TAG/$APP_NAME.zip"
+
+          # Generate new appcast item
+          APPCAST_ITEM="    <item>
+            <title>Version $VERSION</title>
+            <sparkle:version>$BUILD</sparkle:version>
+            <sparkle:shortVersionString>$VERSION</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <pubDate>$(date -R)</pubDate>
+            <sparkle:releaseNotesLink>https://github.com/${{ github.repository }}/releases/tag/$TAG</sparkle:releaseNotesLink>
+            <enclosure
+              url=\"$DOWNLOAD_URL\"
+              type=\"application/octet-stream\"
+              sparkle:edSignature=\"$SIGNATURE\"
+              length=\"$FILE_SIZE\"/>
+          </item>"
+
+          # Insert the new item into appcast.xml (after the opening channel tag)
+          # Read current appcast
+          APPCAST_CONTENT=$(cat appcast.xml)
+
+          # Insert new item after <language>en</language> line
+          NEW_APPCAST=$(echo "$APPCAST_CONTENT" | sed "/<language>en<\/language>/a\\
+          $APPCAST_ITEM
+          ")
+
+          echo "$NEW_APPCAST" > appcast.xml
+
+          echo "Updated appcast.xml for version $VERSION (build $BUILD)"
+          cat appcast.xml
+
+      # Commit updated appcast
+      - name: Commit Appcast
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add appcast.xml
+          git commit -m "Update appcast for ${{ github.event.release.tag_name }}"
+          git push
+
+      # Upload to release
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.ZIP_PATH }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
