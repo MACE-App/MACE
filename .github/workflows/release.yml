@@ -9,6 +9,9 @@ on:
         description: 'Release tag (e.g., v0.0.8-alpha)'
         required: true
 
+permissions:
+  contents: write
+
 jobs:
   update-appcast:
     runs-on: macos-14
