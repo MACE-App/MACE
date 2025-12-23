@@ -17,9 +17,9 @@
       <sparkle:channel>alpha</sparkle:channel>
       <enclosure
         url="https://github.com/MACE-App/MACE/releases/download/v0.0.7-alpha/MACE.zip"
-        length="0"
+        length="37727240"
         type="application/octet-stream"
-        sparkle:edSignature="YOUR_SIGNATURE_HERE"
+        sparkle:edSignature="yvol6QQJZNIXLMycEZ0Hcph+Yw7PzHpXCZnorGt8oKrqeyyErM8GVJN+sK5qpu063YH4/a/KxjWa9xbBrsdMBQ=="
       />
     </item>
 
