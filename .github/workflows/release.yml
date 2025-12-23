@@ -44,7 +44,10 @@ jobs:
         SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
       run: |
         echo "$SPARKLE_PRIVATE_KEY" > /tmp/sparkle_private_key
-        SIGNATURE=$(/tmp/Sparkle/bin/sign_update /tmp/MACE.zip --ed-key-file /tmp/sparkle_private_key | grep "sparkle:edSignature" | sed 's/.*"\(.*\)".*/\1/')
+        SIGN_OUTPUT=$(/tmp/Sparkle/bin/sign_update /tmp/MACE.zip --ed-key-file /tmp/sparkle_private_key)
+        echo "Sign output: $SIGN_OUTPUT"
+        SIGNATURE=$(echo "$SIGN_OUTPUT" | sed -n 's/.*sparkle:edSignature="\([^"]*\)".*/\1/p')
+        echo "Extracted signature: $SIGNATURE"
         echo "SIGNATURE=$SIGNATURE" >> $GITHUB_ENV
         rm /tmp/sparkle_private_key
 
@@ -56,7 +59,7 @@ jobs:
         echo "FULL_TAG=$FULL_TAG" >> $GITHUB_ENV
         VERSION=${FULL_TAG#v}
         echo "VERSION=$VERSION" >> $GITHUB_ENV
-        BUILD_NUM=$(echo "$VERSION" | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+' | tr -d '.')
+        BUILD_NUM=1
         echo "BUILD_NUM=$BUILD_NUM" >> $GITHUB_ENV
         if [[ "$VERSION" == *"-alpha"* ]]; then
           echo "SPARKLE_CHANNEL=alpha" >> $GITHUB_ENV
