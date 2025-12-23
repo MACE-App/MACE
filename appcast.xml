@@ -8,6 +8,21 @@
 
     <item>
       <title>Version 0.0.8-alpha</title>
+      <pubDate>Tue, 23 Dec 2025 12:18:08 +0000</pubDate>
+      <sparkle:version>008</sparkle:version>
+      <sparkle:shortVersionString>0.0.8-alpha</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:channel>alpha</sparkle:channel>
+      <enclosure
+        url="https://github.com/MACE-App/MACE/releases/download/v0.0.8-alpha/MACE.zip"
+        length="38379291"
+        type="application/octet-stream"
+        sparkle:edSignature="38379291"
+      />
+    </item>
+
+    <item>
+      <title>Version 0.0.8-alpha</title>
       <pubDate>Tue, 23 Dec 2025 00:55:17 +0000</pubDate>
       <sparkle:version>008</sparkle:version>
       <sparkle:shortVersionString>0.0.8-alpha</sparkle:shortVersionString>
