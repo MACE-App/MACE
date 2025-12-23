@@ -20,8 +20,11 @@ jobs:
         tar -xf Sparkle.tar.xz -C Sparkle
 
     - name: Download MACE.zip from release
+      env:
+        RELEASE_TAG: ${{ github.event.release.tag_name }}
+        REPO: ${{ github.repository }}
       run: |
-        curl -L -o /tmp/MACE.zip "https://github.com/${{ github.repository }}/releases/download/${{ github.event.release.tag_name }}/MACE.zip"
+        curl -L -o /tmp/MACE.zip "https://github.com/${REPO}/releases/download/${RELEASE_TAG}/MACE.zip"
 
     - name: Get file size
       run: |
@@ -38,20 +41,18 @@ jobs:
         rm /tmp/sparkle_private_key
 
     - name: Get version info
+      env:
+        RELEASE_TAG: ${{ github.event.release.tag_name }}
       run: |
-        # Full tag (e.g., v0.0.7-alpha)
-        FULL_TAG=${{ github.event.release.tag_name }}
+        FULL_TAG=$RELEASE_TAG
         echo "FULL_TAG=$FULL_TAG" >> $GITHUB_ENV
 
-        # Version without 'v' prefix (e.g., 0.0.7-alpha)
         VERSION=${FULL_TAG#v}
         echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-        # Build number - extract digits only (e.g., 008 -> 8)
         BUILD_NUM=$(echo "$VERSION" | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+' | tr -d '.')
         echo "BUILD_NUM=$BUILD_NUM" >> $GITHUB_ENV
 
-        # Determine channel
         if [[ "$VERSION" == *"-alpha"* ]]; then
           echo "SPARKLE_CHANNEL=alpha" >> $GITHUB_ENV
         elif [[ "$VERSION" == *"-beta"* ]]; then
@@ -61,17 +62,17 @@ jobs:
         fi
 
     - name: Update appcast.xml
+      env:
+        REPO: ${{ github.repository }}
       run: |
         DATE=$(date -u "+%a, %d %b %Y %H:%M:%S +0000")
 
-        # Build channel line if applicable
         CHANNEL_LINE=""
         if [[ -n "$SPARKLE_CHANNEL" ]]; then
           CHANNEL_LINE="      <sparkle:channel>$SPARKLE_CHANNEL</sparkle:channel>"
         fi
 
-        # Create new item entry
-        cat > /tmp/new_item.xml << EOF
+        cat > /tmp/new_item.xml << XMLEOF
 
     <item>
       <title>Version $VERSION</title>
@@ -81,15 +82,14 @@ jobs:
       <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
 $CHANNEL_LINE
       <enclosure
-        url="https://github.com/${{ github.repository }}/releases/download/$FULL_TAG/MACE.zip"
+        url="https://github.com/${REPO}/releases/download/$FULL_TAG/MACE.zip"
         length="$FILE_SIZE"
         type="application/octet-stream"
         sparkle:edSignature="$SIGNATURE"
       />
     </item>
-        EOF
+XMLEOF
 
-        # Insert new item after <language>en</language>
         sed -i '' "/<language>en<\/language>/r /tmp/new_item.xml" appcast.xml
 
         echo "=== Updated appcast.xml ==="
