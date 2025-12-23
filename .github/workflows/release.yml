@@ -1,0 +1,138 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'  # Triggers on any version tag (v0.0.7, v0.0.7-alpha, v1.0.0-beta, etc.)
+
+jobs:
+  build:
+    runs-on: macos-14
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+
+    - name: Setup Xcode
+      uses: maxim-lobanov/setup-xcode@v1
+      with:
+        xcode-version: latest-stable
+
+    - name: Install Sparkle
+      run: |
+        cd /tmp
+        curl -L -o Sparkle.tar.xz "https://github.com/sparkle-project/Sparkle/releases/download/2.8.1/Sparkle-2.8.1.tar.xz"
+        mkdir -p Sparkle
+        tar -xf Sparkle.tar.xz -C Sparkle
+
+    - name: Build Release
+      run: |
+        xcodebuild -scheme MACE -configuration Release \
+          -archivePath $RUNNER_TEMP/MACE.xcarchive \
+          archive \
+          CODE_SIGN_IDENTITY="-" \
+          CODE_SIGNING_REQUIRED=NO
+
+    - name: Export App
+      run: |
+        mkdir -p $RUNNER_TEMP/export
+        cp -R "$RUNNER_TEMP/MACE.xcarchive/Products/Applications/MACE.app" "$RUNNER_TEMP/export/"
+
+    - name: Create ZIP
+      run: |
+        cd $RUNNER_TEMP/export
+        zip -r MACE.zip MACE.app
+        echo "ZIP_PATH=$RUNNER_TEMP/export/MACE.zip" >> $GITHUB_ENV
+
+    - name: Get file size
+      run: |
+        SIZE=$(stat -f%z "$RUNNER_TEMP/export/MACE.zip" 2>/dev/null || stat --printf="%s" "$RUNNER_TEMP/export/MACE.zip")
+        echo "FILE_SIZE=$SIZE" >> $GITHUB_ENV
+
+    - name: Sign with Sparkle
+      env:
+        SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+      run: |
+        echo "$SPARKLE_PRIVATE_KEY" > /tmp/sparkle_private_key
+        SIGNATURE=$(/tmp/Sparkle/bin/sign_update "$RUNNER_TEMP/export/MACE.zip" --ed-key-file /tmp/sparkle_private_key | grep "sparkle:edSignature" | sed 's/.*"\(.*\)".*/\1/')
+        echo "SIGNATURE=$SIGNATURE" >> $GITHUB_ENV
+        rm /tmp/sparkle_private_key
+
+    - name: Get version info
+      run: |
+        # Full tag (e.g., v0.0.7-alpha)
+        FULL_TAG=${GITHUB_REF#refs/tags/}
+        echo "FULL_TAG=$FULL_TAG" >> $GITHUB_ENV
+
+        # Version without 'v' prefix (e.g., 0.0.7-alpha)
+        VERSION=${FULL_TAG#v}
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+        # Build number - extract digits only (e.g., 007 -> 7)
+        BUILD_NUM=$(echo "$VERSION" | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+' | tr -d '.')
+        echo "BUILD_NUM=$BUILD_NUM" >> $GITHUB_ENV
+
+        # Determine channel and prerelease status
+        if [[ "$VERSION" == *"-alpha"* ]]; then
+          echo "IS_PRERELEASE=true" >> $GITHUB_ENV
+          echo "SPARKLE_CHANNEL=alpha" >> $GITHUB_ENV
+        elif [[ "$VERSION" == *"-beta"* ]]; then
+          echo "IS_PRERELEASE=true" >> $GITHUB_ENV
+          echo "SPARKLE_CHANNEL=beta" >> $GITHUB_ENV
+        else
+          echo "IS_PRERELEASE=false" >> $GITHUB_ENV
+          echo "SPARKLE_CHANNEL=" >> $GITHUB_ENV
+        fi
+
+    - name: Update appcast.xml
+      run: |
+        DATE=$(date -u "+%a, %d %b %Y %H:%M:%S +0000")
+
+        # Build channel line if applicable
+        CHANNEL_LINE=""
+        if [[ -n "$SPARKLE_CHANNEL" ]]; then
+          CHANNEL_LINE="      <sparkle:channel>$SPARKLE_CHANNEL</sparkle:channel>"
+        fi
+
+        # Create new item entry
+        cat > /tmp/new_item.xml << EOF
+
+    <item>
+      <title>Version $VERSION</title>
+      <pubDate>$DATE</pubDate>
+      <sparkle:version>$BUILD_NUM</sparkle:version>
+      <sparkle:shortVersionString>$VERSION</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+$CHANNEL_LINE
+      <enclosure
+        url="https://github.com/${{ github.repository }}/releases/download/$FULL_TAG/MACE.zip"
+        length="$FILE_SIZE"
+        type="application/octet-stream"
+        sparkle:edSignature="$SIGNATURE"
+      />
+    </item>
+        EOF
+
+        # Insert new item after <language>en</language>
+        sed -i '' "/<language>en<\/language>/r /tmp/new_item.xml" appcast.xml
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: ${{ env.ZIP_PATH }}
+        generate_release_notes: true
+        prerelease: ${{ env.IS_PRERELEASE }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Commit updated appcast
+      run: |
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add appcast.xml
+        git commit -m "Update appcast.xml for $FULL_TAG" || echo "No changes to commit"
+        git push origin HEAD:main
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

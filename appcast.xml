@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>MACE Updates</title>
+    <link>https://github.com/MACE-App/MACE/releases</link>
+    <description>Most recent updates to MACE</description>
+    <language>en</language>
+
+    <!-- Latest release first -->
+    <item>
+      <title>Version 0.0.7-alpha</title>
+      <pubDate>Mon, 22 Dec 2025 12:00:00 +0000</pubDate>
+      <description>Test release</description>
+      <sparkle:version>7</sparkle:version>
+      <sparkle:shortVersionString>0.0.7-alpha</sparkle:shortVersionString>
+      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+      <sparkle:channel>alpha</sparkle:channel>
+      <enclosure
+        url="https://github.com/MACE-App/MACE/releases/download/v0.0.7-alpha/MACE.zip"
+        length="0"
+        type="application/octet-stream"
+        sparkle:edSignature="YOUR_SIGNATURE_HERE"
+      />
+    </item>
+
+  </channel>
+</rss>
