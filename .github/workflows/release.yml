@@ -51,13 +51,10 @@ jobs:
       run: |
         FULL_TAG=$RELEASE_TAG
         echo "FULL_TAG=$FULL_TAG" >> $GITHUB_ENV
-
         VERSION=${FULL_TAG#v}
         echo "VERSION=$VERSION" >> $GITHUB_ENV
-
         BUILD_NUM=$(echo "$VERSION" | grep -oE '^[0-9]+\.[0-9]+\.[0-9]+' | tr -d '.')
         echo "BUILD_NUM=$BUILD_NUM" >> $GITHUB_ENV
-
         if [[ "$VERSION" == *"-alpha"* ]]; then
           echo "SPARKLE_CHANNEL=alpha" >> $GITHUB_ENV
         elif [[ "$VERSION" == *"-beta"* ]]; then
@@ -71,41 +68,39 @@ jobs:
         REPO: ${{ github.repository }}
       run: |
         DATE=$(date -u "+%a, %d %b %Y %H:%M:%S +0000")
-
         CHANNEL_LINE=""
         if [[ -n "$SPARKLE_CHANNEL" ]]; then
           CHANNEL_LINE="      <sparkle:channel>$SPARKLE_CHANNEL</sparkle:channel>"
         fi
-
-        cat > /tmp/new_item.xml << XMLEOF
-
-    <item>
-      <title>Version $VERSION</title>
-      <pubDate>$DATE</pubDate>
-      <sparkle:version>$BUILD_NUM</sparkle:version>
-      <sparkle:shortVersionString>$VERSION</sparkle:shortVersionString>
-      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-$CHANNEL_LINE
-      <enclosure
-        url="https://github.com/${REPO}/releases/download/$FULL_TAG/MACE.zip"
-        length="$FILE_SIZE"
-        type="application/octet-stream"
-        sparkle:edSignature="$SIGNATURE"
-      />
-    </item>
-XMLEOF
-
+        {
+          echo ""
+          echo "    <item>"
+          echo "      <title>Version $VERSION</title>"
+          echo "      <pubDate>$DATE</pubDate>"
+          echo "      <sparkle:version>$BUILD_NUM</sparkle:version>"
+          echo "      <sparkle:shortVersionString>$VERSION</sparkle:shortVersionString>"
+          echo "      <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>"
+          if [[ -n "$CHANNEL_LINE" ]]; then
+            echo "$CHANNEL_LINE"
+          fi
+          echo "      <enclosure"
+          echo "        url=\"https://github.com/${REPO}/releases/download/$FULL_TAG/MACE.zip\""
+          echo "        length=\"$FILE_SIZE\""
+          echo "        type=\"application/octet-stream\""
+          echo "        sparkle:edSignature=\"$SIGNATURE\""
+          echo "      />"
+          echo "    </item>"
+        } > /tmp/new_item.xml
         sed -i '' "/<language>en<\/language>/r /tmp/new_item.xml" appcast.xml
-
         echo "=== Updated appcast.xml ==="
         cat appcast.xml
 
     - name: Commit updated appcast
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add appcast.xml
         git commit -m "Update appcast.xml for $FULL_TAG"
         git push origin HEAD:main
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
