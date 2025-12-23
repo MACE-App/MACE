@@ -59,8 +59,16 @@ jobs:
         echo "FULL_TAG=$FULL_TAG" >> $GITHUB_ENV
         VERSION=${FULL_TAG#v}
         echo "VERSION=$VERSION" >> $GITHUB_ENV
-        BUILD_NUM=1
+
+        # Extract build number from version (e.g., 0.0.8-alpha -> 8, 0.1.0-beta -> 10)
+        # Use minor*10 + patch for a unique incrementing build number
+        BASE_VERSION=$(echo "$VERSION" | sed 's/-.*$//')
+        MINOR=$(echo "$BASE_VERSION" | cut -d. -f2)
+        PATCH=$(echo "$BASE_VERSION" | cut -d. -f3)
+        BUILD_NUM=$((MINOR * 10 + PATCH))
         echo "BUILD_NUM=$BUILD_NUM" >> $GITHUB_ENV
+        echo "Calculated build number: $BUILD_NUM from version $VERSION"
+
         if [[ "$VERSION" == *"-alpha"* ]]; then
           echo "SPARKLE_CHANNEL=alpha" >> $GITHUB_ENV
         elif [[ "$VERSION" == *"-beta"* ]]; then
