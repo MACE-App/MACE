@@ -3,6 +3,11 @@ name: Update Appcast on Release
 on:
   release:
     types: [published]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g., v0.0.8-alpha)'
+        required: true
 
 jobs:
   update-appcast:
@@ -21,7 +26,7 @@ jobs:
 
     - name: Download MACE.zip from release
       env:
-        RELEASE_TAG: ${{ github.event.release.tag_name }}
+        RELEASE_TAG: ${{ github.event.release.tag_name || github.event.inputs.tag }}
         REPO: ${{ github.repository }}
       run: |
         curl -L -o /tmp/MACE.zip "https://github.com/${REPO}/releases/download/${RELEASE_TAG}/MACE.zip"
@@ -42,7 +47,7 @@ jobs:
 
     - name: Get version info
       env:
-        RELEASE_TAG: ${{ github.event.release.tag_name }}
+        RELEASE_TAG: ${{ github.event.release.tag_name || github.event.inputs.tag }}
       run: |
         FULL_TAG=$RELEASE_TAG
         echo "FULL_TAG=$FULL_TAG" >> $GITHUB_ENV
