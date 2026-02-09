@@ -1,4 +1,4 @@
-name: Documentation Issue
+name: 📄 Documentation Issue
 description: Report missing, unclear, or incorrect documentation
 title: "[Docs]: "
 labels: ["documentation"]
@@ -72,11 +72,3 @@ body:
       label: Screenshots
       description: Drag and drop any relevant screenshots here
       placeholder: Screenshots help us find and fix the issue faster.
-
-  - type: checkboxes
-    id: checklist
-    attributes:
-      label: Checklist
-      options:
-        - label: I searched existing issues before submitting
-          required: true

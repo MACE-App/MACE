@@ -1,4 +1,4 @@
-name: Offer to Help
+name: 🤝 Offer to Help
 description: Volunteer to contribute to M.A.C.E. development, testing, or documentation
 title: "[Help]: "
 labels: ["help wanted"]
@@ -18,12 +18,10 @@ body:
       description: Select the area(s) you're interested in contributing to
       multiple: true
       options:
-        - Swift / SwiftUI Development
-        - Testing / QA
+        - App Testing / QA
+        - MDM Test Environment (Jamf, Intune, Workspace ONE, etc.)
         - Documentation
         - UI / UX Design
-        - Security Rule Research
-        - Compliance Framework Expertise
         - Translation / Localization
         - Other
     validations:
@@ -38,33 +36,6 @@ body:
         e.g. I have experience with...
         I work in the field of...
         I'm familiar with...
+        I have access to a ... MDM environment
     validations:
       required: true
-
-  - type: textarea
-    id: availability
-    attributes:
-      label: Availability
-      description: How much time can you dedicate, and are there any constraints?
-      placeholder: |
-        e.g. A few hours per week
-        Weekends only
-        Available for a one-time contribution
-
-  - type: textarea
-    id: ideas
-    attributes:
-      label: Specific Ideas or Areas of Interest
-      description: Is there a specific feature, issue, or area you'd like to work on?
-      placeholder: |
-        e.g. I noticed issue #12 and would like to tackle it
-        I'd like to help improve the audit export formats
-        I can help write documentation for...
-
-  - type: checkboxes
-    id: checklist
-    attributes:
-      label: Checklist
-      options:
-        - label: I have read the project README
-          required: true

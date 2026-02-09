@@ -105,13 +105,3 @@ body:
       label: Logs (if available)
       description: Paste any relevant logs or error output
       render: shell
-
-  - type: checkboxes
-    id: checklist
-    attributes:
-      label: Checklist
-      options:
-        - label: I searched existing issues before submitting
-          required: true
-        - label: I am running the latest available version
-          required: true

@@ -1,4 +1,4 @@
-name: Feature Request
+name: 💡 Feature Request
 description: Suggest a new feature or enhancement for M.A.C.E.
 title: "[Feature]: "
 labels: ["enhancement"]
@@ -10,15 +10,6 @@ body:
       value: |
         Thanks for suggesting a feature!
         Please describe your idea clearly so we can evaluate and prioritize it.
-
-  - type: input
-    id: app_version
-    attributes:
-      label: App Version
-      description: What version of M.A.C.E. are you currently running?
-      placeholder: e.g. v0.0.8-alpha
-    validations:
-      required: true
 
   - type: dropdown
     id: area
@@ -40,22 +31,10 @@ body:
       required: true
 
   - type: textarea
-    id: problem
-    attributes:
-      label: What problem does this solve?
-      description: Describe the problem or limitation you're experiencing
-      placeholder: |
-        I'm frustrated when...
-        It would save time if...
-        Currently there's no way to...
-    validations:
-      required: true
-
-  - type: textarea
     id: solution
     attributes:
-      label: Describe your proposed solution
-      description: How do you envision this feature working?
+      label: Describe your proposed feature
+      description: What would you like to see added or changed?
       placeholder: |
         I'd like to be able to...
         It could work by...
@@ -63,25 +42,14 @@ body:
       required: true
 
   - type: textarea
-    id: alternatives
+    id: problem
     attributes:
-      label: Alternatives considered
-      description: Have you considered any workarounds or alternative approaches?
-      placeholder: Describe any alternatives you've tried or considered
+      label: What problem does this solve or what does it offer?
+      description: Help us understand the end goal — why is this feature valuable?
+      placeholder: |
+        This would help because...
+        The end goal is to...
+        Right now there's no way to...
+    validations:
+      required: true
 
-  - type: textarea
-    id: screenshot
-    attributes:
-      label: Mockups or References
-      description: Drag and drop any mockups, sketches, or reference screenshots here
-      placeholder: Visual references help us understand your vision.
-
-  - type: checkboxes
-    id: checklist
-    attributes:
-      label: Checklist
-      options:
-        - label: I searched existing issues and feature requests before submitting
-          required: true
-        - label: I am running the latest available version
-          required: true
