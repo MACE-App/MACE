@@ -1,0 +1,87 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for M.A.C.E.
+title: "[Feature]: "
+labels: ["enhancement"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature!
+        Please describe your idea clearly so we can evaluate and prioritize it.
+
+  - type: input
+    id: app_version
+    attributes:
+      label: App Version
+      description: What version of M.A.C.E. are you currently running?
+      placeholder: e.g. v0.0.8-alpha
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Feature Area
+      description: Which part of the app does this feature relate to?
+      options:
+        - Compliance Builder Hub
+        - Audit Builder Hub
+        - Documentation Builder Hub
+        - Build / Export Options
+        - MDM Integration (Jamf, Intune, etc.)
+        - Rule Management
+        - Settings / Preferences
+        - UI / UX
+        - App Launch / Startup
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: Describe the problem or limitation you're experiencing
+      placeholder: |
+        I'm frustrated when...
+        It would save time if...
+        Currently there's no way to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Describe your proposed solution
+      description: How do you envision this feature working?
+      placeholder: |
+        I'd like to be able to...
+        It could work by...
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Have you considered any workarounds or alternative approaches?
+      placeholder: Describe any alternatives you've tried or considered
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Mockups or References
+      description: Drag and drop any mockups, sketches, or reference screenshots here
+      placeholder: Visual references help us understand your vision.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and feature requests before submitting
+          required: true
+        - label: I am running the latest available version
+          required: true

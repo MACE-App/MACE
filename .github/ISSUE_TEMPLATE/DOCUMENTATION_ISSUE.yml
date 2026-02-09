@@ -1,0 +1,82 @@
+name: Documentation Issue
+description: Report missing, unclear, or incorrect documentation
+title: "[Docs]: "
+labels: ["documentation"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping us improve the documentation!
+        Clear docs make a big difference — let us know what needs attention.
+
+  - type: dropdown
+    id: issue_type
+    attributes:
+      label: Type of Documentation Issue
+      description: What kind of issue are you reporting?
+      options:
+        - Missing documentation
+        - Incorrect or outdated information
+        - Unclear or confusing content
+        - Typo or formatting issue
+        - Missing example or screenshot
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Documentation Area
+      description: Which part of the documentation is affected?
+      options:
+        - README
+        - Setup / Installation
+        - Compliance Builder
+        - Audit Builder
+        - Documentation Builder
+        - Build / Export Options
+        - MDM Integration
+        - In-App Help or Tooltips
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: What's the issue?
+      description: Describe what's wrong or missing
+      placeholder: |
+        The section about... is missing information on...
+        The instructions for... are outdated because...
+        It's unclear how to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested Improvement
+      description: How should the documentation be updated?
+      placeholder: |
+        It would be helpful to add...
+        The wording should be changed to...
+        A screenshot showing... would clarify things.
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshots
+      description: Drag and drop any relevant screenshots here
+      placeholder: Screenshots help us find and fix the issue faster.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues before submitting
+          required: true
