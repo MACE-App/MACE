@@ -100,7 +100,7 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 - Application platform *(in testing)* — build baselines for Chrome, Edge, and Firefox
 - Open and manage existing projects (`.mace` file format)
 - Import Jamf Compliance Editor (`.jce`) files with auto-detected platform, version, and framework
-- Import mSCP 1.0 baselines
+- Import mSCP 1.0 baselines *(coming soon)*
 - Duplicate existing projects
 - Recent projects list for quick access
 - Platform and compliance framework selection wizard
@@ -237,7 +237,6 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 | **Workspace ONE** | Upload profiles, scripts, and sensors directly (Basic Auth, OAuth2 & Token) |
 | **Microsoft Intune** | Upload profiles, scripts, and custom attributes directly (Tenant/Client auth) |
 | **Kandji** | Profile and script export *(coming soon)* |
-| **Mosyle** | Configuration push *(coming soon)* |
 
 #### Build Options
 - Configurable output options per artifact type
@@ -273,6 +272,7 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 | PDF | Styled documents with headers, footers, table of contents, and page breaks |
 | HTML | Interactive web-ready reports with navigation and syntax highlighting |
 | Excel | Workbooks with multiple sheets, formatted tables, and summary statistics |
+| Markdown | Portable plain-text format for version control and wiki integration |
 
 #### Documentation Options
 - Configurable content: discussions, check procedures, remediation, references, platform info
@@ -392,7 +392,7 @@ Click any preview below to download the sample file and open it locally. GitHub 
 | Format | Description |
 |--------|-------------|
 | **Jamf Compliance Editor (`.jce`)** | Import JCE files with auto-detected platform, version, compliance framework, and rule exclusions |
-| **mSCP 1.0 Baselines** | Import existing mSCP 1.0 baselines into M.A.C.E. projects |
+| **mSCP 1.0 Baselines** | Import existing mSCP 1.0 baselines into M.A.C.E. projects *(coming soon)* |
 
 #### Jamf Pro
 - Upload configuration profiles, remediation scripts, and extension attributes directly to Jamf Pro
@@ -453,7 +453,7 @@ Click any preview below to download the sample file and open it locally. GitHub 
 > This is a beta release. Core features are stable and ready for real-world use, but some features are still being refined based on community feedback.
 
 **Current Focus:**
-- Expanding MDM platform integrations (Kandji, Mosyle)
+- Expanding MDM platform integrations (Kandji)
 - Improving audit export accuracy for MDM platforms
 
 **Known Limitations:**
@@ -479,7 +479,6 @@ Click any preview below to download the sample file and open it locally. GitHub 
 
 ### MDM Targets
 - Kandji direct integration
-- Mosyle direct integration
 
 ### Additional Enhancements
 - Additional language support
