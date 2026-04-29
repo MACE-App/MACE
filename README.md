@@ -125,7 +125,7 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
   - Tags and metadata
   - Modification status (modified vs. baseline)
   - Enabled/disabled status
-- Sort modes: Title, Rule ID, Section, Included status, Modified status, or STIG/CIS ID (ascending/descending)
+- Sort modes: Title, Rule ID, Section, Included status, Modified status, Severity, or STIG/CIS ID (ascending/descending)
 - "Show All" mode to view all available rules regardless of framework
 - Hide disabled rules toggle
 - Search within rule details across all fields
@@ -226,7 +226,7 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 
 #### Build Engines
 - **M.A.C.E. Build Engine:** Native Swift engine with full customization and advanced output options
-- **mSCP Build Engine:** Official NIST Python scripts with real-time output monitoring and progress tracking
+- **mSCP Build Engine:** Official NIST Python scripts with real-time output monitoring and progress tracking *(coming soon)*
 
 #### Build Targets
 | Target | Description |
@@ -421,7 +421,7 @@ Click any preview below to download the sample file and open it locally. GitHub 
 <p align="center"><em>Settings — general, appearance, and advanced options</em></p>
 
 - Light, Dark, and System theme support
-- 13+ seasonal and holiday app icons (automatically switch by date)
+- 40+ seasonal, holiday, and character app icons (automatically switch by date)
 - Auto-save functionality
 - Display settings memory (remember preferences across all hubs)
 - Release channel selection: Alpha, Beta, Stable
