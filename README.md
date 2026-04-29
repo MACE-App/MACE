@@ -131,25 +131,25 @@ Click any preview below to download the sample file and open it locally. GitHub 
 <table>
 <tr>
 <td align="center">
-  <a href=".github/example_outputs/Audit_Report_Example.pdf">
+  <a href="example_outputs/Audit_Report_Example.pdf">
     <img src=".github/images/audit-output-pdf.webp" alt="MACE PDF Audit Report" width="280" />
   </a>
   <p align="center"><em>PDF report</em></p>
 </td>
 <td align="center">
-  <a href=".github/example_outputs/Audit_Report_Example.html">
+  <a href="example_outputs/Audit_Report_Example.html">
     <img src=".github/images/audit-output-html.webp" alt="MACE HTML Audit Report" width="280" />
   </a>
   <p align="center"><em>HTML report</em></p>
 </td>
 <td align="center">
-  <a href=".github/example_outputs/Audit_Report_Example.csv">
+  <a href="example_outputs/Audit_Report_Example.csv">
     <img src=".github/images/audit-output-csv.webp" alt="MACE CSV Audit Report" width="280" />
   </a>
   <p align="center"><em>CSV report</em></p>
 </td>
 <td align="center">
-  <a href=".github/example_outputs/Audit_Report_Example.xlsx">
+  <a href="example_outputs/Audit_Report_Example.xlsx">
     <img src=".github/images/audit-output-xlsx.webp" alt="MACE Excel Audit Report" width="280" />
   </a>
   <p align="center"><em>Excel report</em></p>
@@ -163,25 +163,25 @@ Click any preview below to download the sample file and open it locally. GitHub 
 <table>
 <tr>
 <td align="center">
-  <a href=".github/example_outputs/Documentation_Example.pdf">
+  <a href="example_outputs/Documentation_Example.pdf">
     <img src=".github/images/doc-output-pdf.webp" alt="MACE PDF Documentation" width="280" />
   </a>
   <p align="center"><em>PDF document</em></p>
 </td>
 <td align="center">
-  <a href=".github/example_outputs/Documentation_Example.html">
+  <a href="example_outputs/Documentation_Example.html">
     <img src=".github/images/doc-output-html.webp" alt="MACE HTML Documentation" width="280" />
   </a>
   <p align="center"><em>HTML document</em></p>
 </td>
 <td align="center">
-  <a href=".github/example_outputs/Documentation_Example.xlsx">
+  <a href="example_outputs/Documentation_Example.xlsx">
     <img src=".github/images/doc-output-xlsx.webp" alt="MACE Excel Documentation" width="280" />
   </a>
   <p align="center"><em>Excel document</em></p>
 </td>
 <td align="center">
-  <a href=".github/example_outputs/Documentation_Example.md">
+  <a href="example_outputs/Documentation_Example.md">
     <img src=".github/images/doc-output-markdown.webp" alt="MACE Markdown Documentation" width="280" />
   </a>
   <p align="center"><em>Markdown document</em></p>
