@@ -35,7 +35,6 @@
   - [Build](#build)
   - [Documentation](#documentation)
   - [Audit & Verification](#audit--verification)
-  - [MDM Integration](#mdm-integration)
   - [Settings & Appearance](#settings--appearance)
 - [Status](#status)
 - [Upcoming Features](#upcoming-features)
@@ -247,6 +246,31 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 - Workspace ONE organization group selection and region configuration
 - Intune tenant and client credential configuration
 
+#### MDM Upload — Jamf Pro
+- Upload configuration profiles, remediation scripts, and extension attributes directly to Jamf Pro
+- Authentication via Basic Auth or OAuth
+- Category creation and assignment
+- Connection testing and duplicate handling
+- Upload progress tracking
+
+#### MDM Upload — Workspace ONE
+- Upload configuration profiles, scripts, and sensors directly to Workspace ONE
+- Authentication via Basic Auth, OAuth2, or Token-based
+- Region selection (North America, Europe, Asia-Pacific, China)
+- Organization group discovery and selection
+- Connection testing and upload progress tracking
+
+#### MDM Upload — Microsoft Intune
+- Upload configuration profiles, scripts, and custom attributes directly to Intune
+- Authentication via Tenant ID, Client ID, and Client Secret
+- Connection testing and upload progress tracking
+
+#### Import Formats
+| Format | Description |
+|--------|-------------|
+| **Jamf Compliance Editor (`.jce`)** | Import JCE files with auto-detected platform, version, compliance framework, and rule exclusions |
+| **mSCP 1.0 Baselines** | Import existing mSCP 1.0 baselines into M.A.C.E. projects *(coming soon)* |
+
 ---
 
 ### Documentation
@@ -386,49 +410,6 @@ Click any preview below to download the sample file and open it locally. GitHub 
 
 ---
 
-### MDM Integration
-
-#### Import Formats
-| Format | Description |
-|--------|-------------|
-| **Jamf Compliance Editor (`.jce`)** | Import JCE files with auto-detected platform, version, compliance framework, and rule exclusions |
-| **mSCP 1.0 Baselines** | Import existing mSCP 1.0 baselines into M.A.C.E. projects *(coming soon)* |
-
-#### Jamf Pro
-- Upload configuration profiles, remediation scripts, and extension attributes directly to Jamf Pro
-- Authentication via Basic Auth or OAuth
-- Category creation and assignment
-- Connection testing and duplicate handling
-- Upload progress tracking
-
-#### Workspace ONE
-- Upload configuration profiles, scripts, and sensors directly to Workspace ONE
-- Authentication via Basic Auth, OAuth2, or Token-based
-- Region selection (North America, Europe, Asia-Pacific, China)
-- Organization group discovery and selection
-- Connection testing and upload progress tracking
-
-#### Microsoft Intune
-- Upload configuration profiles, scripts, and custom attributes directly to Intune
-- Authentication via Tenant ID, Client ID, and Client Secret
-- Connection testing and upload progress tracking
-
-#### Automatic App Updates
-
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset=".github/images/update-dark.webp">
-    <img alt="MACE Update Available" src=".github/images/update-light.webp" width="500">
-  </picture>
-</p>
-<p align="center"><em>In-app update dialog with changelog</em></p>
-
-- Background update checking with release channel selection (Alpha, Beta, Stable)
-- Download progress tracking with signature verification
-- Privileged helper for seamless installation
-
----
-
 ### Settings & Appearance
 
 <p align="center">
@@ -446,6 +427,20 @@ Click any preview below to download the sample file and open it locally. GitHub 
 - Release channel selection: Alpha, Beta, Stable
 - Application logging console with real-time logs, export, and log levels
 - Advanced options: clear cache, reset Python/Ruby environments, open data folder
+
+#### Automatic App Updates
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/images/update-dark.webp">
+    <img alt="MACE Update Available" src=".github/images/update-light.webp" width="500">
+  </picture>
+</p>
+<p align="center"><em>In-app update dialog with changelog</em></p>
+
+- Background update checking with release channel selection (Alpha, Beta, Stable)
+- Download progress tracking with signature verification
+- Privileged helper for seamless installation
 
 ## Status
 
