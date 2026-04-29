@@ -1,5 +1,5 @@
 <p align="center">
-  <img src=".github/images/App_Icon.png" alt="MACE App Icon" width="120" />
+  <img src=".github/images/App_Icon.webp" alt="MACE App Icon" width="120" />
 </p>
 
 <h1 align="center">M.A.C.E. — macOS Advanced Compliance Editor</h1>
@@ -147,6 +147,44 @@ Click any preview below to download the sample file and open it locally. GitHub 
     <img src=".github/images/audit-output-csv.webp" alt="MACE CSV Audit Report" width="280" />
   </a>
   <p align="center"><em>CSV report</em></p>
+</td>
+<td align="center">
+  <a href="audit_examples/Audit_Report_Example.xlsx">
+    <img src=".github/images/audit-output-xlsx.webp" alt="MACE Excel Audit Report" width="280" />
+  </a>
+  <p align="center"><em>Excel report</em></p>
+</td>
+</tr>
+</table>
+
+### Documentation Output Examples
+Click any preview below to download the sample file and open it locally. GitHub limits in-browser viewing of HTML and Markdown files, so downloading is the best way to see the full output.
+
+<table>
+<tr>
+<td align="center">
+  <a href="audit_examples/Documentation_Example.pdf">
+    <img src=".github/images/doc-output-pdf.webp" alt="MACE PDF Documentation" width="280" />
+  </a>
+  <p align="center"><em>PDF document</em></p>
+</td>
+<td align="center">
+  <a href="audit_examples/Documentation_Example.html">
+    <img src=".github/images/doc-output-html.webp" alt="MACE HTML Documentation" width="280" />
+  </a>
+  <p align="center"><em>HTML document</em></p>
+</td>
+<td align="center">
+  <a href="audit_examples/Documentation_Example.xlsx">
+    <img src=".github/images/doc-output-xlsx.webp" alt="MACE Excel Documentation" width="280" />
+  </a>
+  <p align="center"><em>Excel document</em></p>
+</td>
+<td align="center">
+  <a href="audit_examples/Documentation_Example.md">
+    <img src=".github/images/doc-output-markdown.webp" alt="MACE Markdown Documentation" width="280" />
+  </a>
+  <p align="center"><em>Markdown document</em></p>
 </td>
 </tr>
 </table>
