@@ -106,6 +106,8 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 - Platform and compliance framework selection wizard
 - Automatic project saving with unsaved changes detection
 
+---
+
 ### Compliance Editor
 
 <p align="center">
@@ -145,6 +147,8 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 - Side-by-side comparison: baseline vs. custom rule versions
 - Automatic YAML structure preservation
 
+---
+
 ### Rule Builder
 
 <p align="center">
@@ -160,6 +164,8 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 - Full validation of rule ID and structure
 - Section/category assignment, tags, references, mobileconfig, DDM, and ODV support
 
+---
+
 ### Rule Updates
 
 <p align="center">
@@ -174,6 +180,8 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 - Detect updated, new, and removed rules with detailed change reports
 - Auto-download latest rules from GitHub on app launch (configurable)
 - Batch update management with framework filtering
+
+---
 
 ### Build
 
@@ -240,6 +248,8 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 - Workspace ONE organization group selection and region configuration
 - Intune tenant and client credential configuration
 
+---
+
 ### Documentation
 
 <p align="center">
@@ -300,6 +310,8 @@ Click any preview below to download the sample file and open it locally. GitHub 
 </td>
 </tr>
 </table>
+
+---
 
 ### Audit & Verification
 
@@ -372,6 +384,8 @@ Click any preview below to download the sample file and open it locally. GitHub 
 </tr>
 </table>
 
+---
+
 ### MDM Integration
 
 #### Import Formats
@@ -412,6 +426,8 @@ Click any preview below to download the sample file and open it locally. GitHub 
 - Background update checking with release channel selection (Alpha, Beta, Stable)
 - Download progress tracking with signature verification
 - Privileged helper for seamless installation
+
+---
 
 ### Settings & Appearance
 
