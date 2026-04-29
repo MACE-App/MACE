@@ -158,7 +158,7 @@ Click any preview below to download the sample file and open it locally. GitHub 
 </table>
 
 ### Documentation Output Examples
-Click any preview below to download the sample file and open it locally. GitHub limits in-browser viewing of HTML and Markdown files, so downloading is the best way to see the full output.
+Click any preview below to download the sample file and open it locally. GitHub limits in-browser viewing of HTML and Excel files, so downloading is the best way to see the full output.
 
 <table>
 <tr>
