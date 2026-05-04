@@ -65,7 +65,7 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 | **All-in-one workflow** | Create, customize, audit, document, and export from a single app |
 | **MDM-ready exports** | Generate deployment-ready profiles for Jamf, Workspace ONE, Intune, and more |
 | **Direct MDM upload** | Upload profiles, scripts, and extension attributes straight to Jamf Pro, Workspace ONE, or Intune |
-| **Free & open source** | Community-driven development with no licensing fees |
+| **Free to use** | Community-driven development with no licensing fees (source code is not public — see [Status](#status)) |
 
 ## Quick Start
 
@@ -447,6 +447,13 @@ Click any preview below to download the sample file and open it locally. GitHub 
 > **Beta Release**
 > This is a beta release. Core features are stable and ready for real-world use, but some features are still being refined based on community feedback.
 
+> **Source Code Availability**
+> The full source code for M.A.C.E. is **not public**. This repository hosts releases, documentation, and issue tracking only. Development is limited to a smaller group involved with the macOS Security Compliance Project while mSCP 2.0 is still evolving — keeping things more controlled helps avoid introducing issues while the tooling and underlying data are still changing. Security is also the priority from the start given how closely the tool interacts with compliance workflows.
+>
+> **Why open sourcing isn't a simple "yes":** Many high compliance environments — federal, defense, and other regulated sectors — operate under policies that restrict or prohibit open source software for security-critical workflows. These organizations represent a significant portion of M.A.C.E.'s user base and are precisely the audience the tool was built to serve. Releasing the source publicly could cut off access for the very users who need it most.
+>
+> Open sourcing is being actively considered, but it is **not a guarantee**. The decision depends on how mSCP 2.0 stabilizes, the security posture of the codebase, and whether it can be done without losing the high compliance users this tool was built for. This README will be updated if anything changes.
+
 **Current Focus:**
 - Expanding MDM platform integrations (Kandji)
 - Improving audit export accuracy for MDM platforms
@@ -455,6 +462,7 @@ Click any preview below to download the sample file and open it locally. GitHub 
 - Rules may not reflect the latest guidance until mSCP 2.0 is finalized
 - Some export formats may have issues with specific MDM platforms (Intune, Jamf)
 - Currently supports American English only
+- Source code is not publicly available, and may not be in the future (see note above)
 
 **Feedback:**
 - Bug reports are welcome via [GitHub Issues](https://github.com/MACE-App/MACE/issues)
@@ -482,6 +490,8 @@ Click any preview below to download the sample file and open it locally. GitHub 
 ## Community & Feedback
 
 M.A.C.E. is a **community-driven project**. I personally work with STIGs, so many features were built around that workflow but I want this app to work for everyone. Whether you're using CIS, NIST 800-53, CMMC, or something else entirely, your input matters.
+
+> **Note:** While community feedback drives the roadmap, the source code is not public and may remain that way. See [Status](#status) for context. Bug reports, feature requests, and discussion are still very welcome via the channels below.
 
 **I'd love to hear from you:**
 - What compliance frameworks do you use?
