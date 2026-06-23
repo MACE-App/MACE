@@ -118,7 +118,7 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 <p align="center"><em>Compliance editor & rule hub</em></p>
 
 - **Three-panel interface:** Sections sidebar, searchable rule list, and detailed editor
-- Browse 500+ security rules organized by section
+- Browse 800+ security rules organized by section
 - Search, filter, and sort by:
   - Compliance framework (STIG, CIS, NIST, etc.)
   - Section/category
@@ -219,14 +219,16 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 | `.mobileconfig` | Combined or individual Apple Configuration Profiles |
 | DDM JSON | Declarative Device Management declarations |
 | Plist / XML | Jamf Pro and Intune configuration formats |
-| Excel / CSV | Spreadsheet export for analysis |
+| CSV | Spreadsheet export for analysis |
+| Tenable Audit | Tenable/Nessus `.audit` file for vulnerability scanning |
+| Manifest | JSON vendor manifest |
 | Audit Plist | Audit preference files for system scanning |
 | Baseline YAML | Updated baseline file |
 | README | Auto-generated build information |
 
 #### Build Engines
 - **M.A.C.E. Build Engine:** Native Swift engine with full customization and advanced output options
-- **mSCP Build Engine:** Official NIST Python scripts with real-time output monitoring and progress tracking *(coming soon)*
+- **mSCP Build Engine:** Official NIST Python scripts with real-time output monitoring and progress tracking
 
 #### Build Targets
 | Target | Description |
@@ -286,8 +288,11 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 #### Documentation Types
 | Type | Description |
 |------|-------------|
-| **Compliance Guide** | Full documentation with discussions, check procedures, and remediation steps |
+| **Full Report** | Everything enabled — all content, references, structure, and appendices |
+| **Compliance Guide** | Policy-focused documentation with discussions, check procedures, and remediation steps |
 | **Technical Reference** | Technical details, scripts, commands, and configuration examples |
+| **Remediation Guide** | Fix-focused with remediation steps and verification commands |
+| **Audit Report** | Audit trail with rule status, justifications, and compliance mapping |
 | **Executive Summary** | High-level overview suitable for management with key metrics |
 
 #### Documentation Formats
@@ -295,8 +300,11 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 |--------|-------------|
 | PDF | Styled documents with headers, footers, table of contents, and page breaks |
 | HTML | Interactive web-ready reports with navigation and syntax highlighting |
-| Excel | Workbooks with multiple sheets, formatted tables, and summary statistics |
 | Markdown | Portable plain-text format for version control and wiki integration |
+| AsciiDoc | Structured authoring format for technical documentation and publishing toolchains |
+| Excel (XLSX) | Workbooks with multiple sheets, formatted tables, and summary statistics |
+| CSV | Spreadsheet-friendly export of rule data for analysis |
+| JSON | Structured data for automation and integrations |
 
 #### Documentation Options
 - Configurable content: discussions, check procedures, remediation, references, platform info
@@ -347,6 +355,14 @@ Click any preview below to download the sample file and open it locally. GitHub 
 </p>
 <p align="center"><em>Audit results & compliance dashboard</em></p>
 
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/images/audit-export-preview-dark.webp">
+    <img alt="MACE Audit Export Preview" src=".github/images/audit-export-preview-light.webp" width="700">
+  </picture>
+</p>
+<p align="center"><em>Live export preview — switch formats, theme, and content options in real time</em></p>
+
 #### Audit Engines
 - **M.A.C.E. Audit Engine:** Native Swift engine with advanced filtering and detailed result analysis
 - **mSCP Audit Engine:** Official NIST Python scripts with real-time output monitoring
@@ -368,13 +384,17 @@ Click any preview below to download the sample file and open it locally. GitHub 
 - Execution time per rule
 
 #### Export Formats
+A live **Export Preview** renders your report exactly as it will export and updates in real time as you change options.
+
 | Format | Description |
 |--------|-------------|
-| **DISA STIG CKL** | Compatible with STIG Viewer; automatic STIG ID mapping |
-| **CSV** | Spreadsheet-friendly with summary statistics and device info |
-| **HTML** | Interactive web-viewable reports with charts and navigation |
 | **PDF** | Professional documents with headers, summaries, and details |
+| **HTML** | Interactive web-viewable reports with charts and navigation |
+| **CSV** | Spreadsheet-friendly with summary statistics and device info |
 | **Excel (XLSX)** | Formatted workbook with color coding and summary sheet |
+| **JSON** | Structured data for automation, dashboards, and other tools |
+| **DISA STIG CKL** | STIG Viewer 2.x checklist (XML); automatic STIG ID mapping |
+| **DISA STIG CKLB** | STIG Viewer 3.x checklist (JSON); update a template or generate from an XCCDF benchmark |
 
 #### Audit Output Examples
 Click any preview below to download the sample file and open it locally. GitHub limits in-browser viewing of HTML and CSV files, so downloading is the best way to see the full output.
