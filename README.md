@@ -9,7 +9,7 @@
   <a href="https://getmace.com">
     <img alt="Website" src="https://img.shields.io/badge/Website-getmace.com-blue?style=flat&logo=safari&logoColor=white" />
   </a>
-  <img alt="Status" src="https://img.shields.io/badge/Status-Beta-yellow?style=flat" />
+  <img alt="Status" src="https://img.shields.io/badge/Status-Stable-brightgreen?style=flat" />
   <img alt="macOS" src="https://img.shields.io/badge/macOS-14%2B-blue?style=flat&logo=apple&logoColor=white" />
   <a href="https://github.com/MACE-App/MACE/releases">
     <img alt="GitHub release" src="https://img.shields.io/github/v/release/MACE-App/MACE?style=flat&logo=github&label=Release" />
