@@ -35,6 +35,7 @@ body:
         - README
         - Setup / Installation
         - Compliance Builder
+        - Rule Builder
         - Audit Builder
         - Documentation Builder
         - Build / Export Options

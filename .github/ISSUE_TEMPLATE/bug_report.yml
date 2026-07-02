@@ -16,7 +16,7 @@ body:
     attributes:
       label: App Version
       description: What version of M.A.C.E. are you running?
-      placeholder: e.g. v0.0.4-alpha
+      placeholder: e.g. v1.0.0 (or v1.0.0-beta)
     validations:
       required: true
 
@@ -26,11 +26,9 @@ body:
       label: macOS Version
       description: Select the macOS version installed on this machine
       options:
+        - macOS Tahoe (26.x)
         - macOS Sequoia (15.x)
         - macOS Sonoma (14.x)
-        - macOS Ventura (13.x)
-        - macOS Monterey (12.x)
-        - macOS Tahoe (26.x)
         - Other / Not listed
     validations:
       required: true
@@ -52,14 +50,17 @@ body:
       options:
         - Compliance Builder Hub
         - Compliance Builder Rule Details
-        - Compliance Builder Hub Other
+        - Rule Builder (create / edit rule)
         - Audit Builder Hub
         - Audit Builder Rule Details
         - Audit Builder Exports
-        - Audit Builder Hub Other
+        - Profile Inspector
         - Documentation Builder Hub
         - Documentation Builder Exports
-        - Documentation Builder Hub Other
+        - Build Hub (Build / Export)
+        - MDM Integration (Jamf, Intune, etc.)
+        - Settings / Preferences
+        - App Update / Rule Updates
         - App Launch / Startup
         - Main Menu / Navigation
         - Other

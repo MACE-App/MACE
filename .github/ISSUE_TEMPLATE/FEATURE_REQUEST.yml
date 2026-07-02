@@ -18,7 +18,9 @@ body:
       description: Which part of the app does this feature relate to?
       options:
         - Compliance Builder Hub
+        - Rule Builder
         - Audit Builder Hub
+        - Audit / Profile Inspector
         - Documentation Builder Hub
         - Build / Export Options
         - MDM Integration (Jamf, Intune, etc.)
