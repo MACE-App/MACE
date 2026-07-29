@@ -55,3 +55,15 @@ body:
     validations:
       required: true
 
+  - type: dropdown
+    id: changelog_credit
+    attributes:
+      label: Changelog Credit
+      description: If this feature is added, how would you like to be credited in the release/changelog notes?
+      options:
+        - Credit me with my GitHub username (e.g. @username)
+        - Keep me anonymous (shown as "User Requested")
+      default: 0
+    validations:
+      required: true
+

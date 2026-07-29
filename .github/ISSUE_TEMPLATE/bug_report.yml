@@ -107,3 +107,15 @@ body:
       label: Logs (if available)
       description: Paste any relevant logs or error output
       render: shell
+
+  - type: dropdown
+    id: changelog_credit
+    attributes:
+      label: Changelog Credit
+      description: If this bug is fixed, how would you like to be credited in the release/changelog notes?
+      options:
+        - Credit me with my GitHub username (e.g. @username)
+        - Keep me anonymous (shown as "User Reported")
+      default: 0
+    validations:
+      required: true
