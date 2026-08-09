@@ -361,7 +361,7 @@ Click any preview below to download the sample file and open it locally. GitHub 
     <img alt="MACE Audit Export Preview" src=".github/images/audit-export-preview-light.webp" width="700">
   </picture>
 </p>
-<p align="center"><em>Live export preview — switch formats, theme, and content options in real time</em></p>
+<p align="center"><em>Live export preview — switch formats, search the report, and change theme and content options in real time</em></p>
 
 #### Audit Engines
 - **M.A.C.E. Audit Engine:** Native Swift engine with advanced filtering and detailed result analysis
@@ -384,12 +384,14 @@ Click any preview below to download the sample file and open it locally. GitHub 
 - Execution time per rule
 
 #### Export Formats
-A live **Export Preview** renders your report exactly as it will export and updates in real time as you change options.
+A live **Export Preview** renders your report exactly as it will export and updates in real time as you change options. Search the rendered report from the preview toolbar to jump straight to any rule or section.
 
 | Format | Description |
 |--------|-------------|
 | **PDF** | Professional documents with headers, summaries, and details |
 | **HTML** | Interactive web-viewable reports with charts and navigation |
+| **Markdown** | Portable plain-text format for version control and wiki integration |
+| **AsciiDoc** | Structured authoring format for technical documentation and publishing toolchains |
 | **CSV** | Spreadsheet-friendly with summary statistics and device info |
 | **Excel (XLSX)** | Formatted workbook with color coding and summary sheet |
 | **JSON** | Structured data for automation, dashboards, and other tools |
