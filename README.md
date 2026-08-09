@@ -437,7 +437,7 @@ Click any preview below to download the sample file and open it locally. GitHub 
 <p align="center">
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset=".github/images/settings-dark.webp">
-    <img alt="MACE Settings" src=".github/images/settings-light.webp" width="400">
+    <img alt="MACE Settings" src=".github/images/settings-light.webp" width="600">
   </picture>
 </p>
 <p align="center"><em>Settings — general, appearance, and advanced options</em></p>
@@ -446,6 +446,9 @@ Click any preview below to download the sample file and open it locally. GitHub 
 - 40+ seasonal, holiday, and character app icons (automatically switch by date)
 - Auto-save functionality
 - Display settings memory (remember preferences across all hubs)
+- Git-ready new projects: adds `.gitignore`/`.gitattributes` so your edits are tracked (use **File ▸ Make Project Git-Ready** for existing projects)
+- Auto-download mSCP rules from GitHub on launch, with optional beta OS versions from mSCP dev branches
+- Save the last audit to the project so it can be reloaded without re-running
 - Release channel selection: Alpha, Beta, Stable
 - Application logging console with real-time logs, export, and log levels
 - Advanced options: clear cache, reset Python/Ruby environments, open data folder
