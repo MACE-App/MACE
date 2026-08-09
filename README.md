@@ -69,7 +69,7 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 
 ## Installation
 
-Pick whichever fits your workflow — all three install the same signed and notarized app.
+**Requires macOS 14 (Sonoma) or later.** All three methods install the same signed build.
 
 **Direct download**
 
@@ -83,13 +83,13 @@ brew install --cask mace
 
 **Installomator**
 
-For MDM-driven deployment, use the `mace` label:
+For MDM-driven deployment, use the `mace` label. Installomator must run as root:
 
 ```sh
-./Installomator.sh mace
+sudo ./Installomator.sh mace
 ```
 
-It pulls the latest release straight from this repo and verifies the developer Team ID `7U624389H9`.
+It pulls the latest release straight from this repo and verifies the Developer ID Team ID `7U624389H9`.
 
 ## Quick Start
 
