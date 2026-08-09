@@ -240,7 +240,6 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 | **Iru** | Profile and script export |
 | **Fleet** | Profile and script export |
 | **Addigy** | Profile and script export |
-| **Kandji** | Profile and script export *(coming soon)* |
 
 More MDM targets are always on the table. Adding one isn't purely up to M.A.C.E., though — the vendor has to expose the right API options before direct upload is possible, and demand from users of that platform is what decides which ones get built first. If you'd like to see your MDM supported, [open an issue](https://github.com/MACE-App/MACE/issues) — and asking your vendor for the API access it needs helps just as much.
 
@@ -491,7 +490,6 @@ Click any preview below to download the sample file and open it locally. GitHub 
 > Open sourcing is being actively considered, but it is **not a guarantee**. The decision depends on how mSCP 2.0 stabilizes, the security posture of the codebase, and whether it can be done without losing the high compliance users this tool was built for. This README will be updated if anything changes.
 
 **Current Focus:**
-- Expanding MDM platform integrations (Kandji)
 - Improving audit export accuracy for MDM platforms
 
 **Known Limitations:**
@@ -517,9 +515,6 @@ Feedback is the most valuable thing you can contribute right now — especially 
 - Apply fixes directly from audit results
 - Compare audits over time
 - Track compliance history
-
-### MDM Targets
-- Kandji direct integration
 
 ### Additional Enhancements
 - Additional language support
