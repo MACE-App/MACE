@@ -52,7 +52,7 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 **Built for:**
 - macOS Security Administrators
 - Compliance Officers & IT Audit Teams
-- MDM Administrators (Jamf, Workspace ONE, Intune)
+- MDM Administrators (Jamf, Workspace ONE, Intune, Iru, Fleet, Addigy)
 - Government & Enterprise Security Teams
 
 ## Why MACE?
@@ -63,7 +63,7 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 | **Native macOS app** | Built with SwiftUI for a fast, responsive experience |
 | **Dual build engines** | Native MACE engine and official mSCP Python scripts |
 | **All-in-one workflow** | Create, customize, audit, document, and export from a single app |
-| **MDM-ready exports** | Generate deployment-ready profiles for Jamf, Workspace ONE, Intune, and more |
+| **MDM-ready exports** | Generate deployment-ready profiles for Jamf, Workspace ONE, Intune, Iru, Fleet, Addigy, and more |
 | **Direct MDM upload** | Upload profiles, scripts, and extension attributes straight to Jamf Pro, Workspace ONE, or Intune |
 | **Free to use** | Community-driven development with no licensing fees (source code is not public — see [Status](#status)) |
 
@@ -237,7 +237,12 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 | **Jamf Pro** | Upload profiles, scripts, and extension attributes directly (Basic Auth & OAuth) |
 | **Workspace ONE** | Upload profiles, scripts, and sensors directly (Basic Auth, OAuth2 & Token) |
 | **Microsoft Intune** | Upload profiles, scripts, and custom attributes directly (Tenant/Client auth) |
+| **Iru** | Profile and script export |
+| **Fleet** | Profile and script export |
+| **Addigy** | Profile and script export |
 | **Kandji** | Profile and script export *(coming soon)* |
+
+More MDM targets are always on the table. Adding one isn't purely up to M.A.C.E., though — the vendor has to expose the right API options before direct upload is possible, and demand from users of that platform is what decides which ones get built first. If you'd like to see your MDM supported, [open an issue](https://github.com/MACE-App/MACE/issues) — and asking your vendor for the API access it needs helps just as much.
 
 #### Build Options
 - Configurable output options per artifact type
