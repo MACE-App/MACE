@@ -26,6 +26,7 @@
 ## Contents
 - [About](#about)
 - [Why MACE?](#why-mace)
+- [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Features](#features)
   - [Project Management](#project-management)
@@ -39,6 +40,7 @@
 - [Status](#status)
 - [Upcoming Features](#upcoming-features)
 - [Community & Feedback](#community--feedback)
+- [Share the Project](#share-the-project)
 - [Credits](#credits)
 
 ## About
@@ -473,7 +475,7 @@ Click any preview below to download the sample file and open it locally. GitHub 
 <p align="center"><em>Settings — general, appearance, and advanced options</em></p>
 
 - Light, Dark, and System theme support
-- 40+ seasonal, holiday, and character app icons (automatically switch by date)
+- 75+ seasonal, holiday, and character app icons (automatically switch by date)
 - Auto-save functionality
 - Display settings memory (remember preferences across all hubs)
 - Git-ready new projects: adds `.gitignore`/`.gitattributes` so your edits are tracked (use **File ▸ Make Project Git-Ready** for existing projects)
@@ -482,6 +484,7 @@ Click any preview below to download the sample file and open it locally. GitHub 
 - Release channel selection: Beta, Stable
 - Application logging console with real-time logs, export, and log levels
 - Advanced options: clear cache, reset Python/Ruby environments, open data folder
+- Download the full app icon set from **Settings ▸ Appearance** (see [Share the Project](#share-the-project))
 
 #### Automatic App Updates
 
@@ -560,6 +563,18 @@ M.A.C.E. is a **community-driven project**. I personally work with STIGs, so man
 **Join the conversation on Slack:** Chat with other MACE users, share tips, and get help in the [`#mace-app`](https://macadmins.org) channel on the [Mac Admins Slack](https://macadmins.org).
 
 Open an [issue](https://github.com/MACE-App/MACE/issues), start a [discussion](https://github.com/MACE-App/MACE/discussions), or visit [getmace.com](https://getmace.com) — your feedback directly shapes development.
+
+## Share the Project
+
+<p align="center">
+  <img src=".github/images/app-icons.webp" alt="A selection of MACE app icons" width="700" />
+</p>
+
+The app ships with **75+ icons that shuffle between the seasons** and the calendar — a small thing, but it keeps M.A.C.E. feeling fun and lively for the people who live in it week to week.
+
+**Feel free to use these images whenever you talk about the project — they're here for fun.** You can download the whole set from **Settings ▸ Appearance** inside the app and use them however you like.
+
+These are purely for fun. My goal was never to offend anyone; it was to make sure everyone felt included, at a fun level. We all come from different walks of life and work all over the world — the Mac community is a worldwide team.
 
 ## Credits
 
