@@ -67,9 +67,33 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 | **Direct MDM upload** | Upload profiles, scripts, and extension attributes straight to Jamf Pro, Workspace ONE, or Intune |
 | **Free to use** | Community-driven development with no licensing fees (source code is not public — see [Status](#status)) |
 
+## Installation
+
+Pick whichever fits your workflow — all three install the same signed and notarized app.
+
+**Direct download**
+
+Grab the latest `.dmg` from the [Releases page](https://github.com/MACE-App/MACE/releases) and drag M.A.C.E. to your Applications folder. The app updates itself from here on out (see [Automatic App Updates](#automatic-app-updates)).
+
+**Homebrew**
+
+```sh
+brew install --cask mace
+```
+
+**Installomator**
+
+For MDM-driven deployment, use the `mace` label:
+
+```sh
+./Installomator.sh mace
+```
+
+It pulls the latest release straight from this repo and verifies the developer Team ID `7U624389H9`.
+
 ## Quick Start
 
-1. **Download** the [latest release](https://github.com/MACE-App/MACE/releases)
+1. **Install** M.A.C.E. using any of the methods above
 2. **Create** a new project and select your compliance framework
 3. **Customize** rules to fit your organization's needs
 4. **Build** scripts and configuration profiles for deployment
