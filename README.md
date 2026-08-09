@@ -190,14 +190,14 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
     <img alt="MACE Build Hub" src=".github/images/build-light.webp" width="700">
   </picture>
 </p>
-<p align="center"><em>Build hub & artifact generation</em></p>
+<p align="center"><em>Build hub — pick a target, choose which artifacts to generate, and customize output names and branding</em></p>
 
 #### Script Generation
 | Output | Description |
 |--------|-------------|
 | Audit Scripts | Shell scripts for compliance checking |
 | Remediation Scripts | Shell scripts to fix non-compliant settings |
-| Extension Attributes | Scripts for Jamf Pro and other MDMs |
+| Extension Attributes | Report failed rules to your MDM for smart groups and dashboards (Jamf, Iru, Intune, WS1) |
 
 #### Configuration Profiles
 | Format | Use Case |
@@ -237,11 +237,11 @@ M.A.C.E. (macOS Advanced Compliance Editor) is a native macOS app that simplifie
 | **Jamf Pro** | Upload profiles, scripts, and extension attributes directly (Basic Auth & OAuth) |
 | **Workspace ONE** | Upload profiles, scripts, and sensors directly (Basic Auth, OAuth2 & Token) |
 | **Microsoft Intune** | Upload profiles, scripts, and custom attributes directly (Tenant/Client auth) |
-| **Iru** | Profile and script export |
 | **Fleet** | Profile and script export |
+| **Iru** | Profile and script export |
 | **Addigy** | Profile and script export |
 
-More MDM targets are always on the table. Adding one isn't purely up to M.A.C.E., though — the vendor has to expose the right API options before direct upload is possible, and demand from users of that platform is what decides which ones get built first. If you'd like to see your MDM supported, [open an issue](https://github.com/MACE-App/MACE/issues) — and asking your vendor for the API access it needs helps just as much.
+More MDM targets are always on the table — the Build Hub has a **Your MDM Here? Suggest** button for exactly that. Adding one isn't purely up to M.A.C.E., though: the vendor has to expose the right API options before direct upload is possible, and demand from users of that platform is what decides which ones get built first. If you'd like to see your MDM supported, suggest it in the app or [open an issue](https://github.com/MACE-App/MACE/issues) — and asking your vendor for the API access it needs helps just as much.
 
 #### Build Options
 - Configurable output options per artifact type
@@ -287,7 +287,7 @@ More MDM targets are always on the table. Adding one isn't purely up to M.A.C.E.
     <img alt="MACE Documentation Hub" src=".github/images/documentation-light.webp" width="700">
   </picture>
 </p>
-<p align="center"><em>Documentation generation options</em></p>
+<p align="center"><em>Live documentation preview — switch formats, search the document, toggle raw source, and change content options in real time</em></p>
 
 #### Documentation Types
 | Type | Description |
@@ -311,6 +311,8 @@ More MDM targets are always on the table. Adding one isn't purely up to M.A.C.E.
 | JSON | Structured data for automation and integrations |
 
 #### Documentation Options
+- Live rendered preview that updates in real time as you change options, with a raw source toggle
+- Search the rendered document to jump straight to any rule or section
 - Configurable content: discussions, check procedures, remediation, references, platform info
 - Author, organization, benchmark name, and timestamp metadata
 - Both MACE and mSCP documentation engines available
