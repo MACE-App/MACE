@@ -449,7 +449,7 @@ Click any preview below to download the sample file and open it locally. GitHub 
 - Git-ready new projects: adds `.gitignore`/`.gitattributes` so your edits are tracked (use **File ▸ Make Project Git-Ready** for existing projects)
 - Auto-download mSCP rules from GitHub on launch, with optional beta OS versions from mSCP dev branches
 - Save the last audit to the project so it can be reloaded without re-running
-- Release channel selection: Alpha, Beta, Stable
+- Release channel selection: Beta, Stable
 - Application logging console with real-time logs, export, and log levels
 - Advanced options: clear cache, reset Python/Ruby environments, open data folder
 
@@ -463,14 +463,20 @@ Click any preview below to download the sample file and open it locally. GitHub 
 </p>
 <p align="center"><em>In-app update dialog with changelog</em></p>
 
-- Background update checking with release channel selection (Alpha, Beta, Stable)
+- Background update checking with release channel selection (Beta, Stable)
 - Download progress tracking with signature verification
 - Privileged helper for seamless installation
 
 ## Status
 
-> **Beta Release**
-> This is a beta release. Core features are stable and ready for real-world use, but some features are still being refined based on community feedback.
+> **Fully Released**
+> M.A.C.E. is fully released and in daily use across many organizations. At this stage the thing the project needs most is **feedback** — real-world reports on what works, what breaks, and what's missing are what drive development forward.
+>
+> **Two release trains:**
+> - **Beta** — cutting-edge features and the newest fixes, shipped early so they can be put through real use. Choose this if you want the latest capabilities first and are willing to report back on what you find.
+> - **Stable** — the settled build for production and regulated environments. Choose this if you'd rather receive changes only after they've been proven on the beta train.
+>
+> Both trains are fully supported. Switch between them any time in **Settings ▸ Updates**.
 
 > **Source Code Availability**
 > The full source code for M.A.C.E. is **not public**. This repository hosts releases, documentation, and issue tracking only. Development is limited to a smaller group involved with the macOS Security Compliance Project while mSCP 2.0 is still evolving — keeping things more controlled helps avoid introducing issues while the tooling and underlying data are still changing. Security is also the priority from the start given how closely the tool interacts with compliance workflows.
@@ -490,8 +496,10 @@ Click any preview below to download the sample file and open it locally. GitHub 
 - Source code is not publicly available, and may not be in the future (see note above)
 
 **Feedback:**
+Feedback is the most valuable thing you can contribute right now — especially from the beta train, where new features and fixes land first.
 - Bug reports are welcome via [GitHub Issues](https://github.com/MACE-App/MACE/issues)
 - Feature suggestions and "nice to have" ideas help guide development
+- Reports on how a build behaves in your environment help decide what's ready to promote to stable
 
 **Website:** Visit [getmace.com](https://getmace.com) for tutorials, usage guides, and the latest news.
 
