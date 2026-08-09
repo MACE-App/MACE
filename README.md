@@ -101,6 +101,8 @@ It pulls the latest release straight from this repo and verifies the Developer I
 4. **Build** scripts and configuration profiles for deployment
 5. **Audit** your Mac and export compliance reports
 
+> **Full instructions live on the website.** Step-by-step tutorials, usage guides, and walkthroughs for every hub are at **[getmace.com](https://getmace.com)** — start there if you want more than the five-step version above.
+
 ## Features
 
 ### Project Management
@@ -518,24 +520,15 @@ Click any preview below to download the sample file and open it locally. GitHub 
 >
 > Open sourcing is being actively considered, but it is **not a guarantee**. The decision depends on how mSCP 2.0 stabilizes, the security posture of the codebase, and whether it can be done without losing the high compliance users this tool was built for. This README will be updated if anything changes.
 
-**Current Focus:**
-- Improving audit export accuracy for MDM platforms
-
 **Known Limitations:**
 - Rules may not reflect the latest guidance until mSCP 2.0 is finalized
 - Some export formats may have issues with specific MDM platforms (Intune, Jamf)
 - Currently supports American English only
 - Source code is not publicly available, and may not be in the future (see note above)
 
-**Feedback:**
-Feedback is the most valuable thing you can contribute right now — especially from the beta train, where new features and fixes land first.
-- Bug reports are welcome via [GitHub Issues](https://github.com/MACE-App/MACE/issues)
-- Feature suggestions and "nice to have" ideas help guide development
-- Reports on how a build behaves in your environment help decide what's ready to promote to stable
-
-**Website:** Visit [getmace.com](https://getmace.com) for tutorials, usage guides, and the latest news.
-
 ## Upcoming Features
+
+**Active right now:** improving audit export accuracy for MDM platforms.
 
 ### Import Enhancements
 - Convert external configurations to projects
@@ -559,10 +552,11 @@ M.A.C.E. is a **community-driven project**. I personally work with STIGs, so man
 - What compliance frameworks do you use?
 - What features would make your workflow easier?
 - What's missing or could be improved?
+- How a build behaves in your environment — especially on the beta train, where new features and fixes land first. That's what decides when something is ready to promote to stable.
 
 **Join the conversation on Slack:** Chat with other MACE users, share tips, and get help in the [`#mace-app`](https://macadmins.org) channel on the [Mac Admins Slack](https://macadmins.org).
 
-Open an [issue](https://github.com/MACE-App/MACE/issues), start a [discussion](https://github.com/MACE-App/MACE/discussions), or visit [getmace.com](https://getmace.com) — your feedback directly shapes development.
+Open an [issue](https://github.com/MACE-App/MACE/issues), start a [discussion](https://github.com/MACE-App/MACE/discussions), or check [getmace.com](https://getmace.com) for the latest news — your feedback directly shapes development.
 
 ## Share the Project
 
