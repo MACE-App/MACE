@@ -23,6 +23,26 @@
 </p>
 <p align="center">Join us in <a href="https://macadmins.org"><strong>#mace-app</strong></a> on Mac Admins Slack</p>
 
+<div align="center">
+
+<table>
+  <tr>
+    <th>🌟 Explore the M.A.C.E. Website 🌟</th>
+    <th>⭐ Support the Project – Give it a Star! ⭐</th>
+  </tr>
+  <tr>
+    <td align="center">🌐 <strong>Visit:</strong> <a href="https://getmace.com">getmace.com</a> 🌐<br />Guides, docs, and screenshots for every feature</td>
+    <td align="center">
+      <a href="https://github.com/MACE-App/MACE">
+        <img src="https://img.shields.io/github/stars/MACE-App/MACE?style=social" alt="GitHub Repo Stars">
+      </a>
+      <br />Stars help other Mac admins find M.A.C.E.
+    </td>
+  </tr>
+</table>
+
+</div>
+
 ## Contents
 - [About](#about)
 - [Why MACE?](#why-mace)
