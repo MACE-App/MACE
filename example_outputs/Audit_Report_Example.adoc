@@ -1,0 +1,2227 @@
+:doctype: book
+:experimental:
+:reproducible:
+:icons: font
+:listing-caption: Listing
+:source-highlighter: rouge
+:nofooter:
+:document-title: M.A.C.E. Audit Report
+:document-subtitle: Example Benchmark
+
+= M.A.C.E. Audit Report: Example Benchmark
+John Doe, Example Organization
+
+== Results
+
+|===
+| Total | ✅ Passed | ❌ Failed | ⚠️ Errors | 🔍 Manual Review
+
+| 117 | 35 | 80 | 0 | 1
+|===
+
+== Executive Summary
+
+🔴 This system shows *poor compliance* with a 30.4% pass rate and requires significant remediation.
+
+Audit found *80 of 117* rules failing. 1 rule(s) require manual review.
+
+*Areas needing attention:* iCloud (0% - 1 failed), Password Policy (0% - 8 failed), System Settings (25% - 33 failed)
+
+== Audit Information
+
+|===
+| Pass Rate | 30.4%
+| Compliance | CIS Level 2
+| Platform | macOS
+| Baseline | macOS 26 (Tahoe)
+|===
+
+== Device
+
+|===
+| Model | MacBook Air
+| Serial Number | C02XY1234Z
+| OS Version | macOS 27.0.0
+|===
+
+== Section Summary
+
+|===
+| Section | Total | Passed | Failed | Manual | Pass Rate
+
+| Password Policy | 8 | 0 | 8 | 0 | 🔴 0%
+| iCloud | 1 | 0 | 1 | 0 | 🔴 0%
+| Supplemental | 1 | 0 | 0 | 1 | 🔴 0%
+| System Settings | 44 | 11 | 33 | 0 | 🔴 25%
+| Audit | 21 | 7 | 14 | 0 | 🔴 33%
+| Operating System | 42 | 17 | 24 | 0 | 🔴 40%
+|===
+
+== Overview
+
+This report contains 117 rules across 4 result groups.
+
+1. link:#group-failed[*Failed*] (80 rules)
+2. link:#group-manual-review[*Manual Review*] (1 rule)
+3. link:#group-passed[*Passed*] (35 rules)
+4. link:#group-not-applicable[*Not Applicable*] (1 rule)
+
+[[group-failed]]
+== Failed (80)
+
+[[system_settings_location_services_menu_enforce]]
+=== Ensure Location Services Is In the Menu Bar
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: 1, Got: 
+
+[[system_settings_screensaver_ask_for_password_delay_enforce]]
+=== Enforce Session Lock After Screen Saver is Started
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+false
+----
+
+*Error:* Expected: true, Got: false
+
+[[system_settings_printer_sharing_disable]]
+=== Disable Printer Sharing
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[system_settings_guest_account_disable]]
+=== Disable the Guest Account
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+false
+----
+
+*Error:* Expected: true, Got: false
+
+[[system_settings_system_wide_preferences_configure]]
+=== Require Administrator Password to Modify System-Wide Preferences
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[system_settings_improve_search_disable]]
+=== Disable Improve Search Information to Apple
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+2
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: 2, Got: 
+
+[[system_settings_smbd_disable]]
+=== Disable Server Message Block Sharing
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[system_settings_loginwindow_prompt_username_password_enforce]]
+=== Configure Login Window to Prompt for Username and Password
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[system_settings_personalized_advertising_disable]]
+=== Disable Personalized Advertising
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[system_settings_time_machine_auto_backup_enable]]
+=== Configure Time Machine for Automatic Backups
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[system_settings_password_hints_disable]]
+=== Disable Password Hints
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: 0, Got: 
+
+[[system_settings_external_intelligence_disable]]
+=== Disable External Intelligence Integrations
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[system_settings_screensaver_timeout_enforce]]
+=== Enforce Screen Saver Timeout
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+false
+----
+
+*Error:* Expected: true, Got: false
+
+[[system_settings_filevault_enforce]]
+=== Enforce FileVault
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[system_settings_content_caching_disable]]
+=== Disable Content Caching Service
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[system_settings_internet_sharing_disable]]
+=== Disable Internet Sharing
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[system_settings_firewall_enable]]
+=== Enable macOS Application Firewall
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[system_settings_siri_disable]]
+=== Disable Siri
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[system_settings_bluetooth_sharing_disable]]
+=== Disable Bluetooth Sharing
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: 0, Got: 
+
+[[system_settings_wake_network_access_disable]]
+=== Ensure Wake for Network Access Is Disabled
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+1
+----
+
+*Error:* Expected: 0, Got: 1
+
+[[system_settings_diagnostics_reports_disable]]
+=== Disable Sending Diagnostic and Usage Data to Apple
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+false
+----
+
+*Error:* Expected: true, Got: false
+
+[[system_settings_improve_siri_dictation_disable]]
+=== Disable Improve Siri and Dictation Information to Apple
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+2
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: 2, Got: 
+
+[[system_settings_loginwindow_loginwindowtext_enable]]
+=== Configure Login Window to Show A Custom Message
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+Q2VudGVyIGZvciBJbnRlcm5ldCBTZWN1cml0eSBUZXN0IE1lc3NhZ2UK
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: Q2VudGVyIGZvciBJbnRlcm5ldCBTZWN1cml0eSBUZXN0IE1lc3NhZ2UK, Got: 
+
+[[system_settings_automatic_login_disable]]
+=== Disable Unattended or Automatic Logon to the System
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[system_settings_external_intelligence_sign_in_disable]]
+=== Disable External Intelligence Integration Sign In
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[system_settings_improve_assistive_voice_disable]]
+=== Disable Sending Audio Recordings and Transcripts to Apple
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[system_settings_time_server_enforce]]
+=== Enforce macOS Time Synchronization
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[system_settings_screensaver_password_enforce]]
+=== Enforce Screen Saver Password
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[system_settings_time_server_configure]]
+=== Configure macOS to Use an Authorized Time Server
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+time.apple.com
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: time.apple.com, Got: 
+
+[[system_settings_media_sharing_disabled]]
+=== Disable Media Sharing
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+false
+----
+
+*Error:* Expected: true, Got: false
+
+[[system_settings_airplay_receiver_disable]]
+=== Disable Airplay Receiver
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[system_settings_rae_disable]]
+=== Disable Remote Apple Events
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[audit_flags_fm_failed_configure]]
+=== Configure System to Audit All Failed Change of Object Attributes
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[audit_flags_aa_configure]]
+=== Configure System to Audit All Authorization and Authentication Events
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[audit_flags_ad_configure]]
+=== Configure System to Audit All Administrative Action Events
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[audit_flags_ex_configure]]
+=== Configure System to Audit All Failed Program Execution on the System
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[audit_auditd_enabled]]
+=== Enable Security Auditing
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+pass
+----
+
+*Actual Result:*
+
+----
+fail
+----
+
+*Error:* Expected: pass, Got: fail
+
+[[audit_files_mode_configure]]
+=== Configure Audit Log Files to Mode 440 or Less Permissive
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+22
+----
+
+*Error:* Expected: 0, Got: 22
+
+[[audit_control_owner_configure]]
+=== Configure Audit_Control Owner to Root
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: 0, Got: 
+
+[[audit_flags_fr_configure]]
+=== Configure System to Audit All Failed Read Actions on the System
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[audit_flags_fw_configure]]
+=== Configure System to Audit All Failed Write Actions on the System
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[audit_retention_configure]]
+=== Configure Audit Retention to $ODV
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+60d OR 5G
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: 60d OR 5G, Got: 
+
+[[audit_folders_mode_configure]]
+=== Configure Audit Log Folders to Mode 700 or Less Permissive
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+700
+----
+
+*Actual Result:*
+
+----
+666
+----
+
+*Error:* Expected: 700, Got: 666
+
+[[audit_flags_lo_configure]]
+=== Configure System to Audit All Log In and Log Out Events
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[audit_control_group_configure]]
+=== Configure Audit_Control Group to Wheel
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: 0, Got: 
+
+[[audit_files_group_configure]]
+=== Configure Audit Log Files Group to Wheel
+
+*Status:* ❌ Fail · *Section:* Audit
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+320
+----
+
+*Error:* Expected: 0, Got: 320
+
+[[os_safari_warn_fraudulent_website_enable]]
+=== Ensure Warn When Visiting A Fraudulent Website in Safari Is Enabled
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[os_notes_transcription_disable]]
+=== Disable Apple Intelligence Notes Transcription
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[os_safari_open_safe_downloads_disable]]
+=== Disable Automatic Opening of Safe Files in Safari
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[os_mail_summary_disable]]
+=== Disable Apple Intelligence Mail Summary
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[os_notes_transcription_summary_disable]]
+=== Disable Apple Intelligence Notes Transcription Summary
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[os_safari_advertising_privacy_protection_enable]]
+=== Ensure Advertising Privacy Protection in Safari Is Enabled
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[os_sleep_and_display_sleep_apple_silicon_enable]]
+=== Ensure Sleep and Display Sleep Is Enabled on Apple Silicon Devices
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+1
+----
+
+*Error:* Expected: 0, Got: 1
+
+[[system_settings_firewall_stealth_mode_enable]]
+=== Enable Firewall Stealth Mode
+
+*Status:* ❌ Fail · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[os_software_update_app_update_enforce]]
+=== Enforce Software Update App Update Updates Automatically
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[os_sudo_log_enforce]]
+=== Configure Sudo To Log Events
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[os_policy_banner_loginwindow_enforce]]
+=== Display Policy Banner at Login Window
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[os_writing_tools_disable]]
+=== Disable Apple Intelligence Writing Tools
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[os_nfsd_disable]]
+=== Disable Network File System Service
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+pass
+----
+
+*Actual Result:*
+
+----
+fail
+----
+
+*Error:* Expected: pass, Got: fail
+
+[[os_airdrop_disable]]
+=== Disable AirDrop
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[os_safari_show_full_website_address_enable]]
+=== Ensure Show Full Website Address in Safari Is Enabled
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[os_terminal_secure_keyboard_enable]]
+=== Ensure Secure Keyboard Entry Terminal.app is Enabled
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[os_gatekeeper_enable]]
+=== Enable Gatekeeper
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[os_sudo_timeout_configure]]
+=== Configure Sudo Timeout Period to $ODV
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[os_home_folders_secure]]
+=== Secure User's Home Folders
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+3
+----
+
+*Error:* Expected: 0, Got: 3
+
+[[os_install_log_retention_configure]]
+=== Configure Install.log Retention to $ODV
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+Yes
+----
+
+*Actual Result:*
+
+----
+all_max setting is configured, must be removed
+TTL not configured
+----
+
+*Error:* Expected: Yes, Got: all_max setting is configured, must be removed TTL not configured
+
+[[os_on_device_dictation_enforce]]
+=== Enforce On Device Dictation
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[os_safari_prevent_cross-site_tracking_enable]]
+=== Ensure Prevent Cross-site Tracking in Safari Is Enabled
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[os_bonjour_disable]]
+=== Disable Bonjour Multicast
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: true, Got: 
+
+[[pwpolicy_custom_regex_enforce]]
+=== Require Passwords to Match the Defined Custom Regular Expression
+
+*Status:* ❌ Fail · *Section:* Password Policy
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+false
+----
+
+*Error:* Expected: true, Got: false
+
+[[pwpolicy_max_lifetime_enforce]]
+=== Restrict Maximum Password Lifetime to $ODV Days
+
+*Status:* ❌ Fail · *Section:* Password Policy
+
+*Expected Result:*
+
+----
+pass
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: pass, Got: 
+
+[[pwpolicy_history_enforce]]
+=== Prohibit Password Reuse for a Minimum of $ODV Generations
+
+*Status:* ❌ Fail · *Section:* Password Policy
+
+*Expected Result:*
+
+----
+pass
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: pass, Got: 
+
+[[pwpolicy_account_lockout_enforce]]
+=== Limit Consecutive Failed Login Attempts to $ODV
+
+*Status:* ❌ Fail · *Section:* Password Policy
+
+*Expected Result:*
+
+----
+pass
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: pass, Got: 
+
+[[pwpolicy_special_character_enforce]]
+=== Require Passwords Contain a Minimum of One Special Character
+
+*Status:* ❌ Fail · *Section:* Password Policy
+
+*Expected Result:*
+
+----
+pass
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: pass, Got: 
+
+[[pwpolicy_account_lockout_timeout_enforce]]
+=== Set Account Lockout Time to $ODV Minutes
+
+*Status:* ❌ Fail · *Section:* Password Policy
+
+*Expected Result:*
+
+----
+pass
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: pass, Got: 
+
+[[pwpolicy_alpha_numeric_enforce]]
+=== Require Passwords Contain a Minimum of One Numeric Character
+
+*Status:* ❌ Fail · *Section:* Password Policy
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[pwpolicy_minimum_length_enforce]]
+=== Require a Minimum Password Length of $ODV Characters
+
+*Status:* ❌ Fail · *Section:* Password Policy
+
+*Expected Result:*
+
+----
+pass
+----
+
+*Actual Result:*
+
+----
+fail
+----
+
+*Error:* Expected: pass, Got: fail
+
+[[icloud_sync_disable]]
+=== Disable iCloud Desktop and Document Folder Sync
+
+*Status:* ❌ Fail · *Section:* iCloud
+
+*Expected Result:*
+
+----
+false
+----
+
+*Actual Result:*
+
+----
+
+----
+
+*Error:* Expected: false, Got: 
+
+[[os_unlock_active_user_session_disable]]
+=== Disable Login to Other User's Active and Locked Sessions
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+PASS
+----
+
+*Actual Result:*
+
+----
+FAIL
+----
+
+*Error:* Expected: PASS, Got: FAIL
+
+[[os_safari_show_status_bar_enabled]]
+=== Ensure Show Safari shows the Status Bar is Enabled
+
+*Status:* ❌ Fail · *Section:* Operating System
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+*Error:* Expected: 1, Got: 0
+
+[[group-manual-review]]
+== Manual Review (1)
+
+[[supplemental_cis_manual]]
+=== CIS Manual Recommendations
+
+*Status:* 🔍 Manual Review · *Section:* Supplemental
+
+*Discussion:* List of CIS recommendations that are manual check in the CIS macOS Benchmark.  [cols="15%h, 85%a"] |=== |Section |System Settings  |Recommendations | 1.7 Ensure the System is Managed by a Mobile Device Management (MDM) Software |===  [cols="15%h, 85%a"] |=== |Section |System Settings  |Recommendations |2.1.1.1 Audit iCloud Keychain + 2.1.1.2 Audit iCloud Drive + 2.1.1.4 Audit Security Keys Used With Apple Accounts + 2.1.1.5 Audit Freeform Sync to iCloud + 2.1.1.6 Audit Find My Mac + 2.1.2 Audit App Store Password Settings + 2.3.3.11 Ensure Computer Name Does Not Contain PII or Protected Organizational Information + 2.4.1 Audit Menu Bar and Control Center Icons + 2.5.2.2 Ensure Listen for Siri is Disabled + 2.6.1.3 Audit Location Services Access + 2.6.2.1 Audit Full Disk Access for Applications + 2.6.3.5 Ensure Share iCloud Analytics Is Disabled + 2.6.7 Audit Lockdown Mode + 2.7.2 Audit iPhone Mirroring + 2.8.1 Audit Universal Control Settings + 2.10.1.1 Ensure the OS Is Not Active When Resuming from Standby (Intel) + 2.12.2 Audit Touch ID + 2.14.1 Audit Game Center Settings + 2.15.1 Audit Notification & Focus Settings + 2.16.1 Audit Wallet & Apple Pay Settings + 2.17.1 Audit Internet Accounts for Authorized Use + |===  [cols="15%h, 85%a"] |=== |Section |Logging and Auditing  |Recommendations |3.6 Audit Software Inventory |===  [cols="15%h, 85%a"] |=== |Section |System Access, Authentication and Authorization  |Recommendations |5.2.3 Ensure Complex Password Must Contain Alphabetic Characters Is Configured + 5.2.4 Ensure Complex Password Must Contain Numeric Character Is Configured + 5.2.5 Ensure Complex Password Must Contain Special Character Is Configured + 5.2.6 Ensure Complex Password Must Contain Uppercase and Lowercase Characters Is Configured + 5.3.1 Ensure All User Storage APFS Volumes are Encrypted + 5.3.2 Ensure All User Storage CoreStorage Volumes are Encrypted + |===  [cols="15%h, 85%a"] |=== |Section |Applications  |Recommendations |6.1.1 Ensure Show All Filename Extensions Setting is Enabled + 6.2.1 Ensure Protect Mail Activity in Mail Is Enabled + 6.3.2 Audit History and Remove History Items + 6.3.5 Audit Hide IP Address in Safari Setting + 6.3.8 Audit Autofill + 6.3.9 Audit Pop-up Windows + 6.5.1 Audit Passwords + |=== 
+
+*Error:* No automated check available
+
+[[group-passed]]
+== Passed (35)
+
+[[system_settings_install_macos_updates_enforce]]
+=== Enforce macOS Updates are Automatically Installed
+
+*Status:* ✅ Pass · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+true
+----
+
+[[system_settings_time_machine_encrypted_configure]]
+=== Ensure Time Machine Volumes are Encrypted
+
+*Status:* ✅ Pass · *Section:* System Settings
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[system_settings_guest_access_smb_disable]]
+=== Disable Guest Access to Shared SMB Folders
+
+*Status:* ✅ Pass · *Section:* System Settings
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+1
+----
+
+[[system_settings_location_services_enable]]
+=== Enable Location Services
+
+*Status:* ✅ Pass · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+true
+----
+
+[[system_settings_hot_corners_secure]]
+=== Secure Hot Corners
+
+*Status:* ✅ Pass · *Section:* System Settings
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[system_settings_remote_management_disable]]
+=== Disable Remote Management
+
+*Status:* ✅ Pass · *Section:* System Settings
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+1
+----
+
+[[system_settings_screen_sharing_disable]]
+=== Disable Screen Sharing and Apple Remote Desktop
+
+*Status:* ✅ Pass · *Section:* System Settings
+
+*Expected Result:*
+
+----
+PASS
+----
+
+*Actual Result:*
+
+----
+PASS
+----
+
+[[system_settings_softwareupdate_current]]
+=== Ensure Software Update is Updated and Current
+
+*Status:* ✅ Pass · *Section:* System Settings
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+1
+----
+
+[[system_settings_ssh_disable]]
+=== Disable SSH Server for Remote Access Sessions
+
+*Status:* ✅ Pass · *Section:* System Settings
+
+*Expected Result:*
+
+----
+PASS
+----
+
+*Actual Result:*
+
+----
+PASS
+----
+
+[[system_settings_software_update_download_enforce]]
+=== Enforce Software Update Downloads Updates Automatically
+
+*Status:* ✅ Pass · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+true
+----
+
+[[system_settings_critical_update_install_enforce]]
+=== Enforce Critical Security Updates to be Installed
+
+*Status:* ✅ Pass · *Section:* System Settings
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+true
+----
+
+[[audit_folder_group_configure]]
+=== Configure Audit Log Folders Group to Wheel
+
+*Status:* ✅ Pass · *Section:* Audit
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[audit_control_mode_configure]]
+=== Configure Audit_Control Owner to Mode 440 or Less Permissive
+
+*Status:* ✅ Pass · *Section:* Audit
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[audit_files_owner_configure]]
+=== Configure Audit Log Files to be Owned by Root
+
+*Status:* ✅ Pass · *Section:* Audit
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[audit_folder_owner_configure]]
+=== Configure Audit Log Folders to be Owned by Root
+
+*Status:* ✅ Pass · *Section:* Audit
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[audit_control_acls_configure]]
+=== Configure Audit_Control to Not Contain Access Control Lists
+
+*Status:* ✅ Pass · *Section:* Audit
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[audit_acls_files_configure]]
+=== Configure Audit Log Files to Not Contain Access Control Lists
+
+*Status:* ✅ Pass · *Section:* Audit
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[audit_acls_folders_configure]]
+=== Configure Audit Log Folder to Not Contain Access Control Lists
+
+*Status:* ✅ Pass · *Section:* Audit
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[os_root_disable]]
+=== Disable Root Login
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[os_anti_virus_installed]]
+=== Must Use an Approved Antivirus Program
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+2
+----
+
+*Actual Result:*
+
+----
+2
+----
+
+[[os_world_writable_system_folder_configure]]
+=== Ensure No World Writable Files Exist in the System Folder
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[os_internal_apfs_volumes_encrypted]]
+=== Ensure All Internal User Storage APFS Volumes Are Encrypted
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+Yes
+----
+
+*Actual Result:*
+
+----
+Yes
+----
+
+[[os_external_apfs_hfs_volumes_encrypted]]
+=== Ensure All APFS and HFS+ External User Storage Volumes Are Encrypted
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+Yes
+----
+
+*Actual Result:*
+
+----
+Yes
+----
+
+[[os_authenticated_root_enable]]
+=== Enable Authenticated Root
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+sealed
+----
+
+*Actual Result:*
+
+----
+sealed
+----
+
+[[os_config_data_install_enforce]]
+=== Enforce Installation of XProtect Remediator and Gatekeeper Updates Automatically
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+true
+----
+
+[[os_guest_folder_removed]]
+=== Remove Guest Folder if Present
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[os_password_hint_remove]]
+=== Remove Password Hint From User Accounts
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+PASS
+----
+
+*Actual Result:*
+
+----
+PASS
+----
+
+[[os_sudoers_timestamp_type_configure]]
+=== Configure Sudoers Timestamp Type
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+tty
+----
+
+*Actual Result:*
+
+----
+tty
+----
+
+[[os_httpd_disable]]
+=== Disable the Built-in Web Server
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+PASS
+----
+
+*Actual Result:*
+
+----
+PASS
+----
+
+[[os_mobile_file_integrity_enable]]
+=== Enable Apple Mobile File Integrity
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[os_sip_enable]]
+=== Ensure System Integrity Protection is Enabled
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+1
+----
+
+[[os_world_writable_library_folder_configure]]
+=== Ensure No World Writable Files Exist in the Library Folder
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[os_time_server_enabled]]
+=== Enable Time Synchronization Daemon
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+1
+----
+
+*Actual Result:*
+
+----
+1
+----
+
+[[os_system_wide_applications_configure]]
+=== Ensure Appropriate Permissions Are Enabled for System Wide Applications
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+0
+----
+
+*Actual Result:*
+
+----
+0
+----
+
+[[os_software_update_deferral]]
+=== Ensure Software Update Deferment Is Less Than or Equal to $ODV Days
+
+*Status:* ✅ Pass · *Section:* Operating System
+
+*Expected Result:*
+
+----
+true
+----
+
+*Actual Result:*
+
+----
+true
+----
+
+[[group-not-applicable]]
+== Not Applicable (1)
+
+[[os_power_nap_disable]]
+=== Disable Power Nap
+
+*Status:* ➖ N/A · *Section:* Operating System
+
+*Expected Result:*
+
+----
+N/A
+----
+
+*Actual Result:*
+
+----
+N/A
+----
+
+*Error:* Rule does not apply to this architecture (arm64)
+
+'''
+
+_Generated by M.A.C.E. (macOS Advanced Compliance Editor) · Aug 9, 2026 at 7:54 PM_

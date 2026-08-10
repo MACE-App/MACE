@@ -225,7 +225,7 @@ It pulls the latest release straight from this repo and verifies the Developer I
 |--------|-------------|
 | Audit Scripts | Shell scripts for compliance checking |
 | Remediation Scripts | Shell scripts to fix non-compliant settings |
-| Extension Attributes | Report failed rules to your MDM for smart groups and dashboards (Jamf, Iru, Intune, WS1) |
+| Extension Attributes | Report failed rules to your MDM for smart groups and dashboards (Jamf, Iru, Intune, WS1, Addigy) |
 
 #### Configuration Profiles
 | Format | Use Case |
@@ -262,12 +262,12 @@ It pulls the latest release straight from this repo and verifies the Developer I
 | Target | Description |
 |--------|-------------|
 | **Local** | Generate files for local deployment |
-| **Jamf Pro** | Upload profiles, scripts, and extension attributes directly (Basic Auth & OAuth) |
-| **Workspace ONE** | Upload profiles, scripts, and sensors directly (Basic Auth, OAuth2 & Token) |
-| **Microsoft Intune** | Upload profiles, scripts, and custom attributes directly (Tenant/Client auth) |
-| **Fleet** | Profile and script export |
-| **Iru** | Profile and script export |
-| **Addigy** | Profile and script export |
+| **Jamf Pro** | Upload profiles, scripts, extension attributes, and audit preferences directly (Basic Auth & OAuth) |
+| **Workspace ONE** | Upload Custom Settings profiles, scripts, and sensors directly (Basic Auth, OAuth2 & Token) |
+| **Microsoft Intune** | Upload profiles, shell scripts, and custom attributes directly via the Graph API (Tenant/Client auth) |
+| **Fleet** | Upload profiles, scripts, and audit preferences directly, plus an osquery compliance policy (email/password or API token) |
+| **Iru** | Upload Custom Profiles, Custom Scripts, and audit preferences directly, with optional Blueprint assignment (API token) |
+| **Addigy** | Upload custom MDM profiles, scripts, audit preferences, and a compliance Custom Fact directly, with optional policy assignment (API key) |
 
 More MDM targets are always on the table — the Build Hub has a **Your MDM Here? Suggest** button for exactly that. Adding one isn't purely up to M.A.C.E., though: the vendor has to expose the right API options before direct upload is possible, and demand from users of that platform is what decides which ones get built first. If you'd like to see your MDM supported, suggest it in the app or [open an issue](https://github.com/MACE-App/MACE/issues) — and asking your vendor for the API access it needs helps just as much.
 
@@ -276,28 +276,9 @@ More MDM targets are always on the table — the Build Hub has a **Your MDM Here
 - Author metadata, organization name, and baseline versioning
 - Custom output directory selection
 - Profile signing with certificate verification
-- Jamf Pro category creation and assignment
-- Workspace ONE organization group selection and region configuration
-- Intune tenant and client credential configuration
-
-#### MDM Upload — Jamf Pro
-- Upload configuration profiles, remediation scripts, and extension attributes directly to Jamf Pro
-- Authentication via Basic Auth or OAuth
-- Category creation and assignment
-- Connection testing and duplicate handling
-- Upload progress tracking
-
-#### MDM Upload — Workspace ONE
-- Upload configuration profiles, scripts, and sensors directly to Workspace ONE
-- Authentication via Basic Auth, OAuth2, or Token-based
-- Region selection (North America, Europe, Asia-Pacific, China)
-- Organization group discovery and selection
-- Connection testing and upload progress tracking
-
-#### MDM Upload — Microsoft Intune
-- Upload configuration profiles, scripts, and custom attributes directly to Intune
-- Authentication via Tenant ID, Client ID, and Client Secret
-- Connection testing and upload progress tracking
+- Combined or individual output for both profiles and scripts
+- Per-target scoping: Jamf Pro categories, Workspace ONE organization groups and regions, Fleet teams, Iru Blueprints, Addigy policies
+- Connection testing, duplicate handling, and live upload progress on every direct-upload target
 
 #### Import Formats
 | Format | Description |
@@ -376,6 +357,13 @@ Click any preview below to download the sample file and open it locally. GitHub 
 </td>
 </tr>
 </table>
+
+<p align="center">
+  Also available:
+  <a href="example_outputs/Documentation_Example.adoc">AsciiDoc</a> ·
+  <a href="example_outputs/Documentation_Example.csv">CSV</a> ·
+  <a href="example_outputs/Documentation_Example.json">JSON</a>
+</p>
 
 ---
 
@@ -463,6 +451,13 @@ Click any preview below to download the sample file and open it locally. GitHub 
 </td>
 </tr>
 </table>
+
+<p align="center">
+  Also available:
+  <a href="example_outputs/Audit_Report_Example.md">Markdown</a> ·
+  <a href="example_outputs/Audit_Report_Example.adoc">AsciiDoc</a> ·
+  <a href="example_outputs/Audit_Report_Example.json">JSON</a>
+</p>
 
 ---
 

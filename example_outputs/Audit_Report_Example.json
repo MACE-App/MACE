@@ -1,0 +1,1039 @@
+{
+  "metadata" : {
+    "authors" : [
+      "John Doe"
+    ],
+    "benchmark" : "Example Benchmark",
+    "compliance" : "cis_lvl2",
+    "generatedAt" : "2026-08-09T23:54:12Z",
+    "generatedBy" : "M.A.C.E. (macOS Advanced Compliance Editor)",
+    "model" : "MacBook Air",
+    "organization" : "Example Organization",
+    "osVersion" : "macOS 27.0.0",
+    "platform" : "macOS",
+    "serialNumber" : "C02XY1234Z",
+    "subtitle" : "Example Benchmark",
+    "title" : "M.A.C.E. Audit Report",
+    "version" : "macOS 26 (Tahoe)"
+  },
+  "results" : [
+    {
+      "expectedOutput" : "1",
+      "id" : "system_settings_location_services_menu_enforce",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:39Z",
+      "title" : "Ensure Location Services Is In the Menu Bar"
+    },
+    {
+      "actualOutput" : "true",
+      "expectedOutput" : "true",
+      "id" : "system_settings_install_macos_updates_enforce",
+      "section" : "system_settings",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:39Z",
+      "title" : "Enforce macOS Updates are Automatically Installed"
+    },
+    {
+      "actualOutput" : "false",
+      "expectedOutput" : "true",
+      "id" : "system_settings_screensaver_ask_for_password_delay_enforce",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:39Z",
+      "title" : "Enforce Session Lock After Screen Saver is Started"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "system_settings_time_machine_encrypted_configure",
+      "section" : "system_settings",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:39Z",
+      "title" : "Ensure Time Machine Volumes are Encrypted"
+    },
+    {
+      "actualOutput" : "1",
+      "expectedOutput" : "1",
+      "id" : "system_settings_guest_access_smb_disable",
+      "section" : "system_settings",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:39Z",
+      "title" : "Disable Guest Access to Shared SMB Folders"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "system_settings_printer_sharing_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:39Z",
+      "title" : "Disable Printer Sharing"
+    },
+    {
+      "actualOutput" : "false",
+      "expectedOutput" : "true",
+      "id" : "system_settings_guest_account_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:39Z",
+      "title" : "Disable the Guest Account"
+    },
+    {
+      "actualOutput" : "true",
+      "expectedOutput" : "true",
+      "id" : "system_settings_location_services_enable",
+      "section" : "system_settings",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:39Z",
+      "title" : "Enable Location Services"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "system_settings_system_wide_preferences_configure",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:40Z",
+      "title" : "Require Administrator Password to Modify System-Wide Preferences"
+    },
+    {
+      "expectedOutput" : "2",
+      "id" : "system_settings_improve_search_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:40Z",
+      "title" : "Disable Improve Search Information to Apple"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "system_settings_smbd_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:40Z",
+      "title" : "Disable Server Message Block Sharing"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "system_settings_hot_corners_secure",
+      "section" : "system_settings",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:40Z",
+      "title" : "Secure Hot Corners"
+    },
+    {
+      "actualOutput" : "1",
+      "expectedOutput" : "1",
+      "id" : "system_settings_remote_management_disable",
+      "section" : "system_settings",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:40Z",
+      "title" : "Disable Remote Management"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "system_settings_loginwindow_prompt_username_password_enforce",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Configure Login Window to Prompt for Username and Password"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "system_settings_personalized_advertising_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Disable Personalized Advertising"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "system_settings_time_machine_auto_backup_enable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Configure Time Machine for Automatic Backups"
+    },
+    {
+      "expectedOutput" : "0",
+      "id" : "system_settings_password_hints_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Disable Password Hints"
+    },
+    {
+      "actualOutput" : "PASS",
+      "expectedOutput" : "PASS",
+      "id" : "system_settings_screen_sharing_disable",
+      "section" : "system_settings",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Disable Screen Sharing and Apple Remote Desktop"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "system_settings_external_intelligence_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Disable External Intelligence Integrations"
+    },
+    {
+      "actualOutput" : "false",
+      "expectedOutput" : "true",
+      "id" : "system_settings_screensaver_timeout_enforce",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Enforce Screen Saver Timeout"
+    },
+    {
+      "actualOutput" : "1",
+      "expectedOutput" : "1",
+      "id" : "system_settings_softwareupdate_current",
+      "section" : "system_settings",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Ensure Software Update is Updated and Current"
+    },
+    {
+      "actualOutput" : "PASS",
+      "expectedOutput" : "PASS",
+      "id" : "system_settings_ssh_disable",
+      "section" : "system_settings",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Disable SSH Server for Remote Access Sessions"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "system_settings_filevault_enforce",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Enforce FileVault"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "system_settings_content_caching_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Disable Content Caching Service"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "system_settings_internet_sharing_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:41Z",
+      "title" : "Disable Internet Sharing"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "system_settings_firewall_enable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Enable macOS Application Firewall"
+    },
+    {
+      "actualOutput" : "true",
+      "expectedOutput" : "true",
+      "id" : "system_settings_software_update_download_enforce",
+      "section" : "system_settings",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Enforce Software Update Downloads Updates Automatically"
+    },
+    {
+      "actualOutput" : "true",
+      "expectedOutput" : "true",
+      "id" : "system_settings_critical_update_install_enforce",
+      "section" : "system_settings",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Enforce Critical Security Updates to be Installed"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "system_settings_siri_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Disable Siri"
+    },
+    {
+      "expectedOutput" : "0",
+      "id" : "system_settings_bluetooth_sharing_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Disable Bluetooth Sharing"
+    },
+    {
+      "actualOutput" : "1",
+      "expectedOutput" : "0",
+      "id" : "system_settings_wake_network_access_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Ensure Wake for Network Access Is Disabled"
+    },
+    {
+      "actualOutput" : "false",
+      "expectedOutput" : "true",
+      "id" : "system_settings_diagnostics_reports_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Disable Sending Diagnostic and Usage Data to Apple"
+    },
+    {
+      "expectedOutput" : "2",
+      "id" : "system_settings_improve_siri_dictation_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Disable Improve Siri and Dictation Information to Apple"
+    },
+    {
+      "expectedOutput" : "Q2VudGVyIGZvciBJbnRlcm5ldCBTZWN1cml0eSBUZXN0IE1lc3NhZ2UK",
+      "id" : "system_settings_loginwindow_loginwindowtext_enable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Configure Login Window to Show A Custom Message"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "system_settings_automatic_login_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Disable Unattended or Automatic Logon to the System"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "system_settings_external_intelligence_sign_in_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Disable External Intelligence Integration Sign In"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "system_settings_improve_assistive_voice_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:42Z",
+      "title" : "Disable Sending Audio Recordings and Transcripts to Apple"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "system_settings_time_server_enforce",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Enforce macOS Time Synchronization"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "system_settings_screensaver_password_enforce",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Enforce Screen Saver Password"
+    },
+    {
+      "expectedOutput" : "time.apple.com",
+      "id" : "system_settings_time_server_configure",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Configure macOS to Use an Authorized Time Server"
+    },
+    {
+      "actualOutput" : "false",
+      "expectedOutput" : "true",
+      "id" : "system_settings_media_sharing_disabled",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Disable Media Sharing"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "system_settings_airplay_receiver_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Disable Airplay Receiver"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "system_settings_rae_disable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Disable Remote Apple Events"
+    },
+    {
+      "discussion" : "List of CIS recommendations that are manual check in the CIS macOS Benchmark.\n\n[cols=\"15%h, 85%a\"]\n|===\n|Section\n|System Settings\n\n|Recommendations\n| 1.7 Ensure the System is Managed by a Mobile Device Management (MDM) Software\n|===\n\n[cols=\"15%h, 85%a\"]\n|===\n|Section\n|System Settings\n\n|Recommendations\n|2.1.1.1 Audit iCloud Keychain +\n2.1.1.2 Audit iCloud Drive +\n2.1.1.4 Audit Security Keys Used With Apple Accounts +\n2.1.1.5 Audit Freeform Sync to iCloud +\n2.1.1.6 Audit Find My Mac +\n2.1.2 Audit App Store Password Settings +\n2.3.3.11 Ensure Computer Name Does Not Contain PII or Protected Organizational Information +\n2.4.1 Audit Menu Bar and Control Center Icons +\n2.5.2.2 Ensure Listen for Siri is Disabled +\n2.6.1.3 Audit Location Services Access +\n2.6.2.1 Audit Full Disk Access for Applications +\n2.6.3.5 Ensure Share iCloud Analytics Is Disabled +\n2.6.7 Audit Lockdown Mode +\n2.7.2 Audit iPhone Mirroring +\n2.8.1 Audit Universal Control Settings +\n2.10.1.1 Ensure the OS Is Not Active When Resuming from Standby (Intel) +\n2.12.2 Audit Touch ID +\n2.14.1 Audit Game Center Settings +\n2.15.1 Audit Notification & Focus Settings +\n2.16.1 Audit Wallet & Apple Pay Settings +\n2.17.1 Audit Internet Accounts for Authorized Use +\n|===\n\n[cols=\"15%h, 85%a\"]\n|===\n|Section\n|Logging and Auditing\n\n|Recommendations\n|3.6 Audit Software Inventory\n|===\n\n[cols=\"15%h, 85%a\"]\n|===\n|Section\n|System Access, Authentication and Authorization\n\n|Recommendations\n|5.2.3 Ensure Complex Password Must Contain Alphabetic Characters Is Configured +\n5.2.4 Ensure Complex Password Must Contain Numeric Character Is Configured +\n5.2.5 Ensure Complex Password Must Contain Special Character Is Configured +\n5.2.6 Ensure Complex Password Must Contain Uppercase and Lowercase Characters Is Configured +\n5.3.1 Ensure All User Storage APFS Volumes are Encrypted +\n5.3.2 Ensure All User Storage CoreStorage Volumes are Encrypted +\n|===\n\n[cols=\"15%h, 85%a\"]\n|===\n|Section\n|Applications\n\n|Recommendations\n|6.1.1 Ensure Show All Filename Extensions Setting is Enabled +\n6.2.1 Ensure Protect Mail Activity in Mail Is Enabled +\n6.3.2 Audit History and Remove History Items +\n6.3.5 Audit Hide IP Address in Safari Setting +\n6.3.8 Audit Autofill +\n6.3.9 Audit Pop-up Windows +\n6.5.1 Audit Passwords +\n|===\n",
+      "id" : "supplemental_cis_manual",
+      "section" : "supplemental",
+      "status" : "Manual Review",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "CIS Manual Recommendations"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "audit_flags_fm_failed_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Configure System to Audit All Failed Change of Object Attributes"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "audit_folder_group_configure",
+      "section" : "audit",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Configure Audit Log Folders Group to Wheel"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "audit_control_mode_configure",
+      "section" : "audit",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Configure Audit_Control Owner to Mode 440 or Less Permissive"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "audit_flags_aa_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Configure System to Audit All Authorization and Authentication Events"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "audit_flags_ad_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Configure System to Audit All Administrative Action Events"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "audit_flags_ex_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Configure System to Audit All Failed Program Execution on the System"
+    },
+    {
+      "actualOutput" : "fail",
+      "expectedOutput" : "pass",
+      "id" : "audit_auditd_enabled",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Enable Security Auditing"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "audit_files_owner_configure",
+      "section" : "audit",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Configure Audit Log Files to be Owned by Root"
+    },
+    {
+      "actualOutput" : "22",
+      "expectedOutput" : "0",
+      "id" : "audit_files_mode_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Configure Audit Log Files to Mode 440 or Less Permissive"
+    },
+    {
+      "expectedOutput" : "0",
+      "id" : "audit_control_owner_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Configure Audit_Control Owner to Root"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "audit_folder_owner_configure",
+      "section" : "audit",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:43Z",
+      "title" : "Configure Audit Log Folders to be Owned by Root"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "audit_flags_fr_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Configure System to Audit All Failed Read Actions on the System"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "audit_flags_fw_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Configure System to Audit All Failed Write Actions on the System"
+    },
+    {
+      "expectedOutput" : "60d OR 5G",
+      "id" : "audit_retention_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Configure Audit Retention to $ODV"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "audit_control_acls_configure",
+      "section" : "audit",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Configure Audit_Control to Not Contain Access Control Lists"
+    },
+    {
+      "actualOutput" : "666",
+      "expectedOutput" : "700",
+      "id" : "audit_folders_mode_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Configure Audit Log Folders to Mode 700 or Less Permissive"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "audit_flags_lo_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Configure System to Audit All Log In and Log Out Events"
+    },
+    {
+      "expectedOutput" : "0",
+      "id" : "audit_control_group_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Configure Audit_Control Group to Wheel"
+    },
+    {
+      "actualOutput" : "320",
+      "expectedOutput" : "0",
+      "id" : "audit_files_group_configure",
+      "section" : "audit",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Configure Audit Log Files Group to Wheel"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "audit_acls_files_configure",
+      "section" : "audit",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Configure Audit Log Files to Not Contain Access Control Lists"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "os_safari_warn_fraudulent_website_enable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Ensure Warn When Visiting A Fraudulent Website in Safari Is Enabled"
+    },
+    {
+      "discussion" : "Power Nap _MUST_ be disabled.\n\nNOTE: Power Nap allows your Mac to perform actions while a Mac is asleep. This can interfere with USB power and may cause devices such as smartcards to stop functioning until a reboot and must therefore be disabled on all applicable systems.\n\nThe following Macs support Power Nap:\n\n* MacBook (Early 2015 and later)\n* MacBook Air (Late 2010 and later)\n* MacBook Pro (all models with Retina display)\n* Mac mini (Late 2012 and later)\n* iMac (Late 2012 and later)\n* Mac Pro (Late 2013 and later)\n",
+      "id" : "os_power_nap_disable",
+      "section" : "os",
+      "status" : "N\/A",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Disable Power Nap"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "audit_acls_folders_configure",
+      "section" : "audit",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Configure Audit Log Folder to Not Contain Access Control Lists"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "os_root_disable",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Disable Root Login"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "os_notes_transcription_disable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Disable Apple Intelligence Notes Transcription"
+    },
+    {
+      "actualOutput" : "2",
+      "expectedOutput" : "2",
+      "id" : "os_anti_virus_installed",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:44Z",
+      "title" : "Must Use an Approved Antivirus Program"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "os_world_writable_system_folder_configure",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:45Z",
+      "title" : "Ensure No World Writable Files Exist in the System Folder"
+    },
+    {
+      "actualOutput" : "Yes",
+      "expectedOutput" : "Yes",
+      "id" : "os_internal_apfs_volumes_encrypted",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:45Z",
+      "title" : "Ensure All Internal User Storage APFS Volumes Are Encrypted"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "os_safari_open_safe_downloads_disable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:45Z",
+      "title" : "Disable Automatic Opening of Safe Files in Safari"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "os_mail_summary_disable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:46Z",
+      "title" : "Disable Apple Intelligence Mail Summary"
+    },
+    {
+      "actualOutput" : "Yes",
+      "expectedOutput" : "Yes",
+      "id" : "os_external_apfs_hfs_volumes_encrypted",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:46Z",
+      "title" : "Ensure All APFS and HFS+ External User Storage Volumes Are Encrypted"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "os_notes_transcription_summary_disable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:46Z",
+      "title" : "Disable Apple Intelligence Notes Transcription Summary"
+    },
+    {
+      "actualOutput" : "sealed",
+      "expectedOutput" : "sealed",
+      "id" : "os_authenticated_root_enable",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:46Z",
+      "title" : "Enable Authenticated Root"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "os_safari_advertising_privacy_protection_enable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:46Z",
+      "title" : "Ensure Advertising Privacy Protection in Safari Is Enabled"
+    },
+    {
+      "actualOutput" : "true",
+      "expectedOutput" : "true",
+      "id" : "os_config_data_install_enforce",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:46Z",
+      "title" : "Enforce Installation of XProtect Remediator and Gatekeeper Updates Automatically"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "os_guest_folder_removed",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:46Z",
+      "title" : "Remove Guest Folder if Present"
+    },
+    {
+      "actualOutput" : "1",
+      "expectedOutput" : "0",
+      "id" : "os_sleep_and_display_sleep_apple_silicon_enable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:46Z",
+      "title" : "Ensure Sleep and Display Sleep Is Enabled on Apple Silicon Devices"
+    },
+    {
+      "actualOutput" : "PASS",
+      "expectedOutput" : "PASS",
+      "id" : "os_password_hint_remove",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:46Z",
+      "title" : "Remove Password Hint From User Accounts"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "system_settings_firewall_stealth_mode_enable",
+      "section" : "system_settings",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:46Z",
+      "title" : "Enable Firewall Stealth Mode"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "os_software_update_app_update_enforce",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:46Z",
+      "title" : "Enforce Software Update App Update Updates Automatically"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "os_sudo_log_enforce",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Configure Sudo To Log Events"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "os_policy_banner_loginwindow_enforce",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Display Policy Banner at Login Window"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "os_writing_tools_disable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Disable Apple Intelligence Writing Tools"
+    },
+    {
+      "actualOutput" : "tty",
+      "expectedOutput" : "tty",
+      "id" : "os_sudoers_timestamp_type_configure",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Configure Sudoers Timestamp Type"
+    },
+    {
+      "actualOutput" : "fail",
+      "expectedOutput" : "pass",
+      "id" : "os_nfsd_disable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Disable Network File System Service"
+    },
+    {
+      "actualOutput" : "PASS",
+      "expectedOutput" : "PASS",
+      "id" : "os_httpd_disable",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Disable the Built-in Web Server"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "os_airdrop_disable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Disable AirDrop"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "os_safari_show_full_website_address_enable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Ensure Show Full Website Address in Safari Is Enabled"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "os_mobile_file_integrity_enable",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Enable Apple Mobile File Integrity"
+    },
+    {
+      "actualOutput" : "1",
+      "expectedOutput" : "1",
+      "id" : "os_sip_enable",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Ensure System Integrity Protection is Enabled"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "os_terminal_secure_keyboard_enable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Ensure Secure Keyboard Entry Terminal.app is Enabled"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "os_gatekeeper_enable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:47Z",
+      "title" : "Enable Gatekeeper"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "os_world_writable_library_folder_configure",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:50Z",
+      "title" : "Ensure No World Writable Files Exist in the Library Folder"
+    },
+    {
+      "actualOutput" : "1",
+      "expectedOutput" : "1",
+      "id" : "os_time_server_enabled",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:50Z",
+      "title" : "Enable Time Synchronization Daemon"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "os_sudo_timeout_configure",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:50Z",
+      "title" : "Configure Sudo Timeout Period to $ODV"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "0",
+      "id" : "os_system_wide_applications_configure",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Ensure Appropriate Permissions Are Enabled for System Wide Applications"
+    },
+    {
+      "actualOutput" : "true",
+      "expectedOutput" : "true",
+      "id" : "os_software_update_deferral",
+      "section" : "os",
+      "status" : "Pass",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Ensure Software Update Deferment Is Less Than or Equal to $ODV Days"
+    },
+    {
+      "actualOutput" : "3",
+      "expectedOutput" : "0",
+      "id" : "os_home_folders_secure",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Secure User's Home Folders"
+    },
+    {
+      "actualOutput" : "all_max setting is configured, must be removed\nTTL not configured",
+      "expectedOutput" : "Yes",
+      "id" : "os_install_log_retention_configure",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Configure Install.log Retention to $ODV"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "os_on_device_dictation_enforce",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Enforce On Device Dictation"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "os_safari_prevent_cross-site_tracking_enable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Ensure Prevent Cross-site Tracking in Safari Is Enabled"
+    },
+    {
+      "expectedOutput" : "true",
+      "id" : "os_bonjour_disable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Disable Bonjour Multicast"
+    },
+    {
+      "actualOutput" : "false",
+      "expectedOutput" : "true",
+      "id" : "pwpolicy_custom_regex_enforce",
+      "section" : "pwpolicy",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Require Passwords to Match the Defined Custom Regular Expression"
+    },
+    {
+      "expectedOutput" : "pass",
+      "id" : "pwpolicy_max_lifetime_enforce",
+      "section" : "pwpolicy",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Restrict Maximum Password Lifetime to $ODV Days"
+    },
+    {
+      "expectedOutput" : "pass",
+      "id" : "pwpolicy_history_enforce",
+      "section" : "pwpolicy",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Prohibit Password Reuse for a Minimum of $ODV Generations"
+    },
+    {
+      "expectedOutput" : "pass",
+      "id" : "pwpolicy_account_lockout_enforce",
+      "section" : "pwpolicy",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Limit Consecutive Failed Login Attempts to $ODV"
+    },
+    {
+      "expectedOutput" : "pass",
+      "id" : "pwpolicy_special_character_enforce",
+      "section" : "pwpolicy",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Require Passwords Contain a Minimum of One Special Character"
+    },
+    {
+      "expectedOutput" : "pass",
+      "id" : "pwpolicy_account_lockout_timeout_enforce",
+      "section" : "pwpolicy",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Set Account Lockout Time to $ODV Minutes"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "pwpolicy_alpha_numeric_enforce",
+      "section" : "pwpolicy",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Require Passwords Contain a Minimum of One Numeric Character"
+    },
+    {
+      "actualOutput" : "fail",
+      "expectedOutput" : "pass",
+      "id" : "pwpolicy_minimum_length_enforce",
+      "section" : "pwpolicy",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Require a Minimum Password Length of $ODV Characters"
+    },
+    {
+      "expectedOutput" : "false",
+      "id" : "icloud_sync_disable",
+      "section" : "icloud",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Disable iCloud Desktop and Document Folder Sync"
+    },
+    {
+      "actualOutput" : "FAIL",
+      "expectedOutput" : "PASS",
+      "id" : "os_unlock_active_user_session_disable",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:58Z",
+      "title" : "Disable Login to Other User's Active and Locked Sessions"
+    },
+    {
+      "actualOutput" : "0",
+      "expectedOutput" : "1",
+      "id" : "os_safari_show_status_bar_enabled",
+      "section" : "os",
+      "status" : "Fail",
+      "timestamp" : "2026-08-09T23:53:59Z",
+      "title" : "Ensure Show Safari shows the Status Bar is Enabled"
+    }
+  ],
+  "summary" : {
+    "failed" : 80,
+    "notApplicable" : 1,
+    "notReviewed" : 1,
+    "passed" : 35,
+    "passRate" : 30.434782608695656,
+    "totalRules" : 117
+  }
+}

@@ -1,0 +1,4958 @@
+{
+  "metadata" : {
+    "author" : "John Doe, Example Organization",
+    "authorName" : "John Doe",
+    "authorOrg" : "Example Organization",
+    "compliance" : "cis_lvl2",
+    "generated" : "2026-08-09T23:54:40Z",
+    "generatedBy" : "M.A.C.E. Documentation Builder",
+    "originalAuthors" : [
+      {
+        "name" : "Bob Gendler",
+        "organization" : "National Institute of Standards and Technology"
+      },
+      {
+        "name" : "Dan Brodjieski",
+        "organization" : "National Aeronautics and Space Administration"
+      },
+      {
+        "name" : "Allen Golbig",
+        "organization" : "Jamf"
+      },
+      {
+        "name" : "Edward Byrd",
+        "organization" : "Center for Internet Security"
+      }
+    ],
+    "platform" : "macOS",
+    "sections" : 6,
+    "subtitle" : "Full Report - CIS Level 2",
+    "title" : "Example Benchmark",
+    "totalRules" : 117,
+    "version" : "macOS 26 (Tahoe)"
+  },
+  "sections" : [
+    {
+      "description" : "This section contains the configuration and enforcement of iCloud and the Apple ID service settings.\n\nNOTE: \tThe check\/fix commands outlined in this section _MUST_ be run by a user with with elevated privileges.",
+      "displayName" : "iCloud",
+      "name" : "icloud",
+      "ruleCount" : 1,
+      "rules" : [
+        {
+          "discussion" : "The macOS system's ability to automatically synchronize a user's desktop and documents folder to their iCloud Drive _MUST_ be disabled.\n\nApple's iCloud service does not provide an organization with enough control over the storage and access of data and, therefore, automated file synchronization _MUST_ be controlled by an organization approved service.\n",
+          "id" : "icloud_sync_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowCloudDesktopAndDocuments: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95153-3"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.1.1.3 (level 2)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8",
+                "15.3"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002150"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "AC-20(1)",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "icloud",
+          "status" : "active",
+          "title" : "Disable iCloud Desktop and Document Folder Sync"
+        }
+      ]
+    },
+    {
+      "description" : "This section contains the configuration and enforcement of operating system settings.",
+      "displayName" : "Operating System",
+      "name" : "os",
+      "ruleCount" : 42,
+      "rules" : [
+        {
+          "discussion" : "Warn when visiting a fraudulent website _MUST_ be enabled in Safari.\n",
+          "id" : "os_safari_warn_fraudulent_website_enable",
+          "mobileconfig" : "- PayloadContent:\n  - WarnAboutFraudulentWebsites: true\n  PayloadType: com.apple.Safari\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95289-5"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "6.3.3 (level 1)"
+              ],
+              "controlsV8" : [
+                "9.1",
+                "9.3"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure Warn When Visiting A Fraudulent Website in Safari Is Enabled"
+        },
+        {
+          "discussion" : "Power Nap _MUST_ be disabled.\n\nNOTE: Power Nap allows your Mac to perform actions while a Mac is asleep. This can interfere with USB power and may cause devices such as smartcards to stop functioning until a reboot and must therefore be disabled on all applicable systems.\n\nThe following Macs support Power Nap:\n\n* MacBook (Early 2015 and later)\n* MacBook Air (Late 2010 and later)\n* MacBook Pro (all models with Retina display)\n* Mac mini (Late 2012 and later)\n* iMac (Late 2012 and later)\n* Mac Pro (Late 2013 and later)\n",
+          "fix" : "\/usr\/bin\/pmset -a powernap 0",
+          "id" : "os_power_nap_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95260-6"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.10.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "nist80053r5" : [
+              "CM-7",
+              "CM-7(1)"
+            ],
+            "nist800171r3" : [
+              "03.04.06"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable Power Nap"
+        },
+        {
+          "discussion" : "To assure individual accountability and prevent unauthorized access, logging in as root at the login window _MUST_ be disabled.\n\nThe macOS system _MUST_ require individuals to be authenticated with an individual authenticator prior to using a group authenticator, and administrator users _MUST_ never log in directly as root.\n",
+          "fix" : "\/usr\/bin\/fdesetup remove -user root\n\/usr\/bin\/dscl '\/Local\/Default' delete '\/Users\/root' AuthenticationAuthority",
+          "id" : "os_root_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95282-0"
+            ],
+            "cci" : [
+              "CCI-000764",
+              "CCI-000770",
+              "CCI-001813",
+              "CCI-004045"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.6 (level 1)"
+              ],
+              "controlsV8" : [
+                "5.4"
+              ]
+            },
+            "cmmc" : [
+              "IA.L1-3.5.1",
+              "IA.L1-3.5.2"
+            ],
+            "disaStig" : [
+              "APPL-26-000100"
+            ],
+            "nist80053r5" : [
+              "IA-2",
+              "IA-2(5)"
+            ],
+            "nist800171r3" : [
+              "03.05.01"
+            ],
+            "srg" : [
+              "SRG-OS-000364-GPOS-00151",
+              "SRG-OS-000109-GPOS-00056",
+              "SRG-OS-000104-GPOS-00051"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable Root Login"
+        },
+        {
+          "ddmInfo" : "ddm_key: Apps\nddm_value:\n  Notes:\n    AllowTranscription: false\ndeclarationtype: com.apple.configuration.intelligence.settings\n",
+          "discussion" : "Apple Intelligence features such as Notes Transcription that use off device AI _MUST_ be disabled.",
+          "id" : "os_notes_transcription_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowNotesTranscription: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95238-2"
+            ],
+            "cci" : [
+              "CCI-000381",
+              "CCI-001774"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.5.1.4 (level 1)"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "AC-20(1)",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable Apple Intelligence Notes Transcription"
+        },
+        {
+          "discussion" : "An approved antivirus product _MUST_ be installed and configured to run.\n\nMalicious software can establish a base on individual desktops and servers. Employing an automated mechanism to detect this type of software will aid in elimination of the software from the operating system.'\n",
+          "fix" : "\/bin\/launchctl load -w \/Library\/Apple\/System\/Library\/LaunchDaemons\/com.apple.XProtect.daemon.scan.plist\n\/bin\/launchctl load -w \/Library\/Apple\/System\/Library\/LaunchDaemons\/com.apple.XprotectFramework.PluginService.plist",
+          "id" : "os_anti_virus_installed",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95158-2"
+            ],
+            "cci" : [
+              "CCI-000366"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.10 (level 1)"
+              ],
+              "controlsV8" : [
+                "10.5",
+                "10.1",
+                "10.2"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Must Use an Approved Antivirus Program"
+        },
+        {
+          "discussion" : "Folders in \/System\/Volumes\/Data\/System _MUST_ not be world-writable.\n",
+          "fix" : "IFS=$'\\n'\nfor sysPermissions in $( \/usr\/bin\/find \/System\/Volumes\/Data\/System -type d -perm -2 | \/usr\/bin\/grep -vE \"downloadDir|locks\" ); do\n  \/bin\/chmod -R o-w \"$sysPermissions\"\ndone",
+          "id" : "os_world_writable_system_folder_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95333-1"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.1.6 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure No World Writable Files Exist in the System Folder"
+        },
+        {
+          "discussion" : "All internal user storage APFS volumes _MUST_ be encrypted.\n\nWhile FileVault protects the boot volume, data may be copied to other attached internal storage and reduce the protection afforded by FileVault. All internal APFS volumes that carry user data and do not have a specific role (Preboot, Recovery, VM) _MUST_ be encrypted to protect user data from loss or tampering.\n",
+          "id" : "os_internal_apfs_volumes_encrypted",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-96725-7"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.3.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.6",
+                "3.11",
+                "13.6",
+                "14.8"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure All Internal User Storage APFS Volumes Are Encrypted"
+        },
+        {
+          "discussion" : "Open \"safe\" files after downloading _MUST_ be disabled in Safari.\n",
+          "id" : "os_safari_open_safe_downloads_disable",
+          "mobileconfig" : "- PayloadContent:\n  - AutoOpenSafeDownloads: false\n  PayloadType: com.apple.Safari\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95284-6"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "6.3.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "9.1",
+                "9.6"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable Automatic Opening of Safe Files in Safari"
+        },
+        {
+          "ddmInfo" : "ddm_key: Apps\nddm_value:\n  Mail:\n    AllowSummary: false\ndeclarationtype: com.apple.configuration.intelligence.settings\n",
+          "discussion" : "Apple Intelligence features such as Apple Mail Summary that use off device AI _MUST_ be disabled.",
+          "id" : "os_mail_summary_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowMailSummary: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95223-4"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.5.1.3 (level 1)"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "AC-20(1)",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable Apple Intelligence Mail Summary"
+        },
+        {
+          "discussion" : "All APFS and HFS+ external user storage volumes _MUST_ be encrypted.\n\nWhile FileVault protects the boot volume, data may be copied to attached external storage and reduce the protection afforded by FileVault. All external user data volumes (APFS or HFS+) _MUST_ be encrypted to protect user data from loss or tampering. CoreStorage has been deprecated and replaced with APFS for volume encryption.\n",
+          "id" : "os_external_apfs_hfs_volumes_encrypted",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-96724-0"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.3.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.6",
+                "3.11",
+                "13.6",
+                "14.8"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure All APFS and HFS+ External User Storage Volumes Are Encrypted"
+        },
+        {
+          "ddmInfo" : "ddm_key: Apps\nddm_value:\n  Notes:\n    AllowTranscriptionSummary: false\ndeclarationtype: com.apple.configuration.intelligence.settings\n",
+          "discussion" : "Apple Intelligence features such as Notes Transcription Summary that use off device AI _MUST_ be disabled.",
+          "id" : "os_notes_transcription_summary_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowNotesTranscriptionSummary: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95239-0"
+            ],
+            "cci" : [
+              "CCI-000381",
+              "CCI-001774"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.5.1.4 (level 1)"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "AC-20(1)",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable Apple Intelligence Notes Transcription Summary"
+        },
+        {
+          "discussion" : "Authenticated Root _MUST_ be enabled.\n\nWhen Authenticated Root is enabled the macOS is booted from a signed volume that is cryptographically protected to prevent tampering with the system volume.\n\nNOTE: Authenticated Root is enabled by default on macOS systems.\n\nWARNING: If more than one partition with macOS is detected, the csrutil command will hang awaiting input.\n",
+          "fix" : "\/usr\/bin\/csrutil authenticated-root enable",
+          "id" : "os_authenticated_root_enable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95164-0"
+            ],
+            "cci" : [
+              "CCI-000213"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.1.4 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.6",
+                "3.11"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1",
+              "CM.L2-3.4.5",
+              "SC.L2-3.13.11"
+            ],
+            "disaStig" : [
+              "APPL-26-005070"
+            ],
+            "nist80053r5" : [
+              "AC-3",
+              "CM-5",
+              "SC-34",
+              "SI-7(6)",
+              "SI-7",
+              "MA-4(1)"
+            ],
+            "nist800171r3" : [
+              "03.01.02",
+              "03.04.05"
+            ],
+            "srg" : [
+              "SRG-OS-000080-GPOS-00048"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Enable Authenticated Root"
+        },
+        {
+          "discussion" : "Allow privacy-preserving measurement of ad effectiveness _MUST_ be enabled in Safari.\n",
+          "id" : "os_safari_advertising_privacy_protection_enable",
+          "mobileconfig" : "- PayloadContent:\n  - WebKitPreferences.privateClickMeasurementEnabled: true\n  PayloadType: com.apple.Safari\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95283-8"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "6.3.6 (level 1)"
+              ],
+              "controlsV8" : [
+                "9.1"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure Advertising Privacy Protection in Safari Is Enabled"
+        },
+        {
+          "discussion" : "Software Update _MUST_ be configured to update XProtect Remediator and Gatekeeper automatically.\n\nThis setting enforces definition updates for XProtect Remediator and Gatekeeper; with this setting in place, new malware and adware that Apple has added to the list of malware or untrusted software will not execute. These updates do not require the computer to be restarted.\n\nlink:https:\/\/support.apple.com\/en-us\/HT207005[]\n\nNOTE: Software update will automatically update XProtect Remediator and Gatekeeper by default in the macOS.\n",
+          "id" : "os_config_data_install_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - ConfigDataInstall: true\n  PayloadType: com.apple.SoftwareUpdate\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95176-4"
+            ],
+            "cci" : [
+              "CCI-000366"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "1.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "7.3",
+                "7.4",
+                "7.7"
+              ]
+            },
+            "cmmc" : [
+              "SI.L1-3.14.1",
+              "SI.L1-3.14.2",
+              "SI.L1-3.14.4"
+            ],
+            "disaStig" : [
+              "APPL-26-005130"
+            ],
+            "nist80053r5" : [
+              "SI-3",
+              "SI-2(5)"
+            ],
+            "nist800171r3" : [
+              "03.14.02"
+            ],
+            "srg" : [
+              "SRG-OS-000480-GPOS-00227"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Enforce Installation of XProtect Remediator and Gatekeeper Updates Automatically"
+        },
+        {
+          "discussion" : "The guest folder _MUST_ be deleted if present.\n",
+          "fix" : "\/bin\/rm -Rf \/Users\/Guest",
+          "id" : "os_guest_folder_removed",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95198-8"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.9 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Remove Guest Folder if Present"
+        },
+        {
+          "discussion" : "Apple Silicon MacBooks should set sleep timeout to 15 minutes (900 seconds) or less and the display sleep timeout should be 10 minutes (600 seconds) or less but less than the sleep setting.\n",
+          "fix" : "\/usr\/bin\/pmset -a sleep 15\n\/usr\/bin\/pmset -a displaysleep 10",
+          "id" : "os_sleep_and_display_sleep_apple_silicon_enable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95302-6"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.10.1.2 (level 2)"
+              ],
+              "controlsV8" : [
+                "4.1"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure Sleep and Display Sleep Is Enabled on Apple Silicon Devices"
+        },
+        {
+          "discussion" : "User accounts _MUST_ not contain password hints.\n",
+          "fix" : "for u in $(\/usr\/bin\/dscl . -list \/Users UniqueID | \/usr\/bin\/awk '$2 > 500 {print $1}'); do\n  \/usr\/bin\/dscl . -delete \/Users\/$u hint\ndone",
+          "id" : "os_password_hint_remove",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95250-7"
+            ],
+            "cci" : [
+              "CCI-000206"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.12.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "5.2"
+              ]
+            },
+            "cmmc" : [
+              "IA.L2-3.5.11"
+            ],
+            "disaStig" : [
+              "APPL-26-003014"
+            ],
+            "nist80053r5" : [
+              "IA-6"
+            ],
+            "nist800171r3" : [
+              "03.05.11"
+            ],
+            "srg" : [
+              "SRG-OS-000079-GPOS-00047"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Remove Password Hint From User Accounts"
+        },
+        {
+          "discussion" : "Software Update _MUST_ be configured to enforce automatic updates of App Updates is enabled.\n",
+          "id" : "os_software_update_app_update_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - AutomaticallyInstallAppUpdates: true\n  PayloadType: com.apple.SoftwareUpdate\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95402-4"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "1.4 (level 1)"
+              ],
+              "controlsV8" : [
+                "7.3",
+                "7.4"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Enforce Software Update App Update Updates Automatically"
+        },
+        {
+          "ddmInfo" : "config_file: sudoers\nconfiguration_key: Defaults\nconfiguration_value: log_allowed\ndeclarationtype: com.apple.configuration.services.configuration-files\nservice: com.apple.sudo\n",
+          "discussion" : "Sudo _MUST_ be configured to log privilege escalation.\n",
+          "fix" : "\/usr\/bin\/find \/etc\/sudoers* -type f -exec sed -i '' '\/^Defaults[[:blank:]]*\\!log_allowed\/s\/^\/# \/' '{}' \\;\n\/bin\/echo \"Defaults log_allowed\" >> \/etc\/sudoers.d\/mscp",
+          "id" : "os_sudo_log_enforce",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95316-6"
+            ],
+            "cci" : [
+              "CCI-000172"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.11 (level 1)"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.3",
+              "AU.L2-3.3.6",
+              "SI.L2-3.14.3"
+            ],
+            "disaStig" : [
+              "APPL-26-000190"
+            ],
+            "nist80053r5" : [
+              "AC-6(9)"
+            ],
+            "nist800171r3" : [
+              "03.01.07"
+            ],
+            "srg" : [
+              "SRG-OS-000064-GPOS-00033"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Configure Sudo To Log Events"
+        },
+        {
+          "discussion" : "Displaying a standardized and approved use notification before granting access to the operating system ensures that users are provided with privacy and security notification verbiage that is consistent with applicable federal laws, Executive Orders, directives, policies, regulations, standards, and guidance.\n\nSystem use notifications are required only for access via login interfaces with human users and are not required when such human interfaces do not exist.\n\nThe policy banner will show if a \"PolicyBanner.rtf\" or \"PolicyBanner.rtfd\" exists in the \"\/Library\/Security\" folder.\n\nThe banner text of the document _MUST_ read:\n\n[source,text]\n----\nCenter for Internet Security Test Message\n----\n",
+          "fix" : "bannerText=\"Center for Internet Security Test Message\"\n\/bin\/mkdir \/Library\/Security\/PolicyBanner.rtfd\n\/usr\/bin\/textutil -convert rtf -output \/Library\/Security\/PolicyBanner.rtfd\/TXT.rtf -stdin <<EOF\n$bannerText\nEOF",
+          "id" : "os_policy_banner_loginwindow_enforce",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95257-2"
+            ],
+            "cci" : [
+              "CCI-000048",
+              "CCI-000050",
+              "CCI-001384",
+              "CCI-001385",
+              "CCI-001386",
+              "CCI-001387",
+              "CCI-001388"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.8 (level 2)"
+              ],
+              "controlsV8" : [
+                "4.1"
+              ]
+            },
+            "cmmc" : [
+              "AC.L2-3.1.9"
+            ],
+            "disaStig" : [
+              "APPL-26-000025"
+            ],
+            "nist80053r5" : [
+              "AC-8"
+            ],
+            "nist800171r3" : [
+              "03.01.09"
+            ],
+            "srg" : [
+              "SRG-OS-000024-GPOS-00007",
+              "SRG-OS-000228-GPOS-00088",
+              "SRG-OS-000023-GPOS-00006"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Display Policy Banner at Login Window"
+        },
+        {
+          "ddmInfo" : "ddm_key: AllowWritingTools\nddm_value: false\ndeclarationtype: com.apple.configuration.intelligence.settings\n",
+          "discussion" : "Apple Intelligence features such as writing tools that use off device AI _MUST_ be disabled.\n",
+          "id" : "os_writing_tools_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowWritingTools: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95334-9"
+            ],
+            "cci" : [
+              "CCI-000381",
+              "CCI-001774"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.5.1.2 (level 1)"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-005160"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "AC-20(1)",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable Apple Intelligence Writing Tools"
+        },
+        {
+          "discussion" : "The file \/etc\/sudoers _MUST_ be configured to not include a timestamp_type of global or ppid and be configured for timestamp record types of tty.\n\nThis rule ensures that the \"sudo\" command will prompt for the administrator's password at least once in each newly opened terminal window. This prevents a malicious user from taking advantage of an unlocked computer or an abandoned logon session by bypassing the normal password prompt requirement.\n",
+          "fix" : "\/usr\/bin\/find \/etc\/sudoers* -type f -exec sed -i '' '\/timestamp_type\/d; \/!tty_tickets\/d' '{}' \\;",
+          "id" : "os_sudoers_timestamp_type_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95318-2"
+            ],
+            "cci" : [
+              "CCI-002038"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.3"
+              ]
+            },
+            "disaStig" : [
+              "APPL-26-004060"
+            ],
+            "nist80053r5" : [
+              "CM-5(1)",
+              "IA-11"
+            ],
+            "nist800171r3" : [
+              "03.05.01"
+            ],
+            "srg" : [
+              "SRG-OS-000373-GPOS-00157",
+              "SRG-OS-000373-GPOS-00156"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Configure Sudoers Timestamp Type"
+        },
+        {
+          "discussion" : "Support for Network File Systems (NFS) services is non-essential and, therefore, _MUST_ be disabled.\n",
+          "fix" : "\/bin\/launchctl disable system\/com.apple.nfsd\n\/bin\/rm -rf \/etc\/exports",
+          "id" : "os_nfsd_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95235-8"
+            ],
+            "cci" : [
+              "CCI-000213"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "4.3 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1"
+            ],
+            "disaStig" : [
+              "APPL-26-002003"
+            ],
+            "nist80053r5" : [
+              "AC-3",
+              "AC-17"
+            ],
+            "nist800171r3" : [
+              "03.01.02",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000080-GPOS-00048"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable Network File System Service"
+        },
+        {
+          "discussion" : "The built-in web server which is managed by launchd is a non-essential service built into macOS and _MUST_ be disabled and not running.\n\nNOTE: The built in web server service is disabled at startup by default macOS.\n",
+          "fix" : "\/usr\/sbin\/apachectl stop 2>\/dev\/null\n\/bin\/launchctl disable system\/org.apache.httpd",
+          "id" : "os_httpd_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95204-4"
+            ],
+            "cci" : [
+              "CCI-000213"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "4.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1"
+            ],
+            "disaStig" : [
+              "APPL-26-002008"
+            ],
+            "nist80053r5" : [
+              "AC-3",
+              "AC-17"
+            ],
+            "nist800171r3" : [
+              "03.01.02",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000080-GPOS-00048"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable the Built-in Web Server"
+        },
+        {
+          "discussion" : "AirDrop _MUST_ be disabled to prevent file transfers to or from unauthorized devices.\nAirDrop allows users to share and receive files from other nearby Apple devices.",
+          "id" : "os_airdrop_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowAirDrop: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95156-6"
+            ],
+            "cci" : [
+              "CCI-000213",
+              "CCI-000381",
+              "CCI-001443"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.1.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8",
+                "6.7"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1",
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002009"
+            ],
+            "nist80053r5" : [
+              "AC-3",
+              "AC-20",
+              "CM-7",
+              "CM-7(1)"
+            ],
+            "nist800171r3" : [
+              "03.01.02",
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000300-GPOS-00118",
+              "SRG-OS-000080-GPOS-00048",
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable AirDrop"
+        },
+        {
+          "discussion" : "Show full website address _MUST_ be enabled in Safari.\n",
+          "id" : "os_safari_show_full_website_address_enable",
+          "mobileconfig" : "- PayloadContent:\n  - ShowFullURLInSmartSearchField: true\n  PayloadType: com.apple.Safari\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95287-9"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "6.3.7 (level 1)"
+              ],
+              "controlsV8" : [
+                "9.1"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure Show Full Website Address in Safari Is Enabled"
+        },
+        {
+          "discussion" : "Mobile file integrity _MUST_ be enabled.",
+          "fix" : "\/usr\/sbin\/nvram boot-args=\"\"",
+          "id" : "os_mobile_file_integrity_enable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95231-7"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.1.3 (level 1)"
+              ],
+              "controlsV8" : [
+                "2.3",
+                "2.6"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Enable Apple Mobile File Integrity"
+        },
+        {
+          "discussion" : "System Integrity Protection (SIP) _MUST_ be enabled.\n\nSIP is vital to protecting the integrity of the system as it prevents malicious users and software from making unauthorized and\/or unintended modifications to protected files and folders; ensures the presence of an audit record generation capability for defined auditable events for all operating system components; protects audit tools from unauthorized access, modification, and deletion; restricts the root user account and limits the actions that the root user can perform on protected parts of the macOS; and prevents non-privileged users from granting other users direct access to the contents of their home directories and folders.\n\nNOTE: SIP is enabled by default in macOS.\n",
+          "fix" : "\/usr\/bin\/csrutil enable",
+          "id" : "os_sip_enable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95298-6"
+            ],
+            "cci" : [
+              "CCI-000154",
+              "CCI-000158",
+              "CCI-000169",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495",
+              "CCI-001499",
+              "CCI-001875",
+              "CCI-001876",
+              "CCI-001877",
+              "CCI-001878",
+              "CCI-001879",
+              "CCI-001880",
+              "CCI-001881",
+              "CCI-001882",
+              "CCI-001090",
+              "CCI-001496"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.1.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "2.3",
+                "2.6",
+                "10.5"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1",
+              "AU.L2-3.3.8",
+              "CM.L2-3.4.5",
+              "SC.L2-3.13.4",
+              "SI.L1-3.14.1",
+              "SI.L1-3.14.4"
+            ],
+            "disaStig" : [
+              "APPL-26-005001"
+            ],
+            "nist80053r5" : [
+              "AC-3",
+              "AU-9",
+              "AU-9(3)",
+              "CM-5",
+              "CM-5(6)",
+              "SC-4",
+              "SI-2",
+              "SI-7"
+            ],
+            "nist800171r3" : [
+              "03.01.02",
+              "03.03.08",
+              "03.04.05",
+              "03.13.04"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000062-GPOS-00031",
+              "SRG-OS-000051-GPOS-00024",
+              "SRG-OS-000054-GPOS-00025",
+              "SRG-OS-000278-GPOS-00108",
+              "SRG-OS-000080-GPOS-00048",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000138-GPOS-00069",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000259-GPOS-00100",
+              "SRG-OS-000122-GPOS-00063",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure System Integrity Protection is Enabled"
+        },
+        {
+          "discussion" : "Secure keyboard entry _MUST_ be enabled in Terminal.app.\n",
+          "id" : "os_terminal_secure_keyboard_enable",
+          "mobileconfig" : "- PayloadContent:\n  - SecureKeyboardEntry: true\n  PayloadType: com.apple.Terminal\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95321-6"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "6.4.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.8"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure Secure Keyboard Entry Terminal.app is Enabled"
+        },
+        {
+          "discussion" : "Gatekeeper _MUST_ be enabled.\n\nGatekeeper is a security feature that ensures that applications are digitally signed by an Apple-issued certificate before they are permitted to run. Digital signatures allow the macOS host to verify that the application has not been modified by a malicious third party.\n\nAdministrator users will still have the option to override these settings on a case-by-case basis.\n",
+          "id" : "os_gatekeeper_enable",
+          "mobileconfig" : "- PayloadContent:\n  - EnableAssessment: true\n  PayloadType: com.apple.systempolicy.control\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95195-4"
+            ],
+            "cci" : [
+              "CCI-001749",
+              "CCI-003992"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.6.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "10.1",
+                "10.2",
+                "10.5"
+              ]
+            },
+            "cmmc" : [
+              "CM.L2-3.4.5",
+              "SI.L1-3.14.1",
+              "SI.L1-3.14.2",
+              "SI.L1-3.14.4"
+            ],
+            "disaStig" : [
+              "APPL-26-002064"
+            ],
+            "nist80053r5" : [
+              "CM-14",
+              "CM-5",
+              "SI-7(1)",
+              "SI-7(15)",
+              "SI-3"
+            ],
+            "nist800171r3" : [
+              "03.14.02"
+            ],
+            "srg" : [
+              "SRG-OS-000366-GPOS-00153",
+              "SRG-OS-000480-GPOS-00228"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Enable Gatekeeper"
+        },
+        {
+          "discussion" : "Folders in \/System\/Volumes\/Data\/Library _MUST_ not be world-writable.\n\nNOTE: Some vendors are known to create world-writable folders to the System Library folder. You may need to add more exclusions to this check and fix to match your environment.\n",
+          "fix" : "IFS=$'\\n'\nfor libPermissions in $(\/usr\/bin\/find \/Library -type d -perm -002 ! -perm -1000 ! -xattrname com.apple.rootless 2>\/dev\/null); do\n  \/bin\/chmod -R o-w \"$libPermissions\"\ndone",
+          "id" : "os_world_writable_library_folder_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95332-3"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.1.7 (level 2)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure No World Writable Files Exist in the Library Folder"
+        },
+        {
+          "discussion" : "The macOS time synchronization daemon (timed) _MUST_ be enabled for proper time synchronization to an authorized time server.\n\nNOTE: The time synchronization daemon is enabled by default on macOS.\n",
+          "fix" : "\/bin\/launchctl load -w \/System\/Library\/LaunchDaemons\/com.apple.timed.plist",
+          "id" : "os_time_server_enabled",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95325-7"
+            ],
+            "cci" : [
+              "CCI-002046",
+              "CCI-001891",
+              "CCI-004923",
+              "CCI-004926",
+              "CCI-004922"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.2.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "8.4"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.7"
+            ],
+            "disaStig" : [
+              "APPL-26-000180"
+            ],
+            "nist80053r5" : [
+              "AU-12(1)",
+              "SC-45(1)"
+            ],
+            "nist800171r3" : [
+              "03.03.07"
+            ],
+            "srg" : [
+              "SRG-OS-000355-GPOS-00143",
+              "SRG-OS-000356-GPOS-00144",
+              "SRG-OS-000785-GPOS-00250"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Enable Time Synchronization Daemon"
+        },
+        {
+          "ddmInfo" : "config_file: sudoers\nconfiguration_key: Defaults timestamp_timeout=\nconfiguration_value: 0\ndeclarationtype: com.apple.configuration.services.configuration-files\nservice: com.apple.sudo\n",
+          "discussion" : "The file \/etc\/sudoers _MUST_ include a timestamp_timeout of 0.\n",
+          "fix" : "\/usr\/bin\/find \/etc\/sudoers* -type f -exec sed -i '' '\/timestamp_timeout\/d' '{}' \\;\n\/bin\/echo \"Defaults timestamp_timeout=0\" >> \/etc\/sudoers.d\/mscp",
+          "id" : "os_sudo_timeout_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95317-4"
+            ],
+            "cci" : [
+              "CCI-002038"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.4 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.3"
+              ]
+            },
+            "disaStig" : [
+              "APPL-26-004022"
+            ],
+            "srg" : [
+              "SRG-OS-000373-GPOS-00156"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Configure Sudo Timeout Period to 0"
+        },
+        {
+          "discussion" : "Applications in the System Applications Directory (\/Applications) _MUST_ not be world-writable.\n",
+          "fix" : "IFS=$'\\n'\nfor apps in $( \/usr\/bin\/find \/Applications -iname \"*\\.app\" -type d -perm -2 ); do\n  \/bin\/chmod -R o-w \"$apps\"\ndone",
+          "id" : "os_system_wide_applications_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95320-8"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.1.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure Appropriate Permissions Are Enabled for System Wide Applications"
+        },
+        {
+          "discussion" : "Software updates _MUST_ be deferred for 30 days or less.\n\nIf you need to defer software updates, create a Restrictions profile using the com.apple.applicationaccess domain and the key enforcedSoftwareUpdateDelay.\n",
+          "id" : "os_software_update_deferral",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95303-4"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "1.6 (level 1)"
+              ],
+              "controlsV8" : [
+                "7.3",
+                "7.4"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure Software Update Deferment Is Less Than or Equal to 30 Days"
+        },
+        {
+          "discussion" : "The system _MUST_ be configured to prevent access to other user's home folders.\n\nThe default behavior of macOS is to allow all valid users access to the top level of every other user's home folder while restricting access only to the Apple default folders within.\n",
+          "fix" : "IFS=$'\\n'\nfor userDirs in $( \/usr\/bin\/find \/System\/Volumes\/Data\/Users -mindepth 1 -maxdepth 1 -type d ! \\( -perm 700 -o -perm 711 \\) | \/usr\/bin\/grep -v \"Shared\" | \/usr\/bin\/grep -v \"Guest\" ); do\n  \/bin\/chmod og-rwx \"$userDirs\"\ndone\nunset IFS",
+          "id" : "os_home_folders_secure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95203-6"
+            ],
+            "cci" : [
+              "CCI-000366"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.1.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1",
+              "AC.L1-3.1.2",
+              "AC.L2-3.1.5",
+              "AC.L2-3.1.6"
+            ],
+            "disaStig" : [
+              "APPL-26-002068"
+            ],
+            "nist80053r5" : [
+              "AC-6"
+            ],
+            "nist800171r3" : [
+              "03.01.05"
+            ],
+            "srg" : [
+              "SRG-OS-000480-GPOS-00230",
+              "SRG-OS-000480-GPOS-00228"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Secure User's Home Folders"
+        },
+        {
+          "discussion" : "The install.log _MUST_ be configured to require records be kept for a organizational defined value before deletion, unless the system uses a central audit record storage facility.\n",
+          "fix" : "\/usr\/bin\/sed -i '' \"s\/\\* file \\\/var\\\/log\\\/install.log.*\/\\* file \\\/var\\\/log\\\/install.log format='\\$\\(\\(Time\\)\\(JZ\\)\\) \\$Host \\$\\(Sender\\)\\[\\$\\(PID\\\\)\\]: \\$Message' rotate=utc compress file_max=50M size_only ttl=365\/g\" \/etc\/asl\/com.apple.install",
+          "id" : "os_install_log_retention_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95211-9"
+            ],
+            "cci" : [
+              "CCI-001849"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.3 (level 1)"
+              ],
+              "controlsV8" : [
+                "8.1",
+                "8.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.1"
+            ],
+            "disaStig" : [
+              "APPL-26-004050"
+            ],
+            "nist80053r5" : [
+              "AU-11",
+              "AU-4"
+            ],
+            "nist800171r3" : [
+              "03.03.03"
+            ],
+            "srg" : [
+              "SRG-OS-000341-GPOS-00132"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Configure Install.log Retention to 365"
+        },
+        {
+          "ddmInfo" : "ddm_key: ForceOnDeviceOnlyTranslation\nddm_value: true\ndeclarationtype: com.apple.configuration.intelligence.settings\n",
+          "discussion" : "The system _MUST_ be configured for on device dictation.\n\nBy enforcing on device dictation this will mitigate the risk of unwanted data being sent to Apple.\n",
+          "id" : "os_on_device_dictation_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - forceOnDeviceOnlyDictation: true\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95247-3"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.18.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002220"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Enforce On Device Dictation"
+        },
+        {
+          "discussion" : "Prevent cross-site tracking _MUST_ be enabled in Safari.\n",
+          "id" : "os_safari_prevent_cross-site_tracking_enable",
+          "mobileconfig" : "- PayloadContent:\n  - WebKitPreferences.storageBlockingPolicy: 1\n  - WebKitStorageBlockingPolicy: 1\n  - BlockStoragePolicy: 2\n  PayloadType: com.apple.Safari\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95285-3"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "6.3.4 (level 1)"
+              ],
+              "controlsV8" : [
+                "9.1",
+                "9.3"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure Prevent Cross-site Tracking in Safari Is Enabled"
+        },
+        {
+          "discussion" : "Bonjour multicast advertising _MUST_ be disabled to prevent the system from broadcasting its presence and available services over network interfaces.\n",
+          "id" : "os_bonjour_disable",
+          "mobileconfig" : "- PayloadContent:\n  - NoMulticastAdvertisements: true\n  PayloadType: com.apple.mDNSResponder\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95169-9"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "4.1 (level 2)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002005"
+            ],
+            "nist80053r5" : [
+              "CM-7",
+              "CM-7(1)"
+            ],
+            "nist800171r3" : [
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable Bonjour Multicast"
+        },
+        {
+          "discussion" : "The ability to log in to another user's active or locked session _MUST_ be disabled.\n\nmacOS has a privilege that can be granted to any user that will allow that user to unlock active user's sessions. Disabling the admins and\/or user's ability to log into another user's active and locked session prevents unauthorized persons from viewing potentially sensitive and\/or personal information.\n\nNOTE: Configuring this setting will change the user experience and disable TouchID from unlocking the screensaver. A configuration profile will be generated to include the setting that restores the expected behavior. You can also apply the settings using `\/usr\/bin\/sudo \/usr\/bin\/defaults write \/Library\/Preferences\/com.apple.loginwindow screenUnlockMode -int 1`.\n\nWARNING: Do not apply this rule if your organization uses smartcards and Platform Single Sign-On (PSSO).\n",
+          "fix" : "SS_RULE=$(\/usr\/bin\/security -q authorizationdb read system.login.screensaver 2>&1 | \/usr\/bin\/xmllint --xpath \"\/\/dict\/key[.='rule']\/following-sibling::array[1]\/string\/text()\" -)\n\nif [[ \"$SS_RULE\" == *psso* ]]; then\n    \/usr\/bin\/security -q authorizationdb read psso-screensaver > \"\/tmp\/psso-screensaver-mscp.plist\"\n    \/usr\/bin\/sed -i.bak 's\/<string>authenticate-session-owner-or-admin<\\\/string>\/<string>authenticate-session-owner<\\\/string>\/' \/tmp\/psso-screensaver-mscp.plist\n    \/usr\/bin\/security -q authorizationdb write psso-screensaver-mscp < \/tmp\/psso-screensaver-mscp.plist\n    \/usr\/bin\/security -q authorizationdb write system.login.screensaver psso-screensaver-mscp 2>&1\nelse\n    \/usr\/bin\/security -q authorizationdb write system.login.screensaver \"authenticate-session-owner\" 2>&1\nfi",
+          "id" : "os_unlock_active_user_session_disable",
+          "mobileconfig" : "- PayloadContent:\n  - screenUnlockMode: 1\n  PayloadType: com.apple.loginwindow\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95328-1"
+            ],
+            "cci" : [
+              "CCI-000764",
+              "CCI-000770",
+              "CCI-004045"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.7 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.3"
+              ]
+            },
+            "cmmc" : [
+              "IA.L1-3.5.1",
+              "IA.L1-3.5.2"
+            ],
+            "disaStig" : [
+              "APPL-26-000090"
+            ],
+            "nist80053r5" : [
+              "IA-2",
+              "IA-2(5)"
+            ],
+            "nist800171r3" : [
+              "03.05.01"
+            ],
+            "srg" : [
+              "SRG-OS-000109-GPOS-00056",
+              "SRG-OS-000104-GPOS-00051"
+            ]
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Disable Login to Other User's Active and Locked Sessions"
+        },
+        {
+          "discussion" : "Safari _MUST_ be configured to show the status bar.\n",
+          "id" : "os_safari_show_status_bar_enabled",
+          "mobileconfig" : "- PayloadContent:\n  - ShowOverlayStatusBar: true\n  PayloadType: com.apple.Safari\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95288-7"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "6.3.10 (level 1)"
+              ],
+              "controlsV8" : [
+                "9.1"
+              ]
+            }
+          },
+          "section" : "os",
+          "status" : "active",
+          "title" : "Ensure Show Safari shows the Status Bar is Enabled"
+        }
+      ]
+    },
+    {
+      "description" : "This section contains the configuration and enforcement of settings pertaining to password policies in macOS.\n\nNOTE: The check\/fix commands outlined in this section _MUST_ be run by a user with elevated privileges.\n\n[IMPORTANT]\n====\nThe password policy recommendations in the NIST 800-53 (Rev 5) and NIST 800-63B state that complexity rules should be organizationally defined. The values defined are based off of common complexity values. But your organization may define its own password complexity rules.\n====\n\nNOTE: The settings outlined in this section adhere to the recommendations provided in this document for systems that utilize passwords for local accounts. If systems are integrated with a directory service, local password policies should align with domain password policies to the fullest extent feasible.",
+      "displayName" : "Password Policy",
+      "name" : "pwpolicy",
+      "ruleCount" : 8,
+      "rules" : [
+        {
+          "ddmInfo" : "ddm_key: CustomRegex\nddm_value:\n  Description: Password must match custom regex.\n  Regex: ^(?=.*[A-Z])(?=.*[a-z]).*$\ndeclarationtype: com.apple.configuration.passcode.settings\n",
+          "discussion" : "The macOS _MUST_ be configured to meet complexity requirements defined in ^(?=.*[A-Z])(?=.*[a-z]).*$.\n\nThis rule enforces password complexity by requiring users to set passwords that are less vulnerable to malicious users.\n\nNOTE: To comply with Executive Order 14028, “Improving the Nation's Cybersecurity”, OMB M-22-09, “Moving the U.S. Government Toward Zero Trust Cybersecurity Principles”, and NIST SP-800-63b, “Digital Identity Guidelines: Authentication and Lifecycle Management” federal, military, and intelligence communities must adopt the following configuration settings. Password policies must not require the use of complexity policies such as upper characters, lower characters, or special characters. Password policies must also not require the use of regular rotation. Password policies should define a minimum length. Multifactor authentication should be used where ever possible.\n\nNOTE: The configuration profile generated must be installed from an MDM server.\n",
+          "id" : "pwpolicy_custom_regex_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - customRegex:\n      passwordContentDescription:\n        default: Password must match custom regex.\n      passwordContentRegex: ^(?=.*[A-Z])(?=.*[a-z]).*$\n  PayloadType: com.apple.mobiledevice.passwordpolicy\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95340-6"
+            ],
+            "cci" : [
+              "CCI-000192",
+              "CCI-000193",
+              "CCI-004066",
+              "CCI-004066",
+              "CCI-004064",
+              "CCI-004065"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.2.6 (level 2)"
+              ],
+              "controlsV8" : [
+                "5.2"
+              ]
+            },
+            "cmmc" : [
+              "IA.L2-3.5.7",
+              "IA.L2-3.5.8",
+              "IA.L2-3.5.9"
+            ],
+            "disaStig" : [
+              "APPL-26-003060"
+            ],
+            "nist80053r5" : [
+              "IA-5(1)"
+            ],
+            "nist800171r3" : [
+              "03.05.07"
+            ],
+            "srg" : [
+              "SRG-OS-000070-GPOS-00038",
+              "SRG-OS-000069-GPOS-00037"
+            ]
+          },
+          "section" : "pwpolicy",
+          "status" : "active",
+          "title" : "Require Passwords to Match the Defined Custom Regular Expression"
+        },
+        {
+          "ddmInfo" : "ddm_key: MaximumPasscodeAgeInDays\nddm_value: 365\ndeclarationtype: com.apple.configuration.passcode.settings\n",
+          "discussion" : "The system _MUST_ be configured to enforce a maximum password lifetime limit of 365 days.\n\nThis rule ensures that users are forced to change their passwords frequently enough to prevent malicious users from gaining and maintaining access to the system.\n\nNOTE: To comply with Executive Order 14028, “Improving the Nation's Cybersecurity”, OMB M-22-09, “Moving the U.S. Government Toward Zero Trust Cybersecurity Principles”, and NIST SP-800-63b, “Digital Identity Guidelines: Authentication and Lifecycle Management” federal, military, and intelligence communities must adopt the following configuration settings. Password policies must not require the use of complexity policies such as upper characters, lower characters, or special characters. Password policies must also not require the use of regular rotation. Password policies should define a minimum length. Multifactor authentication should be used where ever possible.\n",
+          "id" : "pwpolicy_max_lifetime_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - maxPINAgeInDays: 365\n  PayloadType: com.apple.mobiledevice.passwordpolicy\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95345-5"
+            ],
+            "cci" : [
+              "CCI-000199",
+              "CCI-004066"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.2.7 (level 1)"
+              ],
+              "controlsV8" : [
+                "5.3"
+              ]
+            },
+            "cmmc" : [
+              "IA.L2-3.5.8",
+              "IA.L2-3.5.9"
+            ],
+            "disaStig" : [
+              "APPL-26-003008"
+            ],
+            "nist80053r5" : [
+              "IA-5"
+            ],
+            "nist800171r3" : [
+              "03.05.12"
+            ],
+            "srg" : [
+              "SRG-OS-000076-GPOS-00044",
+              "SRG-OS-000775-GPOS-00230"
+            ]
+          },
+          "section" : "pwpolicy",
+          "status" : "active",
+          "title" : "Restrict Maximum Password Lifetime to 365 Days"
+        },
+        {
+          "ddmInfo" : "ddm_key: PasscodeReuseLimit\nddm_value: 24\ndeclarationtype: com.apple.configuration.passcode.settings\n",
+          "discussion" : "The device _MUST_ be configured to enforce a password history of at least 24 previous passwords when a password is created.\n\nThis rule ensures that users are not allowed to re-use a password that was used in any of the 24 previous password generations.\n\nLimiting password reuse protects against malicious users attempting to gain access to the system via brute-force hacking methods.\n",
+          "id" : "pwpolicy_history_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - pinHistory: 24\n  PayloadType: com.apple.mobiledevice.passwordpolicy\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95343-0"
+            ],
+            "cci" : [
+              "CCI-000200"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.2.8 (level 1)"
+              ],
+              "controlsV8" : [
+                "5.2"
+              ]
+            },
+            "cmmc" : [
+              "IA.L2-3.5.7",
+              "IA.L2-3.5.8",
+              "IA.L2-3.5.9"
+            ],
+            "disaStig" : [
+              "APPL-14-003009"
+            ],
+            "nist80053r5" : [
+              "IA-5(1)"
+            ],
+            "nist800171r3" : [
+              "03.05.07"
+            ],
+            "srg" : [
+              "SRG-OS-000077-GPOS-00045",
+              "SRG-OS-000775-GPOS-00230"
+            ]
+          },
+          "section" : "pwpolicy",
+          "status" : "active",
+          "title" : "Prohibit Password Reuse for a Minimum of 24 Generations"
+        },
+        {
+          "ddmInfo" : "ddm_key: MaximumFailedAttempts\nddm_value: 5\ndeclarationtype: com.apple.configuration.passcode.settings\n",
+          "discussion" : "The system _MUST_ be configured to limit the number of failed login attempts to a maximum of 5. When the maximum number of failed attempts is reached, the system _MUST_ prevent logins for a period of time after.\n\nThis rule protects against malicious users attempting to gain access to the system via brute-force hacking methods.\n",
+          "id" : "pwpolicy_account_lockout_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - maxFailedAttempts: 5\n  PayloadType: com.apple.mobiledevice.passwordpolicy\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95337-2"
+            ],
+            "cci" : [
+              "CCI-000044",
+              "CCI-002238"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.2.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "6.2"
+              ]
+            },
+            "cmmc" : [
+              "AC.L2-3.1.8"
+            ],
+            "disaStig" : [
+              "APPL-26-000022"
+            ],
+            "nist80053r5" : [
+              "AC-7"
+            ],
+            "nist800171r3" : [
+              "03.01.08"
+            ],
+            "srg" : [
+              "SRG-OS-000329-GPOS-00128",
+              "SRG-OS-000021-GPOS-00005"
+            ]
+          },
+          "section" : "pwpolicy",
+          "status" : "active",
+          "title" : "Limit Consecutive Failed Login Attempts to 5"
+        },
+        {
+          "ddmInfo" : "ddm_key: MinimumComplexCharacters\nddm_value: 1\ndeclarationtype: com.apple.configuration.passcode.settings\n",
+          "discussion" : "The macOS _MUST_ be configured to require at least one special character be used when a password is created.\n\nSpecial characters are those characters that are not alphanumeric. Examples include: ~ ! @ # $ % ^ *.\n\nThis rule enforces password complexity by requiring users to set passwords that are less vulnerable to malicious users.\n\nNOTE: To comply with Executive Order 14028, \"Improving the Nation's Cybersecurity\", OMB M-22-09, \"Moving the U.S. Government Toward Zero Trust Cybersecurity Principles\", and NIST SP-800-63b, \"Digital Identity Guidelines: Authentication and Lifecycle Management\" federal, military, and intelligence communities must adopt the following configuration settings. Password policies must not require the use of complexity policies such as upper characters, lower characters, or special characters. Password policies must also not require the use of regular rotation. Password policies should define a minimum length. Multifactor authentication should be used where ever possible.\n",
+          "id" : "pwpolicy_special_character_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - minComplexChars: 1\n  PayloadType: com.apple.mobiledevice.passwordpolicy\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95350-5"
+            ],
+            "cci" : [
+              "CCI-001619",
+              "CCI-004066"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.2.5 (level 2)"
+              ],
+              "controlsV8" : [
+                "5.2"
+              ]
+            },
+            "cmmc" : [
+              "IA.L2-3.5.7",
+              "IA.L2-3.5.8",
+              "IA.L2-3.5.9"
+            ],
+            "disaStig" : [
+              "APPL-26-003011"
+            ],
+            "nist80053r5" : [
+              "IA-5(1)"
+            ],
+            "nist800171r3" : [
+              "03.05.07"
+            ],
+            "srg" : [
+              "SRG-OS-000266-GPOS-00101"
+            ]
+          },
+          "section" : "pwpolicy",
+          "status" : "active",
+          "title" : "Require Passwords Contain a Minimum of One Special Character"
+        },
+        {
+          "ddmInfo" : "ddm_key: MaximumGracePeriodInMinutes\nddm_value: 15\ndeclarationtype: com.apple.configuration.passcode.settings\n",
+          "discussion" : "The macOS _MUST_ be configured to enforce a lockout time period of at least 15 minutes when the maximum number of failed logon attempts is reached.\n\nThis rule protects against malicious users attempting to gain access to the system via brute-force hacking methods.\n",
+          "id" : "pwpolicy_account_lockout_timeout_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - minutesUntilFailedLoginReset: 15\n  PayloadType: com.apple.mobiledevice.passwordpolicy\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95338-0"
+            ],
+            "cci" : [
+              "CCI-002238",
+              "CCI-000044"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.2.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "6.2"
+              ]
+            },
+            "cmmc" : [
+              "AC.L2-3.1.8"
+            ],
+            "disaStig" : [
+              "APPL-26-000060"
+            ],
+            "nist80053r5" : [
+              "AC-7"
+            ],
+            "nist800171r3" : [
+              "03.01.08"
+            ],
+            "srg" : [
+              "SRG-OS-000329-GPOS-00128",
+              "SRG-OS-000021-GPOS-00005"
+            ]
+          },
+          "section" : "pwpolicy",
+          "status" : "active",
+          "title" : "Set Account Lockout Time to 15 Minutes"
+        },
+        {
+          "ddmInfo" : "ddm_key: RequireAlphanumericPasscode\nddm_value: true\ndeclarationtype: com.apple.configuration.passcode.settings\n",
+          "discussion" : "The macOS _MUST_ be configured to require at least one numeric character be used when a password is created.\n\nThis rule enforces password complexity by requiring users to set passwords that are less vulnerable to malicious users.\n\nNOTE: To comply with Executive Order 14028, \"Improving the Nation's Cybersecurity\", OMB M-22-09, \"Moving the U.S. Government Toward Zero Trust Cybersecurity Principles\", and NIST SP-800-63b, \"Digital Identity Guidelines: Authentication and Lifecycle Management\" federal, military, and intelligence communities must adopt the following configuration settings. Password policies must not require the use of complexity policies such as upper characters, lower characters, or special characters. Password policies must also not require the use of regular rotation. Password policies should define a minimum length. Multifactor authentication should be used where ever possible.\n",
+          "id" : "pwpolicy_alpha_numeric_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - requireAlphanumeric: true\n  PayloadType: com.apple.mobiledevice.passwordpolicy\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95339-8"
+            ],
+            "cci" : [
+              "CCI-000194",
+              "CCI-004066"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.2.3 (level 2)",
+                "5.2.4 (level 2)"
+              ],
+              "controlsV8" : [
+                "5.2"
+              ]
+            },
+            "cmmc" : [
+              "IA.L2-3.5.7",
+              "IA.L2-3.5.8",
+              "IA.L2-3.5.9"
+            ],
+            "disaStig" : [
+              "APPL-26-003007"
+            ],
+            "nist80053r5" : [
+              "IA-5(1)"
+            ],
+            "nist800171r3" : [
+              "03.05.07"
+            ],
+            "srg" : [
+              "SRG-OS-000071-GPOS-00039",
+              "SRG-OS-000775-GPOS-00230"
+            ]
+          },
+          "section" : "pwpolicy",
+          "status" : "active",
+          "title" : "Require Passwords Contain a Minimum of One Numeric Character"
+        },
+        {
+          "ddmInfo" : "ddm_key: MinimumLength\nddm_value: 15\ndeclarationtype: com.apple.configuration.passcode.settings\n",
+          "discussion" : "The macOS _MUST_ be configured to require a minimum of 15 characters be used when a password is created.\n\nThis rule enforces password complexity by requiring users to set passwords that are less vulnerable to malicious users.\n\nNOTE: To comply with Executive Order 14028, \"Improving the Nation's Cybersecurity\", OMB M-22-09, \"Moving the U.S. Government Toward Zero Trust Cybersecurity Principles\", and NIST SP-800-63b, \"Digital Identity Guidelines: Authentication and Lifecycle Management\" federal, military, and intelligence communities must adopt the following configuration settings. Password policies must not require the use of complexity policies such as upper characters, lower characters, or special characters. Password policies must also not require the use of regular rotation. Password policies should define a minimum length. Multifactor authentication should be used where ever possible.\n",
+          "id" : "pwpolicy_minimum_length_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - minLength: 15\n  PayloadType: com.apple.mobiledevice.passwordpolicy\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95346-3"
+            ],
+            "cci" : [
+              "CCI-000205",
+              "CCI-004066"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "5.2.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "5.2"
+              ]
+            },
+            "cmmc" : [
+              "IA.L2-3.5.7",
+              "IA.L2-3.5.8",
+              "IA.L2-3.5.9"
+            ],
+            "disaStig" : [
+              "APPL-26-003010"
+            ],
+            "nist80053r5" : [
+              "IA-5(1)"
+            ],
+            "nist800171r3" : [
+              "03.05.07"
+            ],
+            "srg" : [
+              "SRG-OS-000078-GPOS-00046"
+            ]
+          },
+          "section" : "pwpolicy",
+          "status" : "active",
+          "title" : "Require a Minimum Password Length of 15 Characters"
+        }
+      ]
+    },
+    {
+      "description" : "This section provides additional information to support the guidance provided by the baselines.",
+      "displayName" : "Supplemental",
+      "name" : "supplemental",
+      "ruleCount" : 1,
+      "rules" : [
+        {
+          "discussion" : "List of CIS recommendations that are manual check in the CIS macOS Benchmark.\n\n[cols=\"15%h, 85%a\"]\n|===\n|Section\n|System Settings\n\n|Recommendations\n| 1.7 Ensure the System is Managed by a Mobile Device Management (MDM) Software\n|===\n\n[cols=\"15%h, 85%a\"]\n|===\n|Section\n|System Settings\n\n|Recommendations\n|2.1.1.1 Audit iCloud Keychain +\n2.1.1.2 Audit iCloud Drive +\n2.1.1.4 Audit Security Keys Used With Apple Accounts +\n2.1.1.5 Audit Freeform Sync to iCloud +\n2.1.1.6 Audit Find My Mac +\n2.1.2 Audit App Store Password Settings +\n2.3.3.11 Ensure Computer Name Does Not Contain PII or Protected Organizational Information +\n2.4.1 Audit Menu Bar and Control Center Icons +\n2.5.2.2 Ensure Listen for Siri is Disabled +\n2.6.1.3 Audit Location Services Access +\n2.6.2.1 Audit Full Disk Access for Applications +\n2.6.3.5 Ensure Share iCloud Analytics Is Disabled +\n2.6.7 Audit Lockdown Mode +\n2.7.2 Audit iPhone Mirroring +\n2.8.1 Audit Universal Control Settings +\n2.10.1.1 Ensure the OS Is Not Active When Resuming from Standby (Intel) +\n2.12.2 Audit Touch ID +\n2.14.1 Audit Game Center Settings +\n2.15.1 Audit Notification & Focus Settings +\n2.16.1 Audit Wallet & Apple Pay Settings +\n2.17.1 Audit Internet Accounts for Authorized Use +\n|===\n\n[cols=\"15%h, 85%a\"]\n|===\n|Section\n|Logging and Auditing\n\n|Recommendations\n|3.6 Audit Software Inventory\n|===\n\n[cols=\"15%h, 85%a\"]\n|===\n|Section\n|System Access, Authentication and Authorization\n\n|Recommendations\n|5.2.3 Ensure Complex Password Must Contain Alphabetic Characters Is Configured +\n5.2.4 Ensure Complex Password Must Contain Numeric Character Is Configured +\n5.2.5 Ensure Complex Password Must Contain Special Character Is Configured +\n5.2.6 Ensure Complex Password Must Contain Uppercase and Lowercase Characters Is Configured +\n5.3.1 Ensure All User Storage APFS Volumes are Encrypted +\n5.3.2 Ensure All User Storage CoreStorage Volumes are Encrypted +\n|===\n\n[cols=\"15%h, 85%a\"]\n|===\n|Section\n|Applications\n\n|Recommendations\n|6.1.1 Ensure Show All Filename Extensions Setting is Enabled +\n6.2.1 Ensure Protect Mail Activity in Mail Is Enabled +\n6.3.2 Audit History and Remove History Items +\n6.3.5 Audit Hide IP Address in Safari Setting +\n6.3.8 Audit Autofill +\n6.3.9 Audit Pop-up Windows +\n6.5.1 Audit Passwords +\n|===\n",
+          "id" : "supplemental_cis_manual",
+          "modified" : false,
+          "section" : "supplemental",
+          "status" : "active",
+          "supplemental" : true,
+          "title" : "CIS Manual Recommendations"
+        }
+      ]
+    },
+    {
+      "description" : "This section contains the configuration and enforcement of the OpenBSM settings.\n\nNOTE: The BSM Audit subsystem has been marked as deprecated by Apple.\n\nNOTE: The check\/fix commands outlined in this section _MUST_ be run with elevated privileges.",
+      "displayName" : "Audit",
+      "name" : "audit",
+      "ruleCount" : 21,
+      "rules" : [
+        {
+          "discussion" : "The audit system _MUST_ be configured to record enforcement actions of failed attempts to modify file attributes (-fm).\n\nEnforcement actions are the methods or mechanisms used to prevent unauthorized changes to configuration settings. One common and effective enforcement action method is using access restrictions (i.e., denying modifications to a file by applying file permissions).\n\nThis configuration ensures that audit lists include events in which enforcement actions prevent attempts to modify a file.\n\nWithout auditing the enforcement of access restrictions, it is difficult to identify attempted attacks, as there is no audit trail available for forensic investigation.\n",
+          "fix" : "\/usr\/bin\/grep -qE \"^flags.*-fm\" \/etc\/security\/audit_control || \/usr\/bin\/sed -i.bak '\/^flags\/ s\/$\/,-fm\/' \/etc\/security\/audit_control;\/usr\/sbin\/audit -s",
+          "id" : "audit_flags_fm_failed_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95120-2"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.2 (level 2)"
+              ],
+              "controlsV8" : [
+                "3.14",
+                "8.2",
+                "8.5"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.3",
+              "AU.L2-3.3.6",
+              "AU.L2-3.3.8",
+              "SI.L2-3.14.3"
+            ],
+            "nist80053r5" : [
+              "AC-2(12)",
+              "AU-12",
+              "AU-2",
+              "AU-9",
+              "CM-5(1)",
+              "MA-4(1)"
+            ],
+            "nist800171r3" : [
+              "03.03.01",
+              "03.03.03",
+              "03.03.08"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure System to Audit All Failed Change of Object Attributes"
+        },
+        {
+          "discussion" : "Audit log files _MUST_ have the group set to wheel.\n\nThe audit service _MUST_ be configured to create log files with the correct group ownership to prevent normal users from reading audit logs.\n\nAudit logs contain sensitive data about the system and users. If log files are set to be readable and writable only by system administrators, the risk is mitigated.\n",
+          "fix" : "\/usr\/bin\/chgrp wheel \/var\/audit",
+          "id" : "audit_folder_group_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95124-4"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-001015"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit Log Folders Group to Wheel"
+        },
+        {
+          "discussion" : "\/etc\/security\/audit_control _MUST_ be configured so that it is readable only by the root user and group wheel.\n",
+          "fix" : "\/bin\/chmod 440 \/etc\/security\/audit_control",
+          "id" : "audit_control_mode_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95108-7"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-000171",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-001130"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000063-GPOS-00032",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit_Control Owner to Mode 440 or Less Permissive"
+        },
+        {
+          "discussion" : "The auditing system _MUST_ be configured to flag authorization and authentication (aa) events.\n\nAuthentication events contain information about the identity of a user, server, or client. Authorization events contain information about permissions, rights, and rules. If audit records do not include aa events, it is difficult to identify incidents and to correlate incidents to subsequent events.\n\nAudit records can be generated from various components within the information system (e.g., via a module or policy filter).\n",
+          "fix" : "\/usr\/bin\/grep -qE \"^flags.*[^-]aa\" \/etc\/security\/audit_control || \/usr\/bin\/sed -i.bak '\/^flags\/ s\/$\/,aa\/' \/etc\/security\/audit_control; \/usr\/sbin\/audit -s",
+          "id" : "audit_flags_aa_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95115-2"
+            ],
+            "cci" : [
+              "CCI-000172",
+              "CCI-001814",
+              "CCI-002884",
+              "CCI-003938"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.2 (level 2)"
+              ],
+              "controlsV8" : [
+                "3.14",
+                "8.2",
+                "8.5"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.3",
+              "AU.L2-3.3.6",
+              "SI.L2-3.14.3"
+            ],
+            "disaStig" : [
+              "APPL-26-001044"
+            ],
+            "nist80053r5" : [
+              "AC-2(12)",
+              "AU-12",
+              "AU-2",
+              "MA-4(1)",
+              "CM-5(1)"
+            ],
+            "nist800171r3" : [
+              "03.03.01",
+              "03.03.03"
+            ],
+            "srg" : [
+              "SRG-OS-000392-GPOS-00172",
+              "SRG-OS-000365-GPOS-00152",
+              "SRG-OS-000475-GPOS-00220",
+              "SRG-OS-000463-GPOS-00207",
+              "SRG-OS-000467-GPOS-00211",
+              "SRG-OS-000465-GPOS-00209",
+              "SRG-OS-000477-GPOS-00222",
+              "SRG-OS-000471-GPOS-00216",
+              "SRG-OS-000466-GPOS-00210",
+              "SRG-OS-000471-GPOS-00215",
+              "SRG-OS-000458-GPOS-00203",
+              "SRG-OS-000468-GPOS-00212"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure System to Audit All Authorization and Authentication Events"
+        },
+        {
+          "discussion" : "The auditing system _MUST_ be configured to flag administrative action (ad) events.\n\nAdministrative action events include changes made to the system (e.g. modifying authentication policies). If audit records do not include ad events, it is difficult to identify incidents and to correlate incidents to subsequent events.\n\nAudit records can be generated from various components within the information system (e.g., via a module or policy filter).\n\nThe information system audits the execution of privileged functions.\n\nNOTE: We recommend changing the line \"43127:AUE_MAC_SYSCALL:mac_syscall(2):ad\" to \"43127:AUE_MAC_SYSCALL:mac_syscall(2):zz\" in the file \/etc\/security\/audit_event. This will prevent sandbox violations from being audited by the ad flag.\n",
+          "fix" : "\/usr\/bin\/grep -qE \"^flags.*[^-]ad\" \/etc\/security\/audit_control || \/usr\/bin\/sed -i.bak '\/^flags\/ s\/$\/,ad\/' \/etc\/security\/audit_control; \/usr\/sbin\/audit -s",
+          "id" : "audit_flags_ad_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95116-0"
+            ],
+            "cci" : [
+              "CCI-000018",
+              "CCI-000172",
+              "CCI-001403",
+              "CCI-001404",
+              "CCI-001405",
+              "CCI-001814",
+              "CCI-002234",
+              "CCI-002884",
+              "CCI-000015",
+              "CCI-000015",
+              "CCI-003938",
+              "CCI-004083"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.2 (level 2)"
+              ],
+              "controlsV8" : [
+                "3.14",
+                "8.2",
+                "8.5"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.3",
+              "AU.L2-3.3.6",
+              "SI.L2-3.14.3"
+            ],
+            "disaStig" : [
+              "APPL-26-001001"
+            ],
+            "nist80053r5" : [
+              "AC-2(12)",
+              "AC-6(9)",
+              "AU-12",
+              "AC-2(4)",
+              "AU-2",
+              "MA-4(1)",
+              "CM-5(1)"
+            ],
+            "nist800171r3" : [
+              "03.01.07",
+              "03.03.01",
+              "03.03.03"
+            ],
+            "srg" : [
+              "SRG-OS-000304-GPOS-00121",
+              "SRG-OS-000365-GPOS-00152",
+              "SRG-OS-000392-GPOS-00172",
+              "SRG-OS-000239-GPOS-00089",
+              "SRG-OS-000240-GPOS-00090",
+              "SRG-OS-000004-GPOS-00004",
+              "SRG-OS-000241-GPOS-00091",
+              "SRG-OS-000274-GPOS-00104",
+              "SRG-OS-000327-GPOS-00127",
+              "SRG-OS-000471-GPOS-00216",
+              "SRG-OS-000476-GPOS-00221",
+              "SRG-OS-000471-GPOS-00215",
+              "SRG-OS-000458-GPOS-00203",
+              "SRG-OS-000303-GPOS-00120",
+              "SRG-OS-000755-GPOS-00220"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure System to Audit All Administrative Action Events"
+        },
+        {
+          "discussion" : "The audit system _MUST_ be configured to record enforcement actions of access restrictions, including failed program execute (-ex) attempts.\n\nEnforcement actions are the methods or mechanisms used to prevent unauthorized access and\/or changes to configuration settings. One common and effective enforcement action method is using program execution restrictions (e.g., denying users access to execute certain processes).\n\nThis configuration ensures that audit lists include events in which program execution has failed.\nWithout auditing the enforcement of program execution, it is difficult to identify attempted attacks, as there is no audit trail available for forensic investigation.\n",
+          "fix" : "\/usr\/bin\/grep -qE \"^flags.*-ex\" \/etc\/security\/audit_control || \/usr\/bin\/sed -i.bak '\/^flags\/ s\/$\/,-ex\/' \/etc\/security\/audit_control; \/usr\/sbin\/audit -s",
+          "id" : "audit_flags_ex_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95117-8"
+            ],
+            "cci" : [
+              "CCI-000172",
+              "CCI-001814",
+              "CCI-003938"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.2 (level 2)"
+              ],
+              "controlsV8" : [
+                "3.14",
+                "8.2",
+                "8.5"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.3",
+              "AU.L2-3.3.6",
+              "SI.L2-3.14.3"
+            ],
+            "disaStig" : [
+              "APPL-26-001024"
+            ],
+            "nist80053r5" : [
+              "AC-2(12)",
+              "AU-12",
+              "AU-2",
+              "CM-5(1)"
+            ],
+            "nist800171r3" : [
+              "03.03.01",
+              "03.03.03"
+            ],
+            "srg" : [
+              "SRG-OS-000365-GPOS-00152",
+              "SRG-OS-000465-GPOS-00209",
+              "SRG-OS-000458-GPOS-00203",
+              "SRG-OS-000463-GPOS-00207"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure System to Audit All Failed Program Execution on the System"
+        },
+        {
+          "discussion" : "The information system _MUST_ be configured to generate audit records.\n\nAudit records establish what types of events have occurred, when they occurred, and which users were involved. These records aid an organization in their efforts to establish, correlate, and investigate the events leading up to an outage or attack.\n\nThe content required to be captured in an audit record varies based on the impact level of an organization's system. Content that may be necessary to satisfy this requirement includes, for example, time stamps, source addresses, destination addresses, user identifiers, event descriptions, success\/fail indications, filenames involved, and access or flow control rules invoked.\n\nThe information system initiates session audits at system start-up.\n\nNOTE: Security auditing is NOT enabled by default on macOS 14 and later.\n",
+          "fix" : "if [[ ! -e \/etc\/security\/audit_control ]] && [[ -e \/etc\/security\/audit_control.example ]];then\n  \/bin\/cp \/etc\/security\/audit_control.example \/etc\/security\/audit_control\nfi\n\n\/bin\/launchctl enable system\/com.apple.auditd\n\/bin\/launchctl bootstrap system \/System\/Library\/LaunchDaemons\/com.apple.auditd.plist\n\/usr\/sbin\/audit -i",
+          "id" : "audit_auditd_enabled",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95104-6"
+            ],
+            "cci" : [
+              "CCI-000130",
+              "CCI-000131",
+              "CCI-000132",
+              "CCI-000133",
+              "CCI-000134",
+              "CCI-000135",
+              "CCI-000159",
+              "CCI-001464",
+              "CCI-001487",
+              "CCI-001889",
+              "CCI-001890",
+              "CCI-001914",
+              "CCI-002130",
+              "CCI-003938",
+              "CCI-004188"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "8.2",
+                "8.5"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.2",
+              "AU.L2-3.3.6"
+            ],
+            "disaStig" : [
+              "APPL-26-001003"
+            ],
+            "nist80053r5" : [
+              "AU-3",
+              "AU-3(1)",
+              "AU-8",
+              "AU-12",
+              "AU-12(1)",
+              "AU-12(3)",
+              "AU-14(1)",
+              "MA-4(1)",
+              "CM-5(1)"
+            ],
+            "nist800171r3" : [
+              "03.03.02",
+              "03.03.03",
+              "03.03.07"
+            ],
+            "srg" : [
+              "SRG-OS-000255-GPOS-00096",
+              "SRG-OS-000474-GPOS-00219",
+              "SRG-OS-000465-GPOS-00209",
+              "SRG-OS-000473-GPOS-00218",
+              "SRG-OS-000337-GPOS-00129",
+              "SRG-OS-000359-GPOS-00146",
+              "SRG-OS-000472-GPOS-00217",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000466-GPOS-00210",
+              "SRG-OS-000042-GPOS-00020",
+              "SRG-OS-000468-GPOS-00212",
+              "SRG-OS-000392-GPOS-00172",
+              "SRG-OS-000463-GPOS-00207",
+              "SRG-OS-000039-GPOS-00017",
+              "SRG-OS-000467-GPOS-00211",
+              "SRG-OS-000470-GPOS-00214",
+              "SRG-OS-000461-GPOS-00205",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000471-GPOS-00215",
+              "SRG-OS-000458-GPOS-00203",
+              "SRG-OS-000037-GPOS-00015",
+              "SRG-OS-000040-GPOS-00018",
+              "SRG-OS-000471-GPOS-00216",
+              "SRG-OS-000476-GPOS-00221",
+              "SRG-OS-000254-GPOS-00095",
+              "SRG-OS-000042-GPOS-00021",
+              "SRG-OS-000358-GPOS-00145",
+              "SRG-OS-000477-GPOS-00222",
+              "SRG-OS-000365-GPOS-00152",
+              "SRG-OS-000475-GPOS-00220",
+              "SRG-OS-000041-GPOS-00019",
+              "SRG-OS-000038-GPOS-00016",
+              "SRG-OS-000462-GPOS-00206",
+              "SRG-OS-000055-GPOS-00026",
+              "SRG-OS-000755-GPOS-00220"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Enable Security Auditing"
+        },
+        {
+          "discussion" : "Audit log files _MUST_ be owned by root.\n\nThe audit service _MUST_ be configured to create log files with the correct ownership to prevent normal users from reading audit logs.\n\nAudit logs contain sensitive data about the system and users. If log files are set to only be readable and writable by system administrators, the risk is mitigated.\n",
+          "fix" : "\/usr\/sbin\/chown -R root \/var\/audit\/*",
+          "id" : "audit_files_owner_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95114-5"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-001012"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit Log Files to be Owned by Root"
+        },
+        {
+          "discussion" : "The audit service _MUST_ be configured to create log files that are readable only by the root user and group wheel. To achieve this, audit log files _MUST_ be configured to mode 440 or less permissive; thereby preventing normal users from reading, modifying or deleting audit logs.\n",
+          "fix" : "\/bin\/chmod 440 \/var\/audit\/*",
+          "id" : "audit_files_mode_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95113-7"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-001016"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit Log Files to Mode 440 or Less Permissive"
+        },
+        {
+          "discussion" : "\/etc\/security\/audit_control _MUST_ have the owner set to root.\n",
+          "fix" : "\/usr\/sbin\/chown root \/etc\/security\/audit_control",
+          "id" : "audit_control_owner_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95109-5"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-000171",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-001120"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000063-GPOS-00032",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit_Control Owner to Root"
+        },
+        {
+          "discussion" : "Audit log folders _MUST_ be owned by root.\n\nThe audit service _MUST_ be configured to create log folders with the correct ownership to prevent normal users from reading audit logs.\n\nAudit logs contain sensitive data about the system and users. If log folders are set to only be readable and writable by system administrators, the risk is mitigated.\n",
+          "fix" : "\/usr\/sbin\/chown root \/var\/audit",
+          "id" : "audit_folder_owner_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95125-1"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-001013"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit Log Folders to be Owned by Root"
+        },
+        {
+          "discussion" : "The audit system _MUST_ be configured to record enforcement actions of access restrictions, including failed file read (-fr) attempts.\n\nEnforcement actions are the methods or mechanisms used to prevent unauthorized access and\/or changes to configuration settings. One common and effective enforcement action method is using access restrictions (e.g., denying access to a file by applying file permissions).\n\nThis configuration ensures that audit lists include events in which enforcement actions prevent attempts to read a file.\n\nWithout auditing the enforcement of access restrictions, it is difficult to identify attempted attacks, as there is no audit trail available for forensic investigation.\n",
+          "fix" : "\/usr\/bin\/grep -qE \"^flags.*-fr\" \/etc\/security\/audit_control || \/usr\/bin\/sed -i.bak '\/^flags\/ s\/$\/,-fr\/' \/etc\/security\/audit_control;\/usr\/sbin\/audit -s",
+          "id" : "audit_flags_fr_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95121-0"
+            ],
+            "cci" : [
+              "CCI-000172",
+              "CCI-001814",
+              "CCI-003938"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.2 (level 2)"
+              ],
+              "controlsV8" : [
+                "3.14",
+                "8.2",
+                "8.5"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.3",
+              "AU.L2-3.3.6",
+              "AU.L2-3.3.8",
+              "SI.L2-3.14.3"
+            ],
+            "disaStig" : [
+              "APPL-26-001022"
+            ],
+            "nist80053r5" : [
+              "AC-2(12)",
+              "AU-12",
+              "AU-2",
+              "AU-9",
+              "CM-5(1)",
+              "MA-4(1)"
+            ],
+            "nist800171r3" : [
+              "03.03.01",
+              "03.03.03",
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000392-GPOS-00172",
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000365-GPOS-00152",
+              "SRG-OS-000474-GPOS-00219",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000064-GPOS-00033",
+              "SRG-OS-000463-GPOS-00207",
+              "SRG-OS-000465-GPOS-00209",
+              "SRG-OS-000461-GPOS-00205",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000458-GPOS-00203",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure System to Audit All Failed Read Actions on the System"
+        },
+        {
+          "discussion" : "The audit system _MUST_ be configured to record enforcement actions of access restrictions, including failed file write (-fw) attempts.\n\nEnforcement actions are the methods or mechanisms used to prevent unauthorized access and\/or changes to configuration settings. One common and effective enforcement action method is using access restrictions (e.g., denying users access to edit a file by applying file permissions).\n\nThis configuration ensures that audit lists include events in which enforcement actions prevent attempts to change a file.\n\nWithout auditing the enforcement of access restrictions, it is difficult to identify attempted attacks, as there is no audit trail available for forensic investigation.\n",
+          "fix" : "\/usr\/bin\/grep -qE \"^flags.*-fw\" \/etc\/security\/audit_control || \/usr\/bin\/sed -i.bak '\/^flags\/ s\/$\/,-fw\/' \/etc\/security\/audit_control;\/usr\/sbin\/audit -s",
+          "id" : "audit_flags_fw_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95122-8"
+            ],
+            "cci" : [
+              "CCI-000172",
+              "CCI-001814",
+              "CCI-003938"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.2 (level 2)"
+              ],
+              "controlsV8" : [
+                "3.14",
+                "8.2",
+                "8.5"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.3",
+              "AU.L2-3.3.6",
+              "AU.L2-3.3.8",
+              "SI.L2-3.14.3"
+            ],
+            "disaStig" : [
+              "APPL-26-001023"
+            ],
+            "nist80053r5" : [
+              "AC-2(12)",
+              "AU-12",
+              "AU-2",
+              "AU-9",
+              "CM-5(1)",
+              "MA-4(1)"
+            ],
+            "nist800171r3" : [
+              "03.03.01",
+              "03.03.03",
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000392-GPOS-00172",
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000365-GPOS-00152",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000064-GPOS-00033",
+              "SRG-OS-000463-GPOS-00207",
+              "SRG-OS-000467-GPOS-00211",
+              "SRG-OS-000465-GPOS-00209",
+              "SRG-OS-000468-GPOS-00212",
+              "SRG-OS-000466-GPOS-00210",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000458-GPOS-00203",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure System to Audit All Failed Write Actions on the System"
+        },
+        {
+          "discussion" : "The audit service _MUST_ be configured to require records be kept for a organizational defined value before deletion, unless the system uses a central audit record storage facility.\n\nWhen \"expire-after\" is set to \"60d OR 5G\", the audit service will not delete audit logs until the log data criteria is met.\n",
+          "fix" : "\/usr\/bin\/sed -i.bak 's\/^expire-after.*\/expire-after:60d OR 5G\/' \/etc\/security\/audit_control; \/usr\/sbin\/audit -s",
+          "id" : "audit_retention_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95130-1"
+            ],
+            "cci" : [
+              "CCI-001849"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.4 (level 1)"
+              ],
+              "controlsV8" : [
+                "8.1",
+                "8.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.1"
+            ],
+            "disaStig" : [
+              "APPL-26-001029"
+            ],
+            "nist80053r5" : [
+              "AU-11",
+              "AU-4"
+            ],
+            "nist800171r3" : [
+              "03.03.03"
+            ],
+            "srg" : [
+              "SRG-OS-000341-GPOS-00132"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit Retention to 60d OR 5G"
+        },
+        {
+          "discussion" : "\/etc\/security\/audit_control _MUST_ not contain Access Control Lists (ACLs).\n",
+          "fix" : "\/bin\/chmod -N \/etc\/security\/audit_control",
+          "id" : "audit_control_acls_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95106-1"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-000171",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-001140"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000063-GPOS-00032",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit_Control to Not Contain Access Control Lists"
+        },
+        {
+          "discussion" : "The audit log folder _MUST_ be configured to mode 700 or less permissive so that only the root user is able to read, write, and execute changes to folders.\n\nBecause audit logs contain sensitive data about the system and users, the audit service _MUST_ be configured to mode 700 or less permissive; thereby preventing normal users from reading, modifying or deleting audit logs.\n",
+          "fix" : "\/bin\/chmod 700 \/var\/audit",
+          "id" : "audit_folders_mode_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95126-9"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-001017"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit Log Folders to Mode 700 or Less Permissive"
+        },
+        {
+          "discussion" : "The audit system _MUST_ be configured to record all attempts to log in and out of the system (lo).\n\nFrequently, an attacker that successfully gains access to a system has only gained access to an account with limited privileges, such as a guest account or a service account. The attacker must attempt to change to another user account with normal or elevated privileges in order to proceed. Auditing both successful and unsuccessful attempts to switch to another user account (by way of monitoring login and logout events) mitigates this risk.\n\nThe information system monitors login and logout events.\n",
+          "fix" : "\/usr\/bin\/grep -qE \"^flags.*[^-]lo\" \/etc\/security\/audit_control || \/usr\/bin\/sed -i.bak '\/^flags\/ s\/$\/,lo\/' \/etc\/security\/audit_control; \/usr\/sbin\/audit -s",
+          "id" : "audit_flags_lo_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95123-6"
+            ],
+            "cci" : [
+              "CCI-000067",
+              "CCI-000172",
+              "CCI-002884"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.2 (level 2)"
+              ],
+              "controlsV8" : [
+                "3.14",
+                "8.2",
+                "8.5"
+              ]
+            },
+            "cmmc" : [
+              "AC.L2-3.1.12",
+              "AU.L2-3.3.3",
+              "AU.L2-3.3.6",
+              "SI.L2-3.14.3"
+            ],
+            "disaStig" : [
+              "APPL-26-001002"
+            ],
+            "nist80053r5" : [
+              "AC-2(12)",
+              "AU-12",
+              "AC-17(1)",
+              "AU-2",
+              "MA-4(1)"
+            ],
+            "nist800171r3" : [
+              "03.03.01",
+              "03.03.03"
+            ],
+            "srg" : [
+              "SRG-OS-000032-GPOS-00013",
+              "SRG-OS-000392-GPOS-00172",
+              "SRG-OS-000064-GPOS-00033",
+              "SRG-OS-000473-GPOS-00218",
+              "SRG-OS-000470-GPOS-00214",
+              "SRG-OS-000471-GPOS-00216",
+              "SRG-OS-000472-GPOS-00217",
+              "SRG-OS-000471-GPOS-00215",
+              "SRG-OS-000458-GPOS-00203",
+              "SRG-OS-000755-GPOS-00220"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure System to Audit All Log In and Log Out Events"
+        },
+        {
+          "discussion" : "\/etc\/security\/audit_control _MUST_ have the group set to wheel.\n",
+          "fix" : "\/usr\/bin\/chgrp wheel \/etc\/security\/audit_control",
+          "id" : "audit_control_group_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95107-9"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-000171",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-001110"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000063-GPOS-00032",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit_Control Group to Wheel"
+        },
+        {
+          "discussion" : "Audit log files _MUST_ have the group set to wheel.\n\nThe audit service _MUST_ be configured to create log files with the correct group ownership to prevent normal users from reading audit logs.\n\nAudit logs contain sensitive data about the system and users. If log files are set to be readable and writable only by system administrators, the risk is mitigated.\n",
+          "fix" : "\/usr\/bin\/chgrp -R wheel \/var\/audit\/*",
+          "id" : "audit_files_group_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95112-9"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-001014"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit Log Files Group to Wheel"
+        },
+        {
+          "discussion" : "The audit log files _MUST_ not contain access control lists (ACLs).\n\nThis rule ensures that audit information and audit files are configured to be readable and writable only by system administrators, thereby preventing unauthorized access, modification, and deletion of files.\n",
+          "fix" : "\/bin\/chmod -RN \/var\/audit",
+          "id" : "audit_acls_files_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95101-2"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-001314",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-000030"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit Log Files to Not Contain Access Control Lists"
+        },
+        {
+          "discussion" : "The audit log folder _MUST_ not contain access control lists (ACLs).\n\nAudit logs contain sensitive data about the system and users. This rule ensures that the audit service is configured to create log folders that are readable and writable only by system administrators in order to prevent normal users from reading audit logs.\n",
+          "fix" : "\/bin\/chmod -N \/var\/audit",
+          "id" : "audit_acls_folders_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95102-0"
+            ],
+            "cci" : [
+              "CCI-000162",
+              "CCI-000162",
+              "CCI-000163",
+              "CCI-000164",
+              "CCI-001493",
+              "CCI-001494",
+              "CCI-001495"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.8"
+            ],
+            "disaStig" : [
+              "APPL-26-000031"
+            ],
+            "nist80053r5" : [
+              "AU-9"
+            ],
+            "nist800171r3" : [
+              "03.03.08"
+            ],
+            "srg" : [
+              "SRG-OS-000256-GPOS-00097",
+              "SRG-OS-000057-GPOS-00027",
+              "SRG-OS-000059-GPOS-00029",
+              "SRG-OS-000257-GPOS-00098",
+              "SRG-OS-000258-GPOS-00099",
+              "SRG-OS-000058-GPOS-00028"
+            ]
+          },
+          "section" : "audit",
+          "status" : "active",
+          "title" : "Configure Audit Log Folder to Not Contain Access Control Lists"
+        }
+      ]
+    },
+    {
+      "description" : "This section contains the configuration and enforcement of the settings within the macOS System Settings application.\n\nNOTE: The check\/fix commands outlined in this section _MUST_ be run by a user with elevated privileges.",
+      "displayName" : "System Settings",
+      "name" : "system_settings",
+      "ruleCount" : 44,
+      "rules" : [
+        {
+          "discussion" : "Location Services menu item _MUST_ be enabled.\n",
+          "fix" : "\/usr\/bin\/defaults write \/Library\/Preferences\/com.apple.locationmenu.plist ShowSystemServices -bool true",
+          "id" : "system_settings_location_services_menu_enforce",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95385-1"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.6.1.2 (level 2)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            }
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Ensure Location Services Is In the Menu Bar"
+        },
+        {
+          "ddmInfo" : "ddm_key: AutomaticActions\nddm_value:\n  InstallOSUpdates: AlwaysOn\ndeclarationtype: com.apple.configuration.softwareupdate.settings\n",
+          "discussion" : "Software Update _MUST_ be configured to enforce automatic installation of macOS updates is enabled.\n",
+          "id" : "system_settings_install_macos_updates_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - AutomaticallyInstallMacOSUpdates: true\n  PayloadType: com.apple.SoftwareUpdate\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95380-2"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "1.3 (level 1)"
+              ],
+              "controlsV8" : [
+                "7.3",
+                "7.4"
+              ]
+            }
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Enforce macOS Updates are Automatically Installed"
+        },
+        {
+          "discussion" : "A screen saver _MUST_ be enabled and the system _MUST_ be configured to require a password to unlock once the screensaver has been on for a maximum of 5 seconds.\n\nAn unattended system with an excessive grace period is vulnerable to a malicious user.\n",
+          "id" : "system_settings_screensaver_ask_for_password_delay_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - askForPasswordDelay: 5\n  PayloadType: com.apple.screensaver\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95395-0"
+            ],
+            "cci" : [
+              "CCI-000056"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.11.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.7"
+              ]
+            },
+            "cmmc" : [
+              "AC.L2-3.1.10"
+            ],
+            "disaStig" : [
+              "APPL-26-000003"
+            ],
+            "nist80053r5" : [
+              "AC-11"
+            ],
+            "nist800171r3" : [
+              "03.01.10"
+            ],
+            "srg" : [
+              "SRG-OS-000028-GPOS-00009"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Enforce Session Lock After Screen Saver is Started"
+        },
+        {
+          "discussion" : "Time Machine volumes _MUST_ be encrypted.\n",
+          "id" : "system_settings_time_machine_encrypted_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95410-7"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.4.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.6",
+                "3.11",
+                "11.3"
+              ]
+            }
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Ensure Time Machine Volumes are Encrypted"
+        },
+        {
+          "discussion" : "Guest access to shared Server Message Block (SMB) folders _MUST_ be disabled.\n\nTurning off guest access prevents anonymous users from accessing files shared via SMB.\n",
+          "fix" : "\/usr\/sbin\/sysadminctl -smbGuestAccess off",
+          "id" : "system_settings_guest_access_smb_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95373-7"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.13.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.2"
+            ],
+            "nist80053r5" : [
+              "AC-2(9)",
+              "AC-2"
+            ],
+            "nist800171r3" : [
+              "03.01.01"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Guest Access to Shared SMB Folders"
+        },
+        {
+          "discussion" : "Printer Sharing _MUST_ be disabled.\n",
+          "fix" : "\/usr\/sbin\/cupsctl --no-share-printers\n\/usr\/bin\/lpstat -p | awk '{print $2}'| \/usr\/bin\/xargs -I{} lpadmin -p {} -o printer-is-shared=false",
+          "id" : "system_settings_printer_sharing_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95391-9"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.3.3 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002240"
+            ],
+            "nist80053r5" : [
+              "CM-7",
+              "CM-7(1)"
+            ],
+            "nist800171r3" : [
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Printer Sharing"
+        },
+        {
+          "discussion" : "Guest access _MUST_ be disabled.\n\nTurning off guest access prevents anonymous users from accessing files.\n",
+          "id" : "system_settings_guest_account_disable",
+          "mobileconfig" : "- PayloadContent:\n  - DisableGuestAccount: true\n  - EnableGuestAccount: false\n  PayloadType: com.apple.MCX\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95374-5"
+            ],
+            "cci" : [
+              "CCI-001813"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.13.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "5.2",
+                "6.2",
+                "6.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.2"
+            ],
+            "disaStig" : [
+              "APPL-26-002063"
+            ],
+            "nist80053r5" : [
+              "AC-2",
+              "AC-2(9)"
+            ],
+            "nist800171r3" : [
+              "03.01.01"
+            ],
+            "srg" : [
+              "SRG-OS-000364-GPOS-00151",
+              "SRG-OS-000480-GPOS-00228"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable the Guest Account"
+        },
+        {
+          "discussion" : "Location Services _MUST_ be enabled.\n",
+          "fix" : "\/usr\/bin\/defaults write \/var\/db\/locationd\/Library\/Preferences\/ByHost\/com.apple.locationd LocationServicesEnabled -bool true;\npid=$(\/bin\/launchctl list | \/usr\/bin\/awk '\/com.apple.locationd\/ { print $1 }')\nkill -9 $pid",
+          "id" : "system_settings_location_services_enable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95384-4"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.6.1.1 (level 2)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            }
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Enable Location Services"
+        },
+        {
+          "discussion" : "The system _MUST_ be configured to require an administrator password in order to modify the system-wide preferences in System Settings.\n\nSome Preference Panes in System Settings contain settings that affect the entire system. Requiring a password to unlock these system-wide settings reduces the risk of a non-authorized user modifying system configurations.\n",
+          "fix" : "authDBs=(\"system.preferences\" \"system.preferences.energysaver\" \"system.preferences.network\" \"system.preferences.printing\" \"system.preferences.sharing\" \"system.preferences.softwareupdate\" \"system.preferences.startupdisk\" \"system.preferences.timemachine\")\n\nfor section in ${authDBs[@]}; do\n  \/usr\/bin\/security -q authorizationdb read \"$section\" > \"\/tmp\/$section.plist\"\n\n  class_key_value=$(\/usr\/libexec\/PlistBuddy -c \"Print :class\" \"\/tmp\/$section.plist\" 2>&1)\n  if [[ \"$class_key_value\" == *\"Does Not Exist\"* ]]; then\n    \/usr\/libexec\/PlistBuddy -c \"Add :class string user\" \"\/tmp\/$section.plist\"\n  else\n    \/usr\/libexec\/PlistBuddy -c \"Set :class user\" \"\/tmp\/$section.plist\"\n  fi\n\n  key_value=$(\/usr\/libexec\/PlistBuddy -c \"Print :shared\" \"\/tmp\/$section.plist\" 2>&1)  \t\n  if [[ \"$key_value\" == *\"Does Not Exist\"* ]]; then\n    \/usr\/libexec\/PlistBuddy -c \"Add :shared bool false\" \"\/tmp\/$section.plist\"\n  else\n    \/usr\/libexec\/PlistBuddy -c \"Set :shared false\" \"\/tmp\/$section.plist\"\n  fi\n\n  auth_user_key=$(\/usr\/libexec\/PlistBuddy -c \"Print :authenticate-user\" \"\/tmp\/$section.plist\" 2>&1)  \t\n  if [[ \"$auth_user_key\" == *\"Does Not Exist\"* ]]; then\n    \/usr\/libexec\/PlistBuddy -c \"Add :authenticate-user bool true\" \"\/tmp\/$section.plist\"\n  else\n    \/usr\/libexec\/PlistBuddy -c \"Set :authenticate-user true\" \"\/tmp\/$section.plist\"\n  fi\n\n  session_owner_key=$(\/usr\/libexec\/PlistBuddy -c \"Print :session-owner\" \"\/tmp\/$section.plist\" 2>&1)  \t\n  if [[ \"$session_owner_key\" == *\"Does Not Exist\"* ]]; then\n    \/usr\/libexec\/PlistBuddy -c \"Add :session-owner bool false\" \"\/tmp\/$section.plist\"\n  else\n    \/usr\/libexec\/PlistBuddy -c \"Set :session-owner false\" \"\/tmp\/$section.plist\"\n  fi\n\n  group_key=$(\/usr\/libexec\/PlistBuddy -c \"Print :group\" \"\/tmp\/$section.plist\" 2>&1)\n  if [[ \"$group_key\" == *\"Does Not Exist\"* ]]; then\n    \/usr\/libexec\/PlistBuddy -c \"Add :group string admin\" \"\/tmp\/$section.plist\"\n  else\n    \/usr\/libexec\/PlistBuddy -c \"Set :group admin\" \"\/tmp\/$section.plist\"\n  fi\n\n  \/usr\/bin\/security -q authorizationdb write \"$section\" < \"\/tmp\/$section.plist\"\ndone",
+          "id" : "system_settings_system_wide_preferences_configure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95408-1"
+            ],
+            "cci" : [
+              "CCI-002235"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.6.8 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1",
+              "AC.L2-3.1.5",
+              "AC.L2-3.1.6"
+            ],
+            "disaStig" : [
+              "APPL-26-002069"
+            ],
+            "nist80053r5" : [
+              "AC-6",
+              "AC-6(2)",
+              "AC-6(1)"
+            ],
+            "nist800171r3" : [
+              "03.01.07"
+            ],
+            "srg" : [
+              "SRG-OS-000324-GPOS-00125",
+              "SRG-OS-000480-GPOS-00228"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Require Administrator Password to Modify System-Wide Preferences"
+        },
+        {
+          "discussion" : "Sending data to Apple to help improve search _MUST_ be disabled. This will disable \"Improve Search\" within Spotlight in System Settings.\n\nThe information system _MUST_ be configured to provide only essential capabilities. Disabling the submission of search data will mitigate the risk of unwanted data being sent to Apple.\n",
+          "id" : "system_settings_improve_search_disable",
+          "mobileconfig" : "- PayloadContent:\n  - Search Queries Data Sharing Status: 2\n  PayloadType: com.apple.assistant.support\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95378-6"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.9.1"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002024"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Improve Search Information to Apple"
+        },
+        {
+          "discussion" : "Support for Server Message Block (SMB) file sharing is non-essential and _MUST_ be disabled.\n\nThe information system _MUST_ be configured to provide only essential capabilities.\n",
+          "fix" : "\/bin\/launchctl disable system\/com.apple.smbd",
+          "id" : "system_settings_smbd_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95401-6"
+            ],
+            "cci" : [
+              "CCI-000213"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.3.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8",
+                "5.4"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1"
+            ],
+            "disaStig" : [
+              "APPL-26-002001"
+            ],
+            "nist80053r5" : [
+              "AC-3",
+              "AC-17"
+            ],
+            "nist800171r3" : [
+              "03.01.02",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000080-GPOS-00048"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Server Message Block Sharing"
+        },
+        {
+          "discussion" : "Hot corners _MUST_ be secured.\n\nThe information system conceals, via the session lock, information previously visible on the display with a publicly viewable image. Although hot comers can be used to initiate a session lock or to launch useful applications, they can also be configured to disable an automatic session lock from initiating. Such a configuration introduces the risk that a user might forget to manually lock the screen before stepping away from the computer.\n\n[NOTE]\n====\nThe check and fix are for the last logged in user. To get the last logged in user, run the following.\n[source,bash]\n----\nCURRENT_USER=$( \/usr\/bin\/defaults read \/Library\/Preferences\/com.apple.loginwindow lastUserName )\n----\n====\n",
+          "fix" : "\/usr\/bin\/sudo -u \"$CURRENT_USER\" \/usr\/bin\/defaults delete \/Users\/\"$CURRENT_USER\"\/Library\/Preferences\/com.apple.dock wvous-bl-corner 2>\/dev\/null\n\/usr\/bin\/sudo -u \"$CURRENT_USER\" \/usr\/bin\/defaults delete \/Users\/\"$CURRENT_USER\"\/Library\/Preferences\/com.apple.dock wvous-tl-corner 2>\/dev\/null\n\/usr\/bin\/sudo -u \"$CURRENT_USER\" \/usr\/bin\/defaults delete \/Users\/\"$CURRENT_USER\"\/Library\/Preferences\/com.apple.dock wvous-tr-corner 2>\/dev\/null\n\/usr\/bin\/sudo -u \"$CURRENT_USER\" \/usr\/bin\/defaults delete \/Users\/\"$CURRENT_USER\"\/Library\/Preferences\/com.apple.dock wvous-br-corner 2>\/dev\/null",
+          "id" : "system_settings_hot_corners_secure",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95376-0"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.7.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.3"
+              ]
+            },
+            "cmmc" : [
+              "AC.L2-3.1.10"
+            ],
+            "nist80053r5" : [
+              "AC-11(1)"
+            ],
+            "nist800171r3" : [
+              "03.01.10"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Secure Hot Corners"
+        },
+        {
+          "discussion" : "Remote Management _MUST_ be disabled.\n",
+          "fix" : "\/System\/Library\/CoreServices\/RemoteManagement\/ARDAgent.app\/Contents\/Resources\/kickstart -deactivate -stop",
+          "id" : "system_settings_remote_management_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95393-5"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.3.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8",
+                "5.4"
+              ]
+            },
+            "cmmc" : [
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002250"
+            ],
+            "nist80053r5" : [
+              "CM-7",
+              "CM-7(1)"
+            ],
+            "nist800171r3" : [
+              "03.01.02",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Remote Management"
+        },
+        {
+          "discussion" : "The login window _MUST_ be configured to prompt all users for both a username and a password.\n\nBy default, the system displays a list of known users on the login window, which can make it easier for a malicious user to gain access to someone else's account. Requiring users to type in both their username and password mitigates the risk of unauthorized users gaining access to the information system.\n",
+          "id" : "system_settings_loginwindow_prompt_username_password_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - SHOWFULLNAME: true\n  PayloadType: com.apple.loginwindow\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95387-7"
+            ],
+            "cci" : [
+              "CCI-000764"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.11.4 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1"
+              ]
+            },
+            "cmmc" : [
+              "IA.L1-3.5.1",
+              "IA.L1-3.5.2"
+            ],
+            "disaStig" : [
+              "APPL-26-005052"
+            ],
+            "nist80053r5" : [
+              "IA-2"
+            ],
+            "nist800171r3" : [
+              "03.05.01"
+            ],
+            "srg" : [
+              "SRG-OS-000104-GPOS-00051"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Configure Login Window to Prompt for Username and Password"
+        },
+        {
+          "discussion" : "Ad tracking and targeted ads _MUST_ be disabled.\n\nThe information system _MUST_ be configured to provide only essential capabilities. Disabling ad tracking ensures that applications and advertisers are unable to track users' interests and deliver targeted advertisements.\n",
+          "id" : "system_settings_personalized_advertising_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowApplePersonalizedAdvertising: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95390-1"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.6.4 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002200"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Personalized Advertising"
+        },
+        {
+          "discussion" : "Automatic backups _MUST_ be enabled when using Time Machine.\n",
+          "id" : "system_settings_time_machine_auto_backup_enable",
+          "mobileconfig" : "- PayloadContent:\n  - AutoBackup: true\n  PayloadType: com.apple.TimeMachine\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95409-9"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.4.1 (level 2)"
+              ],
+              "controlsV8" : [
+                "11.2"
+              ]
+            }
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Configure Time Machine for Automatic Backups"
+        },
+        {
+          "discussion" : "Password hints _MUST_ be disabled.\n\nPassword hints leak information about passwords that are currently in use and can lead to loss of confidentiality.\n",
+          "id" : "system_settings_password_hints_disable",
+          "mobileconfig" : "- PayloadContent:\n  - RetriesUntilHint: 0\n  PayloadType: com.apple.loginwindow\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95389-3"
+            ],
+            "cci" : [
+              "CCI-000206"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.11.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1"
+              ]
+            },
+            "cmmc" : [
+              "IA.L2-3.5.11"
+            ],
+            "disaStig" : [
+              "APPL-26-003012"
+            ],
+            "nist80053r5" : [
+              "IA-6"
+            ],
+            "nist800171r3" : [
+              "03.05.11"
+            ],
+            "srg" : [
+              "SRG-OS-000079-GPOS-00047"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Password Hints"
+        },
+        {
+          "discussion" : "Support for both Screen Sharing and Apple Remote Desktop (ARD) is non-essential and _MUST_ be disabled.\n\nThe information system _MUST_ be configured to provide only essential capabilities. Disabling screen sharing and ARD helps prevent the unauthorized connection of devices, the unauthorized transfer of information, and unauthorized tunneling.\n",
+          "fix" : "\/bin\/launchctl disable system\/com.apple.screensharing",
+          "id" : "system_settings_screen_sharing_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95394-3"
+            ],
+            "cci" : [
+              "CCI-000213"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.3.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1"
+            ],
+            "disaStig" : [
+              "APPL-26-002050"
+            ],
+            "nist80053r5" : [
+              "AC-3",
+              "AC-17"
+            ],
+            "nist800171r3" : [
+              "03.01.02",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000080-GPOS-00048"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Screen Sharing and Apple Remote Desktop"
+        },
+        {
+          "ddmInfo" : "ddm_key: Enabled\nddm_value: false\ndeclarationtype: com.apple.configuration.external-intelligence.settings\n",
+          "discussion" : "Integration with external intelligence systems _MUST_ be disabled unless approved by the organization. Disabling external intelligence integration will mitigate the risk of data being sent to unapproved third party.\n\nThe information system _MUST_ be configured to provide only essential capabilities.\n",
+          "id" : "system_settings_external_intelligence_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowExternalIntelligenceIntegrations: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95365-3"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.5.1.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8",
+                "15.3"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "CM-7",
+              "CM-7(1)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable External Intelligence Integrations"
+        },
+        {
+          "discussion" : "The screen saver timeout _MUST_ be set to 900 seconds or a shorter length of time.\n\nThis rule ensures that a full session lock is triggered within no more than 900 seconds of inactivity.\n",
+          "id" : "system_settings_screensaver_timeout_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - idleTime: 900\n  PayloadType: com.apple.screensaver\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95397-6"
+            ],
+            "cci" : [
+              "CCI-000057"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.11.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.3"
+              ]
+            },
+            "cmmc" : [
+              "AC.L2-3.1.10"
+            ],
+            "disaStig" : [
+              "APPL-26-000070"
+            ],
+            "nist80053r5" : [
+              "AC-11",
+              "IA-11"
+            ],
+            "nist800171r3" : [
+              "03.01.10",
+              "03.05.01"
+            ],
+            "srg" : [
+              "SRG-OS-000029-GPOS-00010"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Enforce Screen Saver Timeout"
+        },
+        {
+          "discussion" : "Make sure Software Update is updated and current.\n\nlink:https:\/\/support.apple.com\/en-us\/108382[Update macOS on Mac] or if enrolled in an MDM consult your MDM's documentation for automated methods.\n",
+          "fix" : "\/usr\/sbin\/softwareupdate -i -a",
+          "id" : "system_settings_softwareupdate_current",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95405-7"
+            ],
+            "cci" : [
+              "CCI-002605"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "1.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "7.3",
+                "7.4"
+              ]
+            },
+            "cmmc" : [
+              "SI.L1-3.14.1",
+              "SI.L1-3.14.2",
+              "SI.L1-3.14.4"
+            ],
+            "disaStig" : [
+              "APPL-26-999999"
+            ],
+            "nist80053r5" : [
+              "SI-2"
+            ],
+            "nist800171r3" : [
+              "03.14.01",
+              "03.14.02"
+            ],
+            "srg" : [
+              "SRG-OS-000439-GPOS-00195"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Ensure Software Update is Updated and Current"
+        },
+        {
+          "discussion" : "SSH service _MUST_ be disabled for remote access.\n",
+          "fix" : "\/usr\/sbin\/systemsetup -f -setremotelogin off >\/dev\/null\n\/bin\/launchctl disable system\/com.openssh.sshd",
+          "id" : "system_settings_ssh_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95406-5"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.3.4 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "nist80053r5" : [
+              "CM-7",
+              "CM-7(1)",
+              "AC-17"
+            ],
+            "nist800171r3" : [
+              "03.01.02",
+              "03.04.06"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable SSH Server for Remote Access Sessions"
+        },
+        {
+          "discussion" : "FileVault _MUST_ be enforced.\n\nThe information system implements cryptographic mechanisms to protect the confidentiality and integrity of information stored on digital media during transport outside of controlled areas.\n\nNOTE: See the FileVault supplemental to implement this rule.\n",
+          "id" : "system_settings_filevault_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - dontAllowFDEDisable: true\n  PayloadType: com.apple.MCX\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95367-9"
+            ],
+            "cci" : [
+              "CCI-001199",
+              "CCI-002475",
+              "CCI-002476"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.6.6 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.6",
+                "3.11"
+              ]
+            },
+            "cmmc" : [
+              "SC.L2-3.13.16"
+            ],
+            "disaStig" : [
+              "APPL-26-005020"
+            ],
+            "nist80053r5" : [
+              "SC-28",
+              "SC-28(1)"
+            ],
+            "nist800171r3" : [
+              "03.13.08"
+            ],
+            "srg" : [
+              "SRG-OS-000185-GPOS-00079",
+              "SRG-OS-000405-GPOS-00184",
+              "SRG-OS-000404-GPOS-00183"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Enforce FileVault"
+        },
+        {
+          "discussion" : "Content caching _MUST_ be disabled.\n\nContent caching is a macOS service that helps reduce Internet data usage and speed up software installation on Mac computers. It is not recommended for devices furnished to employees to act as a caching server.\n",
+          "id" : "system_settings_content_caching_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowContentCaching: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95362-0"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.3.8 (level 2)"
+              ],
+              "controlsV8" : [
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002140"
+            ],
+            "nist80053r5" : [
+              "CM-7",
+              "CM-7(1)"
+            ],
+            "nist800171r3" : [
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Content Caching Service"
+        },
+        {
+          "discussion" : "If the system does not require Internet sharing, support for it is non-essential and _MUST_ be disabled.\n\nThe information system _MUST_ be configured to provide only essential capabilities. Disabling Internet sharing helps prevent the unauthorized connection of devices, unauthorized transfer of information, and unauthorized tunneling.\n",
+          "id" : "system_settings_internet_sharing_disable",
+          "mobileconfig" : "- PayloadContent:\n  - forceInternetSharingOff: true\n  PayloadType: com.apple.MCX\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95382-8"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.3.7 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "AC.L2-3.1.3"
+            ],
+            "disaStig" : [
+              "APPL-26-002007"
+            ],
+            "nist80053r5" : [
+              "AC-4",
+              "AC-20"
+            ],
+            "nist800171r3" : [
+              "03.01.03",
+              "03.01.20"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Internet Sharing"
+        },
+        {
+          "discussion" : "The macOS Application Firewall is the built-in firewall that comes with macOS, and it _MUST_ be enabled.\n\nWhen the macOS Application Firewall is enabled, the flow of information within the information system and between interconnected systems will be controlled by approved authorizations.\n",
+          "fix" : "\/usr\/bin\/defaults write \/Library\/Preferences\/com.apple.alf globalstate -int 1",
+          "id" : "system_settings_firewall_enable",
+          "mobileconfig" : "- PayloadContent:\n  - EnableFirewall: true\n  PayloadType: com.apple.security.firewall\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95369-5"
+            ],
+            "cci" : [
+              "CCI-000366"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.2.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.5",
+                "13.1"
+              ]
+            },
+            "cmmc" : [
+              "AC.L2-3.1.3",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7",
+              "SC.L1-3.13.1"
+            ],
+            "disaStig" : [
+              "APPL-26-005050"
+            ],
+            "nist80053r5" : [
+              "AC-4",
+              "SC-7(12)",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7"
+            ],
+            "nist800171r3" : [
+              "03.01.03",
+              "03.04.06",
+              "03.13.01"
+            ],
+            "srg" : [
+              "SRG-OS-000480-GPOS-00232"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Enable macOS Application Firewall"
+        },
+        {
+          "ddmInfo" : "ddm_key: AutomaticActions\nddm_value:\n  Download: AlwaysOn\ndeclarationtype: com.apple.configuration.softwareupdate.settings\n",
+          "discussion" : "Software Update _MUST_ be configured to enforce automatic downloads of updates is enabled.\n",
+          "id" : "system_settings_software_update_download_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - AutomaticDownload: true\n  PayloadType: com.apple.SoftwareUpdate\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95403-2"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "1.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "7.3",
+                "7.4"
+              ]
+            }
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Enforce Software Update Downloads Updates Automatically"
+        },
+        {
+          "ddmInfo" : "ddm_key: AutomaticActions\nddm_value:\n  InstallSecurityUpdates: AlwaysOn\ndeclarationtype: com.apple.configuration.softwareupdate.settings\n",
+          "discussion" : "Ensure that security updates are installed as soon as they are available from Apple.\n",
+          "id" : "system_settings_critical_update_install_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - CriticalUpdateInstall: true\n  PayloadType: com.apple.SoftwareUpdate\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95363-8"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "1.5 (level 1)"
+              ],
+              "controlsV8" : [
+                "7.3",
+                "7.4",
+                "7.7"
+              ]
+            },
+            "cmmc" : [
+              "SI.L1-3.14.1",
+              "SI.L1-3.14.4"
+            ],
+            "nist80053r5" : [
+              "SI-2"
+            ],
+            "nist800171r3" : [
+              "03.14.01"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Enforce Critical Security Updates to be Installed"
+        },
+        {
+          "ddmInfo" : "ddm_key: Enabled\nddm_value: false\ndeclarationtype: com.apple.configuration.siri.settings\n",
+          "discussion" : "Support for Siri is non-essential and _MUST_ be disabled to prevent organizational data from being synchronized to Apple servers.\n\nApple's Siri service does not provide an organization with enough control over the storage and access of data, and, therefore, automated synchronization _MUST_ be controlled by an organization approved service.\n\nThe information system _MUST_ be configured to provide only essential capabilities.\n",
+          "id" : "system_settings_siri_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowAssistant: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95398-4"
+            ],
+            "cci" : [
+              "CCI-000381",
+              "CCI-001774"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.5.2.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-B.1.III",
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002020"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06",
+              "03.04.08"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Siri"
+        },
+        {
+          "discussion" : "Bluetooth Sharing _MUST_ be disabled.\n\nBluetooth Sharing allows users to wirelessly transmit files between the macOS and Bluetooth-enabled devices, including personally owned cellphones and tablets. A malicious user might introduce viruses or malware onto the system or extract sensitive files via Bluetooth Sharing. When Bluetooth Sharing is disabled, this risk is mitigated.\n\n[NOTE]\n====\nThe check and fix are for the last logged in user. To get the last logged in user, run the following.\n[source,bash]\n----\nCURRENT_USER=$( \/usr\/bin\/defaults read \/Library\/Preferences\/com.apple.loginwindow lastUserName )\n----\n====\n",
+          "fix" : "\/usr\/bin\/sudo -u \"$CURRENT_USER\" \/usr\/bin\/defaults -currentHost write com.apple.Bluetooth PrefKeyServicesEnabled -bool false",
+          "id" : "system_settings_bluetooth_sharing_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95361-2"
+            ],
+            "cci" : [
+              "CCI-000213",
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.3.10 (level 1)"
+              ],
+              "controlsV8" : [
+                "3.3",
+                "4.1"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002110"
+            ],
+            "nist80053r5" : [
+              "AC-3",
+              "AC-18(4)",
+              "CM-7",
+              "CM-7(1)"
+            ],
+            "nist800171r3" : [
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000080-GPOS-00048",
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Bluetooth Sharing"
+        },
+        {
+          "discussion" : "Wake for network access _MUST_ be disabled.\n",
+          "fix" : "\/usr\/bin\/pmset -a womp 0",
+          "id" : "system_settings_wake_network_access_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95417-2"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.10.3 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.8"
+              ]
+            }
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Ensure Wake for Network Access Is Disabled"
+        },
+        {
+          "discussion" : "The ability to submit diagnostic data to Apple _MUST_ be disabled.\n\nThe information system _MUST_ be configured to provide only essential capabilities. Disabling the submission of diagnostic and usage information will mitigate the risk of unwanted data being sent to Apple.\n",
+          "id" : "system_settings_diagnostics_reports_disable",
+          "mobileconfig" : "- PayloadContent:\n  - AutoSubmit: false\n  PayloadType: com.apple.SubmitDiagInfo\n- PayloadContent:\n  - allowDiagnosticSubmission: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95364-6"
+            ],
+            "cci" : [
+              "CCI-001312",
+              "CCI-001314"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.6.3.1 (level 1)",
+                "2.6.3.4 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20"
+            ],
+            "disaStig" : [
+              "APPL-26-002021"
+            ],
+            "nist80053r5" : [
+              "SI-11",
+              "AC-20",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20"
+            ],
+            "srg" : [
+              "SRG-OS-000206-GPOS-00084",
+              "SRG-OS-000205-GPOS-00083"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Sending Diagnostic and Usage Data to Apple"
+        },
+        {
+          "discussion" : "The ability for Apple to store and review audio of your Siri and Dictation interactions _MUST_ be disabled.\n\nThe information system _MUST_ be configured to provide only essential capabilities. Disabling the submission of Siri and Dictation information will mitigate the risk of unwanted data being sent to Apple.\n",
+          "id" : "system_settings_improve_siri_dictation_disable",
+          "mobileconfig" : "- PayloadContent:\n  - Siri Data Sharing Opt-In Status: 2\n  PayloadType: com.apple.assistant.support\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95379-4"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.6.3.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002210"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Improve Siri and Dictation Information to Apple"
+        },
+        {
+          "discussion" : "The login window _MUST_ be configured to show a custom access warning message.\n",
+          "id" : "system_settings_loginwindow_loginwindowtext_enable",
+          "mobileconfig" : "- PayloadContent:\n  - LoginwindowText: Center for Internet Security Test Message\n  PayloadType: com.apple.loginwindow\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95386-9"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.11.3 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1"
+              ]
+            }
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Configure Login Window to Show A Custom Message"
+        },
+        {
+          "discussion" : "Automatic logon _MUST_ be disabled.\n\nWhen automatic logons are enabled, the default user account is automatically logged on at boot time without prompting the user for a password. Even if the screen is later locked, a malicious user would be able to reboot the computer and find it already logged in. Disabling automatic logons mitigates this risk.\n",
+          "id" : "system_settings_automatic_login_disable",
+          "mobileconfig" : "- PayloadContent:\n  - com.apple.login.mcx.DisableAutoLoginClient: true\n  PayloadType: com.apple.loginwindow\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95356-2"
+            ],
+            "cci" : [
+              "CCI-000366"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.13.3 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.7"
+              ]
+            },
+            "cmmc" : [
+              "IA.L1-3.5.1",
+              "IA.L1-3.5.2"
+            ],
+            "disaStig" : [
+              "APPL-26-002066"
+            ],
+            "nist80053r5" : [
+              "IA-2",
+              "IA-5(13)"
+            ],
+            "nist800171r3" : [
+              "03.05.01"
+            ],
+            "srg" : [
+              "SRG-OS-000480-GPOS-00229",
+              "SRG-OS-000104-GPOS-00051",
+              "SRG-OS-000480-GPOS-00228"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Unattended or Automatic Logon to the System"
+        },
+        {
+          "ddmInfo" : "ddm_key: AllowSignIn\nddm_value: false\ndeclarationtype: com.apple.configuration.external-intelligence.settings\n",
+          "discussion" : "The ability to sign into an external intelligence systems _MUST_ be disabled unless approved by the organization. Disabling external intelligence integration will mitigate the risk of data being sent to unapproved third party.\n\nThe information system _MUST_ be configured to provide only essential capabilities.\n",
+          "id" : "system_settings_external_intelligence_sign_in_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowExternalIntelligenceIntegrationsSignIn: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95366-1"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.5.1.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8",
+                "15.3"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "CM-7",
+              "CM-7(1)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable External Intelligence Integration Sign In"
+        },
+        {
+          "discussion" : "The ability for Apple to store and review audio of your audio recordings and transcripts of your vocal shortcuts and voice control interactions _MUST_ be disabled. This will disable \"Improve Assistive Voice Features\" in Privacy & Security within System Settings.\n\nThe information system _MUST_ be configured to provide only essential capabilities. Disabling the submission of this information will mitigate the risk of unwanted data being sent to Apple.\n",
+          "id" : "system_settings_improve_assistive_voice_disable",
+          "mobileconfig" : "- PayloadContent:\n  - AXSAudioDonationSiriImprovementEnabled: false\n  PayloadType: com.apple.Accessibility\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95377-8"
+            ],
+            "cci" : [
+              "CCI-000381"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.6.3.3 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.20",
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002023"
+            ],
+            "nist80053r5" : [
+              "AC-20",
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(10)"
+            ],
+            "nist800171r3" : [
+              "03.01.20",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Sending Audio Recordings and Transcripts to Apple"
+        },
+        {
+          "discussion" : "Time synchronization _MUST_ be enforced on all networked systems.\n\nThis rule ensures the uniformity of time stamps for information systems with multiple system clocks and systems connected over a network.\n",
+          "id" : "system_settings_time_server_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - com.apple.timed:\n      TMAutomaticTimeOnlyEnabled: true\n  PayloadType: com.apple.ManagedClient.preferences\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95412-3"
+            ],
+            "cci" : [
+              "CCI-001891",
+              "CCI-002046",
+              "CCI-004923",
+              "CCI-004926",
+              "CCI-004922"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.2.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "8.4"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.7"
+            ],
+            "disaStig" : [
+              "APPL-26-000014"
+            ],
+            "nist80053r5" : [
+              "AU-12(1)",
+              "SC-45(1)"
+            ],
+            "nist800171r3" : [
+              "03.03.07"
+            ],
+            "srg" : [
+              "SRG-OS-000355-GPOS-00143",
+              "SRG-OS-000356-GPOS-00144"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Enforce macOS Time Synchronization"
+        },
+        {
+          "discussion" : "Users _MUST_ authenticate when unlocking the screen saver.\n\nThe screen saver acts as a session lock and prevents unauthorized users from accessing the current user's account.\n",
+          "id" : "system_settings_screensaver_password_enforce",
+          "mobileconfig" : "- PayloadContent:\n  - askForPassword: true\n  PayloadType: com.apple.screensaver\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95396-8"
+            ],
+            "cci" : [
+              "CCI-000056"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.11.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.7"
+              ]
+            },
+            "cmmc" : [
+              "AC.L2-3.1.10"
+            ],
+            "disaStig" : [
+              "APPL-26-000002"
+            ],
+            "nist80053r5" : [
+              "AC-11"
+            ],
+            "nist800171r3" : [
+              "03.01.10",
+              "03.05.01"
+            ],
+            "srg" : [
+              "SRG-OS-000028-GPOS-00009"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Enforce Screen Saver Password"
+        },
+        {
+          "discussion" : "Approved time server _MUST_ be the only server configured for use.\n\nThis rule ensures the uniformity of time stamps for information systems with multiple system clocks and systems connected over a network.\n\nNOTE: As of macOS 10.13 only one time server is supported.\n",
+          "id" : "system_settings_time_server_configure",
+          "mobileconfig" : "- PayloadContent:\n  - timeServer: time.apple.com\n  PayloadType: com.apple.MCX\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95411-5"
+            ],
+            "cci" : [
+              "CCI-001891",
+              "CCI-002046",
+              "CCI-004923",
+              "CCI-004923",
+              "CCI-004926",
+              "CCI-004926"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.2.1 (level 1)"
+              ],
+              "controlsV8" : [
+                "8.4"
+              ]
+            },
+            "cmmc" : [
+              "AU.L2-3.3.7"
+            ],
+            "disaStig" : [
+              "APPL-26-000170"
+            ],
+            "nist80053r5" : [
+              "AU-12(1)",
+              "SC-45(1)"
+            ],
+            "nist800171r3" : [
+              "03.03.07"
+            ],
+            "srg" : [
+              "SRG-OS-000355-GPOS-00143",
+              "SRG-OS-000356-GPOS-00144"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Configure macOS to Use an Authorized Time Server"
+        },
+        {
+          "discussion" : "Media sharing _MUST_ be disabled.\n\nWhen Media Sharing is enabled, the computer starts a network listening service that shares the contents of the user's music collection with other users in the same subnet.\n\nThe information system _MUST_ be configured to provide only essential capabilities. Disabling Media Sharing helps prevent the unauthorized connection of devices and the unauthorized transfer of information. Disabling Media Sharing mitigates this risk.\n\nNote: On macOS versions prior to 15, the Media Sharing settings panel may still allow you to check \"Home Sharing\" and \"Share media with guests,\" but the service itself will not be activated.\n",
+          "id" : "system_settings_media_sharing_disabled",
+          "mobileconfig" : "- PayloadContent:\n  - allowMediaSharing: false\n  - allowMediaSharingModification: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95388-5"
+            ],
+            "cci" : [
+              "CCI-000213"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.3.9 (level 2)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1"
+            ],
+            "disaStig" : [
+              "APPL-26-002100"
+            ],
+            "nist80053r5" : [
+              "AC-3",
+              "AC-17"
+            ],
+            "nist800171r3" : [
+              "03.01.02",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000080-GPOS-00048"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Media Sharing"
+        },
+        {
+          "discussion" : "Airplay Receiver allows you to send content from another Apple device to be displayed on the screen as it's being played from your other device.\n\nSupport for Airplay Receiver is non-essential and _MUST_ be disabled.\n\nThe information system _MUST_ be configured to provide only essential capabilities.\n",
+          "id" : "system_settings_airplay_receiver_disable",
+          "mobileconfig" : "- PayloadContent:\n  - allowAirPlayIncomingRequests: false\n  PayloadType: com.apple.applicationaccess\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95354-7"
+            ],
+            "cci" : [
+              "CCI-000381",
+              "CCI-001443"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.1.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7"
+            ],
+            "disaStig" : [
+              "APPL-26-002080"
+            ],
+            "nist80053r5" : [
+              "CM-7",
+              "CM-7(1)"
+            ],
+            "nist800171r3" : [
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000300-GPOS-00118",
+              "SRG-OS-000095-GPOS-00049"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Airplay Receiver"
+        },
+        {
+          "discussion" : "If the system does not require Remote Apple Events, support for Apple Remote Events is non-essential and _MUST_ be disabled.\n\nThe information system _MUST_ be configured to provide only essential capabilities. Disabling Remote Apple Events helps prevent the unauthorized connection of devices, the unauthorized transfer of information, and unauthorized tunneling.\n",
+          "fix" : "\/usr\/sbin\/systemsetup -setremoteappleevents off\n\/bin\/launchctl disable system\/com.apple.AEServer",
+          "id" : "system_settings_rae_disable",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95392-7"
+            ],
+            "cci" : [
+              "CCI-000213",
+              "CCI-000382"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.3.3.6 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "AC.L1-3.1.1"
+            ],
+            "disaStig" : [
+              "APPL-26-002022"
+            ],
+            "nist80053r5" : [
+              "AC-3",
+              "AC-17"
+            ],
+            "nist800171r3" : [
+              "03.01.02",
+              "03.04.06"
+            ],
+            "srg" : [
+              "SRG-OS-000080-GPOS-00048",
+              "SRG-OS-000096-GPOS-00050"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Disable Remote Apple Events"
+        },
+        {
+          "discussion" : "Firewall Stealth Mode _MUST_ be enabled.\n\nWhen stealth mode is enabled, the Mac will not respond to any probing requests, and only requests from authorized applications will still be authorized.\n\n[IMPORTANT]\n====\nEnabling firewall stealth mode may prevent certain remote mechanisms used for maintenance and compliance scanning from properly functioning. Information System Security Officers (ISSOs) are advised to first fully weigh the potential risks posed to their organization before opting not to enable stealth mode.\n====\n",
+          "fix" : "\/usr\/bin\/defaults write \/Library\/Preferences\/com.apple.alf stealthenabled -int 1",
+          "id" : "system_settings_firewall_stealth_mode_enable",
+          "mobileconfig" : "- PayloadContent:\n  - EnableStealthMode: true\n  - EnableFirewall: true\n  PayloadType: com.apple.security.firewall\n",
+          "modified" : false,
+          "references" : {
+            "cce" : [
+              "CCE-95370-3"
+            ],
+            "cis" : {
+              "benchmark" : [
+                "2.2.2 (level 1)"
+              ],
+              "controlsV8" : [
+                "4.1",
+                "4.5",
+                "4.8"
+              ]
+            },
+            "cmmc" : [
+              "CM.L2-3.4.6",
+              "CM.L2-3.4.7",
+              "SC.L1-3.13.1"
+            ],
+            "nist80053r5" : [
+              "CM-7",
+              "CM-7(1)",
+              "SC-7(16)",
+              "SC-7"
+            ],
+            "nist800171r3" : [
+              "03.04.06",
+              "03.13.01"
+            ]
+          },
+          "section" : "system_settings",
+          "status" : "active",
+          "title" : "Enable Firewall Stealth Mode"
+        }
+      ]
+    }
+  ],
+  "summary" : {
+    "breakdown" : [
+      {
+        "name" : "iCloud",
+        "ruleCount" : 1
+      },
+      {
+        "name" : "Operating System",
+        "ruleCount" : 42
+      },
+      {
+        "name" : "Password Policy",
+        "ruleCount" : 8
+      },
+      {
+        "name" : "Supplemental",
+        "ruleCount" : 1
+      },
+      {
+        "name" : "Audit",
+        "ruleCount" : 21
+      },
+      {
+        "name" : "System Settings",
+        "ruleCount" : 44
+      }
+    ],
+    "sections" : 6,
+    "totalRules" : 117
+  }
+}
