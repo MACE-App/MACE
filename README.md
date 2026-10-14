@@ -50,6 +50,7 @@
 - [Quick Start](#quick-start)
 - [Features](#features)
   - [Build Targets](#build-targets)
+  - [Baseline Compare](#baseline-compare)
   - [Output Examples](#output-examples)
   - [Staying Current](#staying-current)
 - [Status](#status)
@@ -147,13 +148,14 @@ It pulls the latest release straight from this repo and verifies the Developer I
 | Area | What it does | Docs |
 |---|---|---|
 | **Project Management** | Projects for macOS, iOS/iPadOS, and visionOS, plus Chrome, Edge, and Firefox baselines *(in testing)*. Opens `.mace` projects and imports Jamf Compliance Editor `.jce` files with auto-detected platform, version, and framework. | [Guide](https://getmace.com/docs/getting-started/projects) |
-| **Compliance Editor** | Three-panel editor over 800+ mSCP rules: search, filter, and sort by framework, section, tags, or modification state, then edit discussions, checks, remediations, references, mobileconfig payloads, DDM declarations, and ODVs. | [Guide](https://getmace.com/docs/compliance-editor/overview) |
-| **Rule Builder** | Author custom rules from templates or edit standalone YAML, with full rule ID and structure validation. | [Guide](https://getmace.com/docs/custom-rules/overview) |
-| **Rule Updates** | Detects new, updated, and removed rules from the mSCP repository with a per-rule change report. Your customizations are preserved. | [Guide](https://getmace.com/docs/compliance-editor/overview) |
-| **Build** | Audit and remediation scripts, `.mobileconfig` profiles (signed or unsigned), DDM declarations, and extension attributes, plus Tenable `.audit`, CSV, manifest, and baseline YAML. Native MACE engine or the official mSCP Python scripts. | [Guide](https://getmace.com/docs/build/overview) |
+| **Compliance Editor** | Three-panel editor over 800+ mSCP rules: search, filter, and sort by framework, section, tags, or modification state, then edit discussions, checks, remediations, mobileconfig payloads, DDM declarations, and ODVs. Mark rules exempt with a reason, flag them for review, and change them in bulk. | [Guide](https://getmace.com/docs/compliance-editor/overview) |
+| **Baseline Compare** | Put any two baselines side by side: CIS Level 1 vs Level 2, CIS vs STIG, one OS release vs another, an mSCP dev branch vs main, or your own project vs its framework. Search by STIG ID or CCE, ignore wording changes, and export as CSV, Markdown, or HTML. | [Guide](https://getmace.com/docs/baseline-compare/overview) |
+| **Rule Builder** | Author custom rules from templates or edit standalone YAML, then import them into any project. | [Guide](https://getmace.com/docs/custom-rules/overview) |
+| **Rule Updates** | Detects updated and removed rules from the mSCP repository with a per-rule What's Changing diff. Projects can follow the release branch, an mSCP dev branch, or a public fork. Your customizations are preserved. | [Guide](https://getmace.com/docs/compliance-editor/overview) |
+| **Build** | Audit and remediation scripts, `.mobileconfig` profiles (signed or unsigned), DDM declarations, and compliance reporting scripts for six MDMs, plus Tenable `.audit`, CSV, vendor manifest, baseline YAML, and a self-scheduling offline script package. Exempt rules flow through every output. Native MACE engine or the official mSCP Python scripts. | [Guide](https://getmace.com/docs/build/overview) |
 | **Documentation** | Full baseline documents in PDF, HTML, Markdown, AsciiDoc, Excel, CSV, or JSON, with a live preview that updates as you change options. | [Guide](https://getmace.com/docs/documentation/overview) |
-| **Audit & Verification** | Run a baseline against a Mac, review pass/fail/manual results section by section, and export in seven formats plus DISA STIG CKL and CKLB. | [Guide](https://getmace.com/docs/audit/overview) |
-| **Settings & Appearance** | Themes, 75+ seasonal app icons, auto-save, Git-ready projects, release channel selection, logging console, and environment resets. | [Guide](https://getmace.com/docs/reference/settings) |
+| **Audit & Verification** | Run a baseline against a Mac, review pass/fail/manual results section by section with exemptions honored, and export in seven formats plus DISA STIG CKL and CKLB. | [Guide](https://getmace.com/docs/audit/overview) |
+| **Settings & Appearance** | Themes, 75+ seasonal app icons, auto-save, Git-ready projects, a Rules Source picker for mSCP dev branches and forks, release channel selection, logging console, and environment resets. | [Guide](https://getmace.com/docs/reference/settings) |
 
 ### Build Targets
 
@@ -165,18 +167,30 @@ It pulls the latest release straight from this repo and verifies the Developer I
 </p>
 <p align="center"><em>Build hub: pick a target, choose which artifacts to generate, and customize output names and branding</em></p>
 
-Build locally, or upload straight to any of six MDM platforms:
+Build locally, or upload straight to any of six MDM platforms. Every upload follows the same Settings → Review → Upload → Verify flow, with saved servers, a connection test, a review of exactly what will be sent, and verification on the server afterwards:
 
 | Target | Direct upload |
 |--------|---------------|
-| **Jamf Pro** | Profiles, scripts, extension attributes, and audit preferences (Basic Auth & OAuth) |
-| **Workspace ONE** | Custom Settings profiles, scripts, and sensors (Basic Auth, OAuth2 & Token) |
-| **Microsoft Intune** | Profiles, shell scripts, and custom attributes via the Graph API (Tenant/Client auth) |
-| **Fleet** | Profiles, scripts, and audit preferences, plus an osquery compliance policy (email/password or API token) |
-| **Iru** | Custom Profiles, Custom Scripts, and audit preferences, with optional Blueprint assignment (API token) |
+| **Jamf Pro** | Profiles, scripts, extension attribute, audit preferences or JSON schema, Smart Groups, and a scheduled audit policy (API client or username/password) |
+| **Workspace ONE** | Custom Settings profiles, scripts delivered as Scripts or a Product, and reporting as Sensors or Custom Attributes (REST API key) |
+| **Intune** | Settings Catalog profiles, shell scripts on a schedule, custom attributes, and an optional compliance policy via the Graph API (Entra app credentials) |
+| **Fleet** | Profiles, scripts, audit preferences, DDM declarations, labels, and a combined or per-rule osquery compliance policy, with Hold for Scoping and staged rollouts (email/password or API token) |
+| **Iru** | Custom Profiles, Custom Scripts in audit and remediation slots, audit preferences, and a Failed Rules Report, with optional Blueprint assignment (API token) |
 | **Addigy** | Custom MDM profiles, scripts, audit preferences, and a compliance Custom Fact, with optional policy assignment (API key) |
 
-More MDM targets are always on the table. The Build Hub has a **Your MDM Here? Suggest** button for exactly that. Adding one isn't purely up to M.A.C.E., though: the vendor has to expose the right API options before direct upload is possible, and demand from users of that platform is what decides which ones get built first. If you'd like to see your MDM supported, suggest it in the app or [open an issue](https://github.com/MACE-App/MACE/issues). Asking your vendor for the API access it needs helps just as much.
+More MDM targets are always on the table. The Build Hub has a **Don't see your MDM?** entry with a Get in Touch button for exactly that. Adding one isn't purely up to M.A.C.E., though: the vendor has to expose the right API options before direct upload is possible, and demand from users of that platform is what decides which ones get built first. If you'd like to see your MDM supported, suggest it in the app or [open an issue](https://github.com/MACE-App/MACE/issues). Asking your vendor for the API access it needs helps just as much.
+
+### Baseline Compare
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset=".github/images/baseline-compare-dark.webp">
+    <img alt="MACE Baseline Compare Hub" src=".github/images/baseline-compare-light.webp" width="700">
+  </picture>
+</p>
+<p align="center"><em>Baseline Compare: two baselines side by side, sorted into what only one requires and what both require but configure differently</em></p>
+
+Picking a framework is the first real decision in a project, and it's hard to make blind. **Compare Baselines** on the main menu puts any two baselines next to each other: CIS Level 1 against Level 2, CIS against the DISA STIG, one OS release against another, an mSCP dev branch against `main`, or one of your own projects against the stock framework to see only your changes. Search by rule, STIG ID, or CCE, ignore wording and command rewrites that don't change the requirement, open any rule to see the full difference, and export the result as CSV, Markdown, or HTML. Full guide at [getmace.com/docs/baseline-compare](https://getmace.com/docs/baseline-compare/overview).
 
 ### Output Examples
 
@@ -270,7 +284,7 @@ Click any preview to download the sample and open it locally. GitHub limits in-b
 </p>
 <p align="center"><em>Rule updates: what changed upstream, which rules it touches, and what's about to be written</em></p>
 
-**Rules** follow mSCP. M.A.C.E. checks the project for changes and shows you exactly what moved before anything is applied: how many rules were updated or removed, how many are relevant to your framework, and a per-file list of what's about to change. Your customizations and exported baselines are preserved through the update.
+**Rules** follow mSCP. M.A.C.E. checks the project for changes and shows you exactly what moved before anything is applied: how many rules were updated or removed, how many are relevant to your framework, and a per-file diff of what's about to change. Your customizations and exported baselines are preserved through the update. New projects can also draw their rules from an mSCP development branch or a public fork, chosen under **Settings ▸ General ▸ Rules Source**.
 
 **The app** updates itself in the background. Pick **Beta** or **Stable** in **Settings ▸ Updates**, and downloads are signature-verified and installed through a privileged helper.
 
